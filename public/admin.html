@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="QualiLearn Admin Dashboard - Manage curriculum, content, and users.">
+    
+    <title>Admin Dashboard • QualiLearn</title>
+
+    <!-- Bootstrap 5.3 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
+    <style>
+        :root {
+            --primary: #0f172a;
+            --accent: #4f46e5;
+            --accent-hover: #4338ca;
+            --secondary: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --sidebar-width: 280px;
+            --bg-light: #f1f5f9;
+            --card-shadow: 0 10px 30px -5px rgba(0,0,0,0.04), 0 4px 10px -2px rgba(0,0,0,0.02);
+            --glass: rgba(255, 255, 255, 0.8);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--primary);
+            overflow-x: hidden;
+            letter-spacing: -0.01em;
+        }
+
+        h1, h2, h3, h4, .outfit { font-family: 'Outfit', sans-serif; }
+
+        /* Sidebar Glassmorphism */
+        .sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: #0f172a;
+            color: white;
+            z-index: 1000;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 10px 0 30px rgba(0,0,0,0.05);
+        }
+
+        .sidebar-header {
+            padding: 2.5rem 2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .nav-link {
+            padding: 0.85rem 1.75rem;
+            margin: 0.2rem 1rem;
+            color: #94a3b8;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.2s ease;
+            border-radius: 12px;
+        }
+
+        .nav-link:hover {
+            color: white;
+            background: rgba(255,255,255,0.05);
+            transform: translateX(5px);
+        }
+
+        .nav-link.active {
+            color: white;
+            background: var(--accent);
+            box-shadow: 0 10px 20px -5px rgba(79, 70, 229, 0.4);
+        }
+
+        .nav-link i { font-size: 1.25rem; }
+
+        /* Main Content Area */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 3rem;
+            transition: all 0.3s ease;
+        }
+
+        /* Modern Cards */
+        .admin-card {
+            background: white;
+            border-radius: 24px;
+            padding: 2rem;
+            border: 1px solid rgba(226, 232, 240, 0.6);
+            box-shadow: var(--card-shadow);
+            height: 100%;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .admin-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.08);
+            border-color: var(--accent);
+        }
+
+        .stat-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .bg-accent-soft { background: rgba(79, 70, 229, 0.1); color: var(--accent); }
+        .bg-secondary-soft { background: rgba(16, 185, 129, 0.1); color: var(--secondary); }
+        .bg-warning-soft { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
+        .bg-danger-soft { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
+
+        /* Premium Table */
+        .table-custom-wrapper {
+            background: white;
+            border-radius: 24px;
+            padding: 1rem;
+            border: 1px solid rgba(226, 232, 240, 0.6);
+            box-shadow: var(--card-shadow);
+        }
+
+        .table-custom thead th {
+            background: #f8fafc;
+            border: none;
+            padding: 1.25rem 1rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #64748b;
+        }
+
+        .table-custom tbody td {
+            padding: 1.25rem 1rem;
+            border-bottom: 1px solid #f1f5f9;
+            vertical-align: middle;
+            font-size: 0.9rem;
+        }
+
+        .table-custom tr:last-child td { border-bottom: none; }
+
+        .badge-pill {
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.75rem;
+        }
+
+        /* Quick Actions */
+        .btn-action {
+            padding: 1.25rem;
+            border-radius: 20px;
+            border: none;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s ease;
+            width: 100%;
+            text-align: left;
+        }
+        .btn-action:hover { transform: scale(1.02); opacity: 0.9; }
+
+        .btn-accent { background: var(--accent); color: white; }
+        .btn-secondary-custom { background: var(--secondary); color: white; }
+        .btn-warning-custom { background: var(--warning); color: white; }
+
+        @media (max-width: 991px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.active { transform: translateX(0); }
+            .main-content { margin-left: 0; padding: 1.5rem; }
+        }
+
+        .profile-section {
+            background: white;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .profile-bubble {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent) 0%, #818cf8 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="adminSidebar">
+        <div class="sidebar-header">
+            <a class="navbar-brand fw-bold d-flex align-items-center text-white" href="index.html">
+                <img src="image/mylogo.png" alt="Logo" style="height: 35px;" class="me-3">
+                <span class="outfit fs-4">QualiLearn<span class="text-accent" style="color: #818cf8;">.</span></span>
+            </a>
+        </div>
+        
+        <nav class="mt-4 flex-grow-1">
+            <a href="admin.html" class="nav-link active"><i class="bi bi-grid-1x2-fill"></i> Dashboard Overview</a>
+            <a href="admin-curriculum.html" class="nav-link"><i class="bi bi-journal-bookmark-fill"></i> Curriculum Hub</a>
+            <a href="admin-content.html" class="nav-link"><i class="bi bi-play-circle-fill"></i> Content Library</a>
+            <a href="admin-assessments.html" class="nav-link"><i class="bi bi-patch-question-fill"></i> Assessments</a>
+            <a href="admin-vocational.html" class="nav-link"><i class="bi bi-hammer"></i> Vocational Skills</a>
+            <div class="px-4 mt-4 mb-2 small text-muted text-uppercase fw-bold" style="font-size: 0.7rem; letter-spacing: 0.1em;">Administration</div>
+            <a href="admin-users.html" class="nav-link"><i class="bi bi-people-fill"></i> User Management</a>
+            <a href="#" class="nav-link"><i class="bi bi-bar-chart-fill"></i> Analytics Export</a>
+            <a href="#" class="nav-link"><i class="bi bi-gear-fill"></i> System Settings</a>
+        </nav>
+
+        <div class="p-4 mt-auto">
+            <a href="javascript:void(0)" onclick="apiLogout()" class="nav-link text-danger bg-danger bg-opacity-10 py-3" style="margin: 0;">
+                <i class="bi bi-box-arrow-right"></i> Secure Logout
+            </a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <!-- Header -->
+        <header class="d-flex justify-content-between align-items-center mb-5">
+            <div class="animate__animated animate__fadeIn">
+                <h1 class="fw-bold mb-1 outfit display-6">Platform Command</h1>
+                <p class="text-muted mb-0 fw-medium">Welcome back, <span id="admin-welcome-name">Administrator</span>.</p>
+            </div>
+            
+            <div class="d-flex align-items-center gap-4">
+                <div class="d-none d-md-flex align-items-center gap-2">
+                    <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-3 py-2 rounded-pill fw-bold">
+                        <i class="bi bi-circle-fill me-2" style="font-size: 0.5rem;"></i> System Live
+                    </span>
+                </div>
+
+                <div class="profile-section shadow-sm animate__animated animate__fadeIn">
+                    <div class="text-end d-none d-lg-block">
+                        <p class="fw-bold mb-0 small" id="admin-name" style="line-height: 1;">Admin User</p>
+                        <p class="text-muted mb-0" style="font-size: 0.65rem; font-weight: 600; text-transform: uppercase;">Super Admin</p>
+                    </div>
+                    <div class="profile-bubble" id="admin-initial">A</div>
+                </div>
+
+                <button class="btn btn-white border-0 shadow-sm d-lg-none rounded-circle p-2" onclick="document.getElementById('adminSidebar').classList.toggle('active')">
+                    <i class="bi bi-list fs-4"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Stats Grid -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-3">
+                <div class="admin-card animate__animated animate__fadeInUp">
+                    <div class="stat-icon bg-accent-soft"><i class="bi bi-people-fill"></i></div>
+                    <h6 class="text-muted small fw-bold text-uppercase" style="letter-spacing: 0.05em;">Total Learners</h6>
+                    <h2 class="fw-bold mb-0 outfit" id="stat-users">0</h2>
+                    <div class="mt-3 small text-success fw-bold"><i class="bi bi-graph-up-arrow me-1"></i> +12% this week</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="admin-card animate__animated animate__fadeInUp" style="animation-delay: 0.1s">
+                    <div class="stat-icon bg-secondary-soft"><i class="bi bi-journal-text"></i></div>
+                    <h6 class="text-muted small fw-bold text-uppercase" style="letter-spacing: 0.05em;">Learning Units</h6>
+                    <h2 class="fw-bold mb-0 outfit" id="stat-topics">0</h2>
+                    <div class="mt-3 small text-muted fw-medium">Active Curriculum</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="admin-card animate__animated animate__fadeInUp" style="animation-delay: 0.2s">
+                    <div class="stat-icon bg-warning-soft"><i class="bi bi-patch-question-fill"></i></div>
+                    <h6 class="text-muted small fw-bold text-uppercase" style="letter-spacing: 0.05em;">Exam Bank</h6>
+                    <h2 class="fw-bold mb-0 outfit" id="stat-questions">0</h2>
+                    <div class="mt-3 small text-muted fw-medium">Questions Published</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="admin-card animate__animated animate__fadeInUp" style="animation-delay: 0.3s">
+                    <div class="stat-icon bg-danger-soft"><i class="bi bi-hammer"></i></div>
+                    <h6 class="text-muted small fw-bold text-uppercase" style="letter-spacing: 0.05em;">Skill Hubs</h6>
+                    <h2 class="fw-bold mb-0 outfit" id="stat-vocational">0</h2>
+                    <div class="mt-3 small text-muted fw-medium">Vocational Tracks</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <!-- Recent Users -->
+            <div class="col-lg-8">
+                <div class="table-custom-wrapper animate__animated animate__fadeIn">
+                    <div class="p-4 d-flex justify-content-between align-items-center">
+                        <h5 class="fw-bold outfit mb-0">New Registrations</h5>
+                        <button class="btn btn-sm btn-light border-0 px-3 fw-bold rounded-pill text-accent">View Directory</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-custom">
+                            <thead>
+                                <tr>
+                                    <th>Student</th>
+                                    <th>Identifier</th>
+                                    <th>Academic Track</th>
+                                    <th>Activity</th>
+                                    <th>Join Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="user-table-body">
+                                <!-- Dynamic rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="col-lg-4">
+                <div class="admin-card h-auto mb-4 animate__animated animate__fadeInRight">
+                    <h5 class="fw-bold outfit mb-4">Command Center</h5>
+                    <div class="d-grid gap-3">
+                        <button class="btn-action btn-accent" onclick="window.location.href='admin-curriculum.html'">
+                            <span><i class="bi bi-plus-circle-fill me-2"></i> New Curriculum Unit</span>
+                            <i class="bi bi-chevron-right small"></i>
+                        </button>
+                        <button class="btn-action btn-secondary-custom" onclick="window.location.href='admin-assessments.html'">
+                            <span><i class="bi bi-patch-plus-fill me-2"></i> Add Exam Question</span>
+                            <i class="bi bi-chevron-right small"></i>
+                        </button>
+                        <button class="btn-action btn-warning-custom text-dark" onclick="window.location.href='admin-vocational.html'">
+                            <span><i class="bi bi-tools me-2"></i> Manage Skill Tracks</span>
+                            <i class="bi bi-chevron-right small"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="admin-card bg-primary text-white animate__animated animate__fadeInRight" style="animation-delay: 0.1s">
+                    <h6 class="text-white opacity-50 small fw-bold text-uppercase mb-3">System health</h6>
+                    <div class="d-flex align-items-center gap-3 mb-4">
+                        <div class="spinner-grow text-success spinner-grow-sm"></div>
+                        <h4 class="mb-0 outfit">Optimization: 98%</h4>
+                    </div>
+                    <div class="progress bg-white bg-opacity-10" style="height: 6px;">
+                        <div class="progress-bar bg-success" style="width: 98%;"></div>
+                    </div>
+                    <p class="small mt-3 mb-0 opacity-75">All API endpoints responding within 45ms.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="api-config.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Role Check
+            const user = JSON.parse(localStorage.getItem('ql_user'));
+            if (!user || user.role !== 'admin') {
+                window.location.href = 'dashboard.html';
+                return;
+            }
+
+            const fullName = `${user.first_name} ${user.last_name}`;
+            document.getElementById('admin-name').textContent = fullName;
+            document.getElementById('admin-welcome-name').textContent = user.first_name;
+            document.getElementById('admin-initial').textContent = user.first_name.charAt(0);
+
+            try {
+                // Fetch stats
+                const usersRes = await apiAdminGetUsers();
+                if (usersRes.success) {
+                    document.getElementById('stat-users').textContent = usersRes.data.length;
+                    renderUsers(usersRes.data.slice(0, 5));
+                }
+
+                const topicsRes = await apiGetTopics();
+                if (topicsRes.success) {
+                    let total = 0;
+                    Object.values(topicsRes.data).forEach(list => total += list.length);
+                    document.getElementById('stat-topics').textContent = total;
+                }
+
+                const questRes = await apiGetPastQuestions();
+                if (questRes.success) {
+                    document.getElementById('stat-questions').textContent = questRes.data.length;
+                }
+
+                const vocRes = await apiGetVocational();
+                if (vocRes.success) {
+                    document.getElementById('stat-vocational').textContent = vocRes.data.length;
+                }
+
+            } catch (err) {
+                console.error("Dashboard error:", err);
+            }
+        });
+
+        function renderUsers(users) {
+            const body = document.getElementById('user-table-body');
+            body.innerHTML = users.map(u => `
+                <tr>
+                    <td>
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width:40px; height:40px; font-size: 0.9rem;">${u.first_name.charAt(0)}</div>
+                            <div>
+                                <p class="fw-bold mb-0">${u.first_name} ${u.last_name}</p>
+                                <p class="text-muted small mb-0">UID: ${u.id}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="small fw-medium">${u.email}</td>
+                    <td><span class="badge badge-pill bg-light text-primary border border-primary border-opacity-10">${u.education_level || 'General'}</span></td>
+                    <td><span class="badge badge-pill bg-success bg-opacity-10 text-success">Active Session</span></td>
+                    <td class="text-muted small">${new Date(u.created_at).toLocaleDateString('en-GB', {day: '2-digit', month: 'short', year: 'numeric'})}</td>
+                </tr>
+            `).join('');
+        }
+    </script>
+</body>
+</html>

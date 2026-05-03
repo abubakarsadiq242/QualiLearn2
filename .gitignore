@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+*$py.class
+*.db
+*.db-journal
+.env
+instance/
+temp_ql/
+QualiLearn_Source.zip
+.vscode/
+scratch/

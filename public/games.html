@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Brain Games - QualiLearn. Recharge your mind with educational games.">
+    
+    <title>Brain Gym • QualiLearn</title>
+
+    <!-- Bootstrap 5.3 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <script>
+        if (!localStorage.getItem('ql_token')) {
+            window.location.href = 'login.html';
+        }
+    </script>
+
+    <style>
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --dark: #0f172a;
+            --light-bg: #f0fdf4;
+            --border: #dcfce7;
+            --sidebar-width: 280px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--dark);
+        }
+
+        h1, h2, h3, h4, .outfit { font-family: 'Outfit', sans-serif; }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            position: fixed;
+            background: white;
+            border-right: 1px solid #e2e8f0;
+            z-index: 1000;
+        }
+
+        .nav-link {
+            padding: 0.85rem 1.5rem;
+            margin: 0.25rem 1rem;
+            border-radius: 12px;
+            color: #64748b;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+        .nav-link i { margin-right: 0.75rem; font-size: 1.25rem; }
+        .nav-link.active { background: var(--primary); color: white !important; }
+
+        .content-main {
+            margin-left: var(--sidebar-width);
+            padding: 2.5rem;
+            min-height: 100vh;
+        }
+
+        /* Game Cards */
+        .game-card {
+            background: white;
+            border-radius: 32px;
+            overflow: hidden;
+            border: 2px solid var(--border);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            height: 100%;
+            cursor: pointer;
+            text-align: center;
+        }
+        .game-card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 30px 60px rgba(16, 185, 129, 0.15);
+            border-color: var(--primary);
+        }
+
+        .game-icon-box {
+            height: 160px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #ecfdf5;
+            font-size: 5rem;
+            color: var(--primary);
+        }
+
+        .btn-play {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-weight: 700;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+        .btn-play:hover {
+            background: var(--primary-dark);
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 991px) {
+            .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; }
+            .sidebar.active { transform: translateX(0); }
+            .content-main { margin-left: 0; padding: 1.5rem; }
+        }
+
+        .profile-bubble {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .profile-bubble:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3); }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="mainSidebar">
+        <div class="p-4 border-bottom">
+            <a class="navbar-brand fw-bold d-flex align-items-center text-primary" href="index.html">
+                <img src="image/mylogo.png" alt="QualiLearn Logo" style="height: 28px; width: auto;" class="me-2">
+                <span class="outfit">QualiLearn</span>
+            </a>
+        </div>
+        
+        <nav class="mt-4">
+            <a href="dashboard.html" class="nav-link" data-i18n="nav_dashboard"><i class="bi bi-grid-1x2"></i> Dashboard</a>
+            <a href="learning.html" class="nav-link" data-i18n="nav_subjects"><i class="bi bi-book-half"></i> Subjects</a>
+            <a href="assessment.html" class="nav-link" data-i18n="nav_past_questions"><i class="bi bi-question-octagon"></i> Past Questions</a>
+            <a href="flashcard.html" class="nav-link" data-i18n="nav_flashcards"><i class="bi bi-card-text"></i> Flashcards</a>
+            <a href="games.html" class="nav-link active" data-i18n="nav_games"><i class="bi bi-joystick"></i> Games</a>
+            <a href="chat.html" class="nav-link" data-i18n="nav_ai_support"><i class="bi bi-robot"></i> AI Support</a>
+            
+            <div class="mt-5 border-top pt-4">
+                <a href="profile.html" class="nav-link" data-i18n="nav_profile"><i class="bi bi-person-circle"></i> Profile</a>
+                <a href="settings.html" class="nav-link" data-i18n="nav_settings"><i class="bi bi-sliders"></i> Settings</a>
+                <a href="javascript:void(0)" onclick="apiLogout()" class="nav-link text-danger" data-i18n="nav_logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="content-main">
+        
+        <header class="d-flex justify-content-between align-items-center mb-5">
+            <div>
+                <h1 class="fw-bold mb-1 outfit" data-i18n="games_title">Brain Gym</h1>
+                <p class="text-muted" data-i18n="games_subtitle">Educational fun to boost your cognitive speed.</p>
+            </div>
+            
+            <div class="d-flex align-items-center gap-3">
+                <div class="btn btn-white border shadow-sm rounded-pill px-3 d-none d-md-block">
+                    <i class="bi bi-stars text-primary me-2"></i> <strong>2,450</strong> pts
+                </div>
+                
+                <div class="dropdown">
+                    <button class="btn btn-white border shadow-sm rounded-pill px-3" data-bs-toggle="dropdown">
+                        <i class="bi bi-translate text-primary me-2"></i> EN
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-4">
+                        <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="setLanguage('en')">English</a></li>
+                        <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="setLanguage('ha')">Hausa</a></li>
+                        <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="setLanguage('yo')">Yoruba</a></li>
+                        <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="setLanguage('ig')">Igbo</a></li>
+                        <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="setLanguage('pi')">Pidgin</a></li>
+                    </ul>
+                </div>
+
+                <div class="dropdown">
+                    <div class="profile-bubble shadow-sm" data-bs-toggle="dropdown" id="user-initial">U</div>
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-4">
+                        <li><a class="dropdown-item py-2" href="profile.html"><i class="bi bi-person me-2"></i> Profile</a></li>
+                        <li><a class="dropdown-item py-2" href="settings.html"><i class="bi bi-sliders me-2"></i> Settings</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item py-2 text-danger" href="javascript:void(0)" onclick="apiLogout()"><i class="bi bi-box-arrow-right me-2"></i> Logout</a></li>
+                    </ul>
+                </div>
+                
+                <button class="btn btn-primary d-lg-none rounded-circle" onclick="document.getElementById('mainSidebar').classList.toggle('active')">
+                    <i class="bi bi-list"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Games Grid -->
+        <div class="row g-4">
+            <!-- Tic Tac Toe -->
+            <div class="col-md-6 col-lg-4">
+                <div class="game-card">
+                    <div class="game-icon-box">
+                        <i class="bi bi-x-circle"></i>
+                    </div>
+                    <div class="p-4">
+                        <h4 class="fw-bold mb-2 outfit" data-i18n="game_tic_tac_toe">Tic-Tac-Toe</h4>
+                        <p class="text-muted small mb-4" data-i18n="game_tic_tac_toe_desc">Strategic thinking and planning challenge.</p>
+                        <button class="btn btn-play" onclick="startTicTacToe()" data-i18n="btn_play">Play Now</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Memory -->
+            <div class="col-md-6 col-lg-4">
+                <div class="game-card">
+                    <div class="game-icon-box" style="background: #f0f9ff; color: #0ea5e9;">
+                        <i class="bi bi-grid-3x3-gap-fill"></i>
+                    </div>
+                    <div class="p-4">
+                        <h4 class="fw-bold mb-2 outfit" data-i18n="game_memory">Memory Match</h4>
+                        <p class="text-muted small mb-4" data-i18n="game_memory_desc">Improve short-term memory and focus.</p>
+                        <button class="btn btn-play" onclick="startMemory()" style="background:#0ea5e9;" data-i18n="btn_play">Play Now</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Math -->
+            <div class="col-md-6 col-lg-4">
+                <div class="game-card">
+                    <div class="game-icon-box" style="background: #fff1f2; color: #f43f5e;">
+                        <i class="bi bi-plus-slash-minus"></i>
+                    </div>
+                    <div class="p-4">
+                        <h4 class="fw-bold mb-2 outfit" data-i18n="game_math">Math Challenge</h4>
+                        <p class="text-muted small mb-4" data-i18n="game_math_desc">Speed arithmetic and logical solving.</p>
+                        <button class="btn btn-play" onclick="startMath()" style="background:#f43f5e;" data-i18n="btn_play">Play Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Leaderboard -->
+        <h4 class="fw-bold mt-5 mb-4 outfit" data-i18n="top_learners_week">Top Learners This Week</h4>
+        <div class="bg-white rounded-4 border p-2 shadow-sm mb-5" id="leaderboard-list">
+            <div class="text-center py-5">
+                <div class="spinner-border text-primary opacity-25" role="status"></div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Game Container Modal -->
+    <div class="modal fade" id="gameModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 rounded-4 shadow-lg">
+                <div class="modal-header border-0 bg-light rounded-top-4">
+                    <h5 class="modal-title fw-bold outfit" id="gameTitle">Game Title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" onclick="stopGame()"></button>
+                </div>
+                <div class="modal-body p-4 text-center">
+                    <div id="gameCanvas" class="d-flex flex-column align-items-center justify-content-center min-vh-50">
+                        <!-- Game UI will be injected here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="api-config.js"></script>
+    <script src="translations.js"></script>
+    <script src="language-selector.js"></script>
+    
+    <script>
+        const gameModal = new bootstrap.Modal(document.getElementById('gameModal'));
+        const canvas = document.getElementById('gameCanvas');
+        const title = document.getElementById('gameTitle');
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const user = JSON.parse(localStorage.getItem('ql_user'));
+            if (user) {
+                const initialEl = document.getElementById('user-initial');
+                if (initialEl) initialEl.textContent = user.first_name.charAt(0).toUpperCase();
+            }
+            await loadLeaderboard();
+        });
+
+        async function loadLeaderboard() {
+            try {
+                const res = await apiGetLeaderboard();
+                if (res.success) {
+                    const container = document.getElementById('leaderboard-list');
+                    if (!container) return;
+                    
+                    if (res.data.length === 0) {
+                        container.innerHTML = `<div class="p-5 text-center text-muted">No activities recorded this week yet. Be the first to top the charts!</div>`;
+                        return;
+                    }
+                    
+                    container.innerHTML = res.data.map((user, index) => `
+                        <div class="d-flex align-items-center gap-3 p-3 ${index < res.data.length - 1 ? 'border-bottom' : ''}">
+                            <span class="fw-bold fs-4 ${index === 0 ? 'text-warning' : (index === 1 ? 'text-secondary' : (index === 2 ? 'text-bronze' : 'text-muted'))}" style="width: 45px;">#${index + 1}</span>
+                            <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold shadow-sm" style="width:45px; height:45px;">${user.initial}</div>
+                            <div class="flex-grow-1 fw-bold fs-5">${user.name}</div>
+                            <div class="badge bg-success-subtle text-success rounded-pill px-4 py-2 fs-6">${user.points.toLocaleString()} pts</div>
+                        </div>
+                    `).join('');
+                }
+            } catch (e) {
+                console.error("Leaderboard load failed", e);
+            }
+        }
+
+        function stopGame() {
+            canvas.innerHTML = '';
+            stopStudyTimer();
+        }
+
+        // --- Tic Tac Toe ---
+        function startTicTacToe() {
+            title.innerText = "Tic-Tac-Toe";
+            canvas.innerHTML = `
+                <div class="ttt-grid">
+                    ${[0,1,2,3,4,5,6,7,8].map(i => `<div class="ttt-cell" onclick="makeMove(${i})"></div>`).join('')}
+                </div>
+                <div id="gameStatus" class="mt-4 fw-bold fs-5">Your turn (X)</div>
+                <button class="btn btn-outline-primary mt-3" onclick="startTicTacToe()">Reset Game</button>
+            `;
+            gameState = Array(9).fill(null);
+            currentPlayer = 'X';
+            gameActive = true;
+            gameModal.show();
+            
+            // Start real-time tracking for game session
+            startStudyTimer(null);
+        }
+
+        let gameState = [];
+        let currentPlayer = 'X';
+        let gameActive = true;
+
+        function makeMove(i) {
+            const cells = document.querySelectorAll('.ttt-cell');
+            if (gameState[i] || !gameActive || currentPlayer === 'O') return;
+            
+            gameState[i] = 'X';
+            cells[i].innerText = 'X';
+            cells[i].classList.add('x-mark');
+            
+            if (checkWin()) {
+                endGame("You Won!");
+                return;
+            }
+            if (!gameState.includes(null)) {
+                endGame("It's a Draw!");
+                return;
+            }
+            
+            currentPlayer = 'O';
+            document.getElementById('gameStatus').innerText = "AI is thinking...";
+            setTimeout(aiMove, 600);
+        }
+
+        function aiMove() {
+            if (!gameActive) return;
+            let empty = gameState.map((v, i) => v === null ? i : null).filter(v => v !== null);
+            let move = empty[Math.floor(Math.random() * empty.length)];
+            
+            gameState[move] = 'O';
+            const cells = document.querySelectorAll('.ttt-cell');
+            cells[move].innerText = 'O';
+            cells[move].classList.add('o-mark');
+            
+            if (checkWin()) {
+                endGame("AI Won!");
+                return;
+            }
+            if (!gameState.includes(null)) {
+                endGame("It's a Draw!");
+                return;
+            }
+            
+            currentPlayer = 'X';
+            document.getElementById('gameStatus').innerText = "Your turn (X)";
+        }
+
+        function checkWin() {
+            const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+            return wins.some(w => gameState[w[0]] && gameState[w[0]] === gameState[w[1]] && gameState[w[0]] === gameState[w[2]]);
+        }
+
+        function endGame(msg) {
+            gameActive = false;
+            document.getElementById('gameStatus').innerText = msg;
+            if (msg === "You Won!") trackGameProgress(20);
+        }
+
+        // --- Memory Match ---
+        function startMemory() {
+            title.innerText = "Memory Match";
+            const icons = ['bi-heart', 'bi-star', 'bi-moon', 'bi-brightness-high', 'bi-cloud', 'bi-lightning'];
+            const deck = [...icons, ...icons].sort(() => Math.random() - 0.5);
+            
+            canvas.innerHTML = `
+                <div class="memory-grid">
+                    ${deck.map((icon, i) => `
+                        <div class="memory-card" data-icon="${icon}" onclick="flipCard(this)">
+                            <div class="front"><i class="bi bi-question fs-2"></i></div>
+                            <div class="back"><i class="bi ${icon} fs-2"></i></div>
+                        </div>
+                    `).join('')}
+                </div>
+                <div id="memoryStatus" class="mt-4 fw-bold fs-5">Find the pairs!</div>
+            `;
+            gameModal.show();
+            flippedCards = [];
+            matchedPairs = 0;
+            
+            // Start real-time tracking
+            startStudyTimer(null);
+        }
+
+        let flippedCards = [];
+        let matchedPairs = 0;
+
+        function flipCard(card) {
+            if (flippedCards.length === 2 || card.classList.contains('flipped') || card.classList.contains('matched')) return;
+            
+            card.classList.add('flipped');
+            flippedCards.push(card);
+            
+            if (flippedCards.length === 2) {
+                if (flippedCards[0].dataset.icon === flippedCards[1].dataset.icon) {
+                    flippedCards.forEach(c => c.classList.add('matched'));
+                    flippedCards = [];
+                    matchedPairs++;
+                    if (matchedPairs === 6) {
+                        document.getElementById('memoryStatus').innerText = "Amazing! You matched them all!";
+                        trackGameProgress(30);
+                    }
+                } else {
+                    setTimeout(() => {
+                        flippedCards.forEach(c => c.classList.remove('flipped'));
+                        flippedCards = [];
+                    }, 1000);
+                }
+            }
+        }
+
+        // --- Math Challenge ---
+        function startMath() {
+            title.innerText = "Math Challenge";
+            gameModal.show();
+            nextMathTask();
+            
+            // Start real-time tracking
+            startStudyTimer(null);
+        }
+
+        let currentResult;
+        function nextMathTask() {
+            const a = Math.floor(Math.random() * 20) + 1;
+            const b = Math.floor(Math.random() * 20) + 1;
+            const ops = ['+', '-'];
+            const op = ops[Math.floor(Math.random() * 2)];
+            currentResult = op === '+' ? a + b : a - b;
+            
+            canvas.innerHTML = `
+                <div class="card p-5 border-0 bg-primary bg-opacity-10 rounded-4">
+                    <h1 class="display-1 fw-bold outfit mb-4">${a} ${op} ${b} = ?</h1>
+                    <div class="d-flex gap-3 justify-content-center">
+                        <input type="number" id="mathAns" class="form-control form-control-lg w-50 text-center" autofocus>
+                        <button class="btn btn-primary btn-lg" onclick="checkMath()">Submit</button>
+                    </div>
+                    <div id="mathStatus" class="mt-3 fw-bold"></div>
+                </div>
+            `;
+            document.getElementById('mathAns').addEventListener('keypress', e => { if (e.key === 'Enter') checkMath(); });
+        }
+
+        function checkMath() {
+            const ans = parseInt(document.getElementById('mathAns').value);
+            if (ans === currentResult) {
+                document.getElementById('mathStatus').innerHTML = "<span class='text-success'>Correct! +10 pts</span>";
+                trackGameProgress(10);
+                setTimeout(nextMathTask, 1000);
+            } else {
+                document.getElementById('mathStatus').innerHTML = "<span class='text-danger'>Try again!</span>";
+            }
+        }
+
+        async function trackGameProgress(pts) {
+            // Track study time and minor progress for playing educational games
+            await apiTrackActivity({
+                activity_type: 'game_play',
+                module: 'games',
+                score: pts,
+                duration: 120, // Assume 2 mins per session
+                completed: true
+            });
+        }
+    </script>
+
+    <style>
+        .ttt-grid { display: grid; grid-template-columns: repeat(3, 100px); gap: 10px; }
+        .ttt-cell { width: 100px; height: 100px; background: #f8fafc; border: 2px solid var(--border); border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 3rem; font-weight: bold; cursor: pointer; transition: all 0.2s; }
+        .ttt-cell:hover { background: #f1f5f9; }
+        .x-mark { color: var(--primary); }
+        .o-mark { color: #f43f5e; }
+
+        .memory-grid { display: grid; grid-template-columns: repeat(4, 80px); gap: 15px; }
+        .memory-card { width: 80px; height: 100px; position: relative; transform-style: preserve-3d; transition: transform 0.6s; cursor: pointer; }
+        .memory-card.flipped { transform: rotateY(180deg); }
+        .memory-card .front, .memory-card .back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 12px; display: flex; align-items: center; justify-content: center; border: 2px solid var(--border); }
+        .memory-card .front { background: #f8fafc; color: var(--primary); }
+        .memory-card .back { background: var(--primary); color: white; transform: rotateY(180deg); }
+        .memory-card.matched { opacity: 0.5; pointer-events: none; }
+
+        .min-vh-50 { min-height: 50vh; }
+    </style>
+</body>
+</html>
+
+

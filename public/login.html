@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Secure login and registration for QualiLearn. Start your learning journey today.">
+    
+    <title>Join QualiLearn • Secure Access</title>
+
+    <!-- Bootstrap 5.3 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- PWA Setup -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#4f46e5">
+    <script src="pwa-handler.js" defer></script>
+    
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #10b981;
+            --dark: #0f172a;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.5);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at top right, #e0e7ff 0%, #ffffff 50%, #f1f5f9 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+            overflow-x: hidden;
+        }
+
+        /* Decorative Background Elements */
+        .bg-blob {
+            position: fixed;
+            z-index: -1;
+            filter: blur(80px);
+            opacity: 0.4;
+            border-radius: 50%;
+        }
+        .blob-1 { width: 400px; height: 400px; background: #6366f1; top: -100px; right: -100px; }
+        .blob-2 { width: 300px; height: 300px; background: #a855f7; bottom: -50px; left: -50px; }
+
+        h1, h2, h3, h4, .outfit { font-family: 'Outfit', sans-serif; }
+
+        .auth-card {
+            background: var(--glass-bg);
+            border-radius: 32px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+            width: 100%;
+            max-width: 480px;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: transform 0.3s ease;
+        }
+
+        .auth-header {
+            padding: 3.5rem 2.5rem 1.5rem;
+            text-align: center;
+        }
+
+        .auth-body {
+            padding: 0 2.5rem 3.5rem;
+        }
+
+        .form-label {
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #64748b;
+            margin-bottom: 0.6rem;
+            display: block;
+        }
+
+        .form-control, .form-select {
+            border-radius: 16px;
+            padding: 0.85rem 1.25rem;
+            border: 2px solid transparent;
+            background: #f1f5f9;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.95rem;
+        }
+
+        .form-control:focus, .form-select:focus {
+            background: white;
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.15);
+            outline: none;
+        }
+
+        .btn-auth {
+            padding: 1rem;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 1rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border: none;
+            color: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
+        }
+
+        .btn-auth:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.35);
+            filter: brightness(1.1);
+        }
+
+        .btn-auth:active {
+            transform: translateY(0);
+        }
+
+        .auth-lang {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            z-index: 100;
+        }
+
+        .logo-circle {
+            width: 72px;
+            height: 72px;
+            background: white;
+            border-radius: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 12px 24px rgba(0,0,0,0.05);
+            transform: rotate(-5deg);
+            transition: transform 0.3s ease;
+            overflow: hidden;
+        }
+
+        .logo-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 5px;
+        }
+
+        .auth-card:hover .logo-circle {
+            transform: rotate(0deg) scale(1.05);
+        }
+
+        .auth-footer {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        /* Animations */
+        .fade-in {
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .input-group-text {
+            border-radius: 16px 0 0 16px;
+            background: #f1f5f9;
+            border: none;
+            color: #64748b;
+        }
+
+        .input-with-icon {
+            position: relative;
+            width: 100%;
+        }
+        .input-with-icon i {
+            position: absolute;
+            left: 1.25rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #1e293b; /* Darker/Black color */
+            pointer-events: none;
+        }
+        .input-with-icon .form-control {
+            padding-left: 3rem;
+            padding-right: 3rem;
+        }
+
+        .input-with-icon.no-left-icon .form-control {
+            padding-left: 1.25rem;
+        }
+
+        .input-with-icon .toggle-password {
+            position: absolute;
+            right: 1rem !important;
+            left: auto !important;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #000; /* Black */
+            z-index: 10;
+            pointer-events: auto !important;
+        }
+        .toggle-password:hover {
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-blob blob-1"></div>
+    <div class="bg-blob blob-2"></div>
+
+    <div class="auth-lang">
+        <div class="dropdown">
+            <button class="btn btn-white border-0 shadow-sm rounded-pill px-4 py-2 bg-white" data-bs-toggle="dropdown">
+                <i class="bi bi-translate text-primary me-2"></i> EN
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-4 mt-2">
+                <li><a class="dropdown-item py-2 px-4" href="#" onclick="setLanguage('en')">English</a></li>
+                <li><a class="dropdown-item py-2 px-4" href="#" onclick="setLanguage('ha')">Hausa</a></li>
+                <li><a class="dropdown-item py-2 px-4" href="#" onclick="setLanguage('yo')">Yoruba</a></li>
+                <li><a class="dropdown-item py-2 px-4" href="#" onclick="setLanguage('ig')">Igbo</a></li>
+                <li><a class="dropdown-item py-2 px-4" href="#" onclick="setLanguage('pi')">Pidgin</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="auth-card">
+        <header class="auth-header">
+            <div class="logo-circle">
+                <img src="image/mylogo.png" alt="QualiLearn Logo">
+            </div>
+            <h2 class="fw-bold outfit mb-2" id="auth-title" data-i18n="nav_login">Sign In</h2>
+            <p class="text-muted small mb-0" id="auth-subtitle" data-i18n="auth_welcome">Welcome back to your learning hub.</p>
+            <div id="admin-badge" class="badge bg-dark text-white rounded-pill px-3 py-2 mt-3 d-none">
+                <i class="bi bi-shield-check me-1"></i> Admin Portal
+            </div>
+        </header>
+
+        <div class="auth-body">
+            <div id="auth-alert" class="alert alert-danger d-none animate__animated animate__shakeX rounded-4 border-0 shadow-sm mb-4 small"></div>
+
+            <form id="loginForm" class="fade-in">
+                <div class="mb-3">
+                    <label class="form-label" data-i18n="form_email">Email Address</label>
+                    <div class="input-with-icon">
+                        <i class="bi bi-envelope"></i>
+                        <input type="email" class="form-control" name="email" required placeholder="name@example.com">
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <label class="form-label mb-0" data-i18n="form_password">Password</label>
+                        <a href="#" class="text-primary small fw-semibold text-decoration-none" data-i18n="form_forgot">Forgot?</a>
+                    </div>
+                    <div class="input-with-icon">
+                        <i class="bi bi-shield-lock"></i>
+                        <input type="password" class="form-control" name="password" required placeholder="••••••••">
+                        <i class="bi bi-eye-slash toggle-password" onclick="togglePasswordVisibility(this)"></i>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-auth w-100 mb-4" id="submitBtn" data-i18n="form_btn_login">Sign In</button>
+            </form>
+
+            <form id="registerForm" class="d-none fade-in">
+                <div class="row g-3 mb-3">
+                    <div class="col-6">
+                        <label class="form-label" data-i18n="form_firstname">First Name</label>
+                        <input type="text" class="form-control" name="first_name" required placeholder="John">
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label" data-i18n="form_lastname">Last Name</label>
+                        <input type="text" class="form-control" name="last_name" required placeholder="Doe">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" data-i18n="form_email">Email Address</label>
+                    <div class="input-with-icon">
+                        <i class="bi bi-envelope"></i>
+                        <input type="email" class="form-control" name="email" required placeholder="john@example.com">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" data-i18n="form_education">Education Level</label>
+                    <select class="form-select" name="education_level">
+                        <option value="SSS">Senior Secondary (SSS)</option>
+                        <option value="JSS">Junior Secondary (JSS)</option>
+                        <option value="Vocational">Vocational / Skill</option>
+                    </select>
+                </div>
+                <div class="row g-3 mb-4">
+                    <div class="col-6">
+                        <label class="form-label" data-i18n="form_password">Password</label>
+                        <div class="input-with-icon no-left-icon">
+                            <input type="password" class="form-control" name="password" required placeholder="••••••••" data-i18n-placeholder="form_pass_placeholder">
+                            <i class="bi bi-eye-slash toggle-password" onclick="togglePasswordVisibility(this)"></i>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label" data-i18n="auth_confirm_pass">Confirm</label>
+                        <div class="input-with-icon no-left-icon">
+                            <input type="password" class="form-control" name="confirm_password" required placeholder="••••••••" data-i18n-placeholder="form_pass_placeholder">
+                            <i class="bi bi-eye-slash toggle-password" onclick="togglePasswordVisibility(this)"></i>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-auth w-100 mb-4" data-i18n="form_btn_register">Create Free Account</button>
+            </form>
+
+            <div class="auth-footer text-center">
+                <div id="student-toggle-group">
+                    <p class="text-muted small mb-2" id="toggle-text" data-i18n="auth_no_account">Don't have an account?</p>
+                    <a href="javascript:void(0)" onclick="toggleAuth()" class="btn btn-outline-light border text-dark fw-bold px-4 rounded-pill small transition mb-3" id="toggle-btn" data-i18n="btn_signup_free">Sign Up for Free</a>
+                    <div id="admin-login-link" class="mt-2 pt-2 border-top">
+                        <a href="javascript:void(0)" onclick="toggleAdminMode(true)" class="text-muted small text-decoration-none">
+                            <i class="bi bi-person-lock me-1"></i> Admin Login
+                        </a>
+                    </div>
+                </div>
+                <div id="admin-toggle-group" class="d-none">
+                    <a href="javascript:void(0)" onclick="toggleAdminMode(false)" class="text-primary small fw-bold text-decoration-none">
+                        <i class="bi bi-arrow-left me-1"></i> Back to Student Login
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="api-config.js"></script>
+    <script src="translations.js"></script>
+    <script src="language-selector.js"></script>
+    
+    <script>
+        let isLogin = true;
+
+        // Initialize based on URL parameters
+        window.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('mode') === 'signup') {
+                toggleAuth();
+            }
+        });
+
+        function togglePasswordVisibility(el) {
+            const input = el.parentElement.querySelector('input');
+            if (input.type === 'password') {
+                input.type = 'text';
+                el.classList.remove('bi-eye-slash');
+                el.classList.add('bi-eye');
+            } else {
+                input.type = 'password';
+                el.classList.remove('bi-eye');
+                el.classList.add('bi-eye-slash');
+            }
+        }
+
+        function toggleAdminMode(enable) {
+            const adminBadge = document.getElementById('admin-badge');
+            const studentGroup = document.getElementById('student-toggle-group');
+            const adminGroup = document.getElementById('admin-toggle-group');
+            const title = document.getElementById('auth-title');
+            const subtitle = document.getElementById('auth-subtitle');
+            const form = document.getElementById('loginForm');
+            const submitBtn = document.getElementById('submitBtn');
+
+            if (enable) {
+                adminBadge.classList.remove('d-none');
+                studentGroup.classList.add('d-none');
+                adminGroup.classList.remove('d-none');
+                title.innerText = "Admin Portal";
+                subtitle.innerText = "Secure access for platform administrators.";
+                submitBtn.innerText = "Enter Admin Control";
+                submitBtn.style.background = "#0f172a"; // Darker for admin
+                form.email.value = "qualilearn@qualilearn.com"; // Pre-fill as requested
+                form.password.focus();
+            } else {
+                adminBadge.classList.add('d-none');
+                studentGroup.classList.remove('d-none');
+                adminGroup.classList.add('d-none');
+                title.innerText = "Sign In";
+                subtitle.innerText = "Welcome back to your learning hub.";
+                submitBtn.innerText = "Sign In";
+                submitBtn.style.background = ""; // Restore default
+                form.email.value = "";
+            }
+        }
+        
+        function toggleAuth() {
+            isLogin = !isLogin;
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            const title = document.getElementById('auth-title');
+            const subtitle = document.getElementById('auth-subtitle');
+            const toggleText = document.getElementById('toggle-text');
+            const toggleBtn = document.getElementById('toggle-btn');
+            const alert = document.getElementById('auth-alert');
+            const adminLink = document.getElementById('admin-login-link');
+
+            alert.classList.add('d-none');
+
+            if (isLogin) {
+                loginForm.classList.remove('d-none');
+                registerForm.classList.add('d-none');
+                adminLink.classList.remove('d-none');
+                title.setAttribute('data-i18n', 'nav_login');
+                subtitle.setAttribute('data-i18n', 'auth_welcome');
+                toggleText.setAttribute('data-i18n', 'auth_no_account');
+                toggleBtn.setAttribute('data-i18n', 'btn_signup_free');
+                // subtitle.innerText = "Welcome back to your learning hub.";
+                // toggleText.innerText = "Don't have an account?";
+                // toggleBtn.innerText = "Sign Up for Free";
+            } else {
+                loginForm.classList.add('d-none');
+                registerForm.classList.remove('d-none');
+                adminLink.classList.add('d-none');
+                title.setAttribute('data-i18n', 'nav_sign_up');
+                subtitle.setAttribute('data-i18n', 'auth_join');
+                toggleText.setAttribute('data-i18n', 'auth_has_account');
+                toggleBtn.setAttribute('data-i18n', 'btn_signin_instead');
+                // subtitle.innerText = "Join 10,000+ students learning in their language.";
+                // toggleText.innerText = "Already have an account?";
+                // toggleBtn.innerText = "Sign In instead";
+            }
+            
+            // Re-apply translations for toggled elements
+            applyLanguage(localStorage.getItem('ql_lang') || 'en');
+        }
+
+        function showAlert(msg, type = 'danger') {
+            const alert = document.getElementById('auth-alert');
+            alert.textContent = msg;
+            alert.classList.remove('d-none', 'alert-danger', 'alert-success');
+            alert.classList.add(`alert-${type}`);
+            alert.classList.add('animate__shakeX');
+            setTimeout(() => alert.classList.remove('animate__shakeX'), 1000);
+        }
+
+        // Form Handling
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Signing in...';
+            
+            const req = {
+                email: e.target.email.value,
+                password: e.target.password.value
+            };
+
+            try {
+                const res = await apiLogin(req);
+                if (res.success) {
+                    redirectByLevel();
+                } else {
+                    throw new Error(res.message);
+                }
+            } catch (err) {
+                showAlert(err.message);
+                btn.disabled = false;
+                btn.innerText = "Sign In";
+            }
+        });
+
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Validation
+            if (e.target.password.value !== e.target.confirm_password.value) {
+                showAlert("Passwords do not match!");
+                return;
+            }
+
+            if (e.target.password.value.length < 6) {
+                showAlert("Password must be at least 6 characters.");
+                return;
+            }
+
+            const btn = e.target.querySelector('button');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Creating...';
+
+            const req = {
+                first_name: e.target.first_name.value,
+                last_name: e.target.last_name.value,
+                email: e.target.email.value,
+                education_level: e.target.education_level.value,
+                password: e.target.password.value,
+                language: localStorage.getItem('ql_lang') || 'en'
+            };
+
+            try {
+                const res = await apiRegister(req);
+                if (res.success) {
+                    showAlert("Account created! Please sign in.", "success");
+                    setTimeout(() => { if (!isLogin) toggleAuth(); }, 2000);
+                } else {
+                    throw new Error(res.message);
+                }
+            } catch (err) {
+                showAlert(err.message);
+                btn.disabled = false;
+                btn.innerText = "Create Free Account";
+            }
+        });
+    </script>
+</body>
+</html>
+
+

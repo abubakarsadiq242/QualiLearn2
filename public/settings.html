@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Settings - QualiLearn. Customize your learning experience.">
+    
+    <title>Settings • QualiLearn</title>
+
+    <!-- Bootstrap 5.3 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <script>
+        if (!localStorage.getItem('ql_token')) {
+            window.location.href = 'login.html';
+        }
+    </script>
+
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --secondary: #10b981;
+            --dark: #0f172a;
+            --light-bg: #f8fafc;
+            --border: #e2e8f0;
+            --sidebar-width: 280px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--dark);
+            min-height: 100vh;
+        }
+
+        h1, h2, h3, .outfit { font-family: 'Outfit', sans-serif; }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            position: fixed;
+            background: white;
+            border-right: 1px solid var(--border);
+            z-index: 1000;
+        }
+
+        .nav-link {
+            padding: 0.85rem 1.5rem;
+            margin: 0.25rem 1rem;
+            border-radius: 12px;
+            color: #64748b;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+        .nav-link i { margin-right: 0.75rem; font-size: 1.25rem; }
+        .nav-link.active { background: var(--primary); color: white !important; }
+
+        .settings-wrapper {
+            margin-left: var(--sidebar-width);
+            padding: 2.5rem;
+            max-width: 1200px;
+        }
+
+        .settings-card {
+            background: white;
+            border-radius: 24px;
+            padding: 2rem;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            margin-bottom: 2rem;
+        }
+
+        .settings-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.25rem 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .settings-item:last-child { border-bottom: none; }
+
+        .form-switch .form-check-input {
+            width: 3rem;
+            height: 1.5rem;
+            cursor: pointer;
+        }
+        .form-switch .form-check-input:checked {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .btn-modern {
+            border-radius: 12px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+        }
+
+        .profile-bubble {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .profile-bubble:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(79, 70, 229, 0.3); }
+
+        @media (max-width: 991px) {
+            .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; }
+            .sidebar.active { transform: translateX(0); }
+            .settings-wrapper { margin-left: 0; padding: 1.5rem; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="mainSidebar">
+        <div class="p-4 border-bottom">
+            <a class="navbar-brand fw-bold d-flex align-items-center text-primary" href="index.html">
+                <img src="image/mylogo.png" alt="QualiLearn Logo" style="height: 28px; width: auto;" class="me-2">
+                <span class="outfit">QualiLearn</span>
+            </a>
+        </div>
+        
+        <nav class="mt-4">
+            <a href="dashboard.html" class="nav-link" data-i18n="nav_dashboard"><i class="bi bi-grid-1x2"></i> Dashboard</a>
+            <a href="learning.html" class="nav-link" data-i18n="nav_subjects"><i class="bi bi-book-half"></i> Subjects</a>
+            <a href="assessment.html" class="nav-link" data-i18n="nav_past_questions"><i class="bi bi-question-octagon"></i> Past Questions</a>
+            <a href="vocational.html" class="nav-link" data-i18n="nav_vocational"><i class="bi bi-tools"></i> Vocational</a>
+            <a href="flashcard.html" class="nav-link" data-i18n="nav_flashcards"><i class="bi bi-card-text"></i> Flashcards</a>
+            <a href="games.html" class="nav-link" data-i18n="nav_games"><i class="bi bi-joystick"></i> Games</a>
+            <a href="chat.html" class="nav-link" data-i18n="nav_ai_support"><i class="bi bi-robot"></i> AI Support</a>
+            
+            <div class="mt-5 border-top pt-4">
+                <a href="profile.html" class="nav-link" data-i18n="nav_profile"><i class="bi bi-person-circle"></i> Profile</a>
+                <a href="settings.html" class="nav-link active" data-i18n="nav_settings"><i class="bi bi-sliders"></i> Settings</a>
+                <a href="javascript:void(0)" onclick="apiLogout()" class="nav-link text-danger" data-i18n="nav_logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="settings-wrapper">
+        
+        <header class="d-flex justify-content-between align-items-center mb-5">
+            <h1 class="fw-bold mb-0 outfit" data-i18n="settings_title">Account Settings</h1>
+            
+            <div class="d-flex align-items-center gap-3">
+                <div class="dropdown">
+                    <button class="btn btn-white border shadow-sm rounded-pill px-3" data-bs-toggle="dropdown">
+                        <i class="bi bi-translate text-primary me-2"></i> EN
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-4">
+                        <li><a class="dropdown-item py-2" href="#" onclick="setLanguage('en')">English</a></li>
+                        <li><a class="dropdown-item py-2" href="#" onclick="setLanguage('ha')">Hausa</a></li>
+                        <li><a class="dropdown-item py-2" href="#" onclick="setLanguage('yo')">Yoruba</a></li>
+                        <li><a class="dropdown-item py-2" href="#" onclick="setLanguage('ig')">Igbo</a></li>
+                        <li><a class="dropdown-item py-2" href="#" onclick="setLanguage('pi')">Pidgin</a></li>
+                    </ul>
+                </div>
+
+                <div class="dropdown">
+                    <div class="profile-bubble shadow-sm" data-bs-toggle="dropdown" id="user-initial-header">U</div>
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-4">
+                        <li><a class="dropdown-item py-2" href="profile.html"><i class="bi bi-person me-2"></i> Profile</a></li>
+                        <li><a class="dropdown-item py-2" href="settings.html"><i class="bi bi-sliders me-2"></i> Settings</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item py-2 text-danger" href="javascript:void(0)" onclick="apiLogout()"><i class="bi bi-box-arrow-right me-2"></i> Logout</a></li>
+                    </ul>
+                </div>
+
+                <button class="btn btn-primary d-lg-none rounded-circle" onclick="document.getElementById('mainSidebar').classList.toggle('active')">
+                    <i class="bi bi-list"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Profile Section -->
+        <section class="settings-card">
+            <h5 class="fw-bold mb-4 outfit" data-i18n="profile_info">Profile Information</h5>
+            <div class="row g-3">
+                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                    <div class="position-relative d-inline-block">
+                        <div class="avatar-container bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width:100px; height:100px; font-size:2.5rem;" id="user-initial">U</div>
+                        <button class="btn btn-primary btn-sm rounded-circle position-absolute bottom-0 end-0 p-2"><i class="bi bi-camera-fill"></i></button>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label small text-muted fw-bold" data-i18n="form_firstname">First Name</label>
+                        <input type="text" class="form-control rounded-3" id="inp-first" value="Umar">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small text-muted fw-bold" data-i18n="form_lastname">Last Name</label>
+                        <input type="text" class="form-control rounded-3" id="inp-last" value="Danjuma">
+                    </div>
+                    <button class="btn btn-primary btn-modern w-100 mt-2" data-i18n="btn_submit">Save Changes</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Preferences -->
+        <section class="settings-card">
+            <h5 class="fw-bold mb-4 outfit" data-i18n="study_prefs">Experience Preferences</h5>
+            
+            <div class="settings-item">
+                <div>
+                    <h6 class="fw-bold mb-1" data-i18n="display_theme">Dark Mode</h6>
+                    <p class="text-muted small mb-0" data-i18n="dark_mode_desc">Use the darker theme for easier reading at night.</p>
+                </div>
+                <div class="form-check form-switch">
+                    <input class="form-check-input shadow-none" type="checkbox">
+                </div>
+            </div>
+
+            <div class="settings-item">
+                <div>
+                    <h6 class="fw-bold mb-1" data-i18n="notifications_pref">Push Notifications</h6>
+                    <p class="text-muted small mb-0" data-i18n="notifications_desc">Receive updates about new lessons and exam dates.</p>
+                </div>
+                <div class="form-check form-switch">
+                    <input class="form-check-input shadow-none" type="checkbox" checked>
+                </div>
+            </div>
+
+            <div class="settings-item">
+                <div>
+                    <h6 class="fw-bold mb-1" data-i18n="preferred_lang">Preferred UI Language</h6>
+                    <p class="text-muted small mb-0" data-i18n="preferred_lang_desc">Select your default platform language.</p>
+                </div>
+                <select class="form-select w-auto rounded-pill border-0 bg-light" onchange="setLanguage(this.value)">
+                    <option value="en">English</option>
+                    <option value="ha">Hausa</option>
+                    <option value="yo">Yoruba</option>
+                    <option value="ig">Igbo</option>
+                    <option value="pi">Pidgin</option>
+                </select>
+            </div>
+        </section>
+
+        <!-- Danger Zone -->
+        <section class="settings-card border-danger border-opacity-25" style="background:#fff5f5;">
+            <h5 class="fw-bold mb-4 outfit text-danger" data-i18n="danger_zone">Danger Zone</h5>
+            <div class="settings-item border-0">
+                <div>
+                    <h6 class="fw-bold mb-1" data-i18n="delete_account">Delete Account</h6>
+                    <p class="text-muted small mb-0" data-i18n="delete_account_desc">Permanently delete your profile and all learning progress.</p>
+                </div>
+                <button class="btn btn-outline-danger btn-sm rounded-pill px-4 fw-bold">Delete</button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="translations.js"></script>
+    <script src="language-selector.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = JSON.parse(localStorage.getItem('ql_user'));
+            if (user) {
+                const initialEl = document.getElementById('user-initial');
+                if (initialEl) initialEl.textContent = user.first_name.charAt(0).toUpperCase();
+
+                const headerInitialEl = document.getElementById('user-initial-header');
+                if (headerInitialEl) headerInitialEl.textContent = user.first_name.charAt(0).toUpperCase();
+
+                document.getElementById('inp-first').value = user.first_name;
+                document.getElementById('inp-last').value = user.last_name;
+            }
+        });
+    </script>
+</body>
+</html>
+
+

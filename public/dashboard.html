@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="QualiLearn Dashboard - Your personalized learning journey.">
+    
+    <title>Dashboard • QualiLearn</title>
+
+    <!-- Bootstrap 5.3 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- PWA Setup -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#4f46e5">
+    <script src="pwa-handler.js" defer></script>
+    
+    <script>
+        if (!localStorage.getItem('ql_token')) {
+            window.location.href = 'login.html';
+        }
+    </script>
+
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-light: #818cf8;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --dark: #0f172a;
+            --light-bg: #f1f5f9;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --border: #e2e8f0;
+            --gradient: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            --sidebar-width: 280px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--dark);
+            min-height: 100vh;
+        }
+
+        h1, h2, h3, .outfit { font-family: 'Outfit', sans-serif; }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: white;
+            border-right: 1px solid var(--border);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-logo {
+            padding: 2rem;
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        nav {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-link {
+            padding: 0.85rem 1.5rem;
+            margin: 0.25rem 1rem;
+            border-radius: 12px;
+            color: #64748b;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+
+        .nav-link i { font-size: 1.25rem; margin-right: 1rem; }
+
+        .nav-link:hover {
+            background: #f8fafc;
+            color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .nav-link.active {
+            background: var(--gradient);
+            color: white !important;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+
+        /* Main Content */
+        .main-wrapper {
+            margin-left: var(--sidebar-width);
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        /* Top Header */
+        .top-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            position: relative;
+            z-index: 1050;
+        }
+
+        .profile-bubble {
+            background: white;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            border: 1px solid var(--border);
+        }
+
+        /* Cards */
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            border: 1px solid white;
+            padding: 1.5rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.04);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+        }
+
+        .icon-box {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .progress-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: conic-gradient(var(--primary) var(--progress), #e2e8f0 0deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .progress-circle::after {
+            content: attr(data-value);
+            width: 64px;
+            height: 64px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* Responsive Sidebar */
+        @media (max-width: 991px) {
+            .sidebar { left: -100%; }
+            .sidebar.active { left: 0; box-shadow: 0 0 50px rgba(0,0,0,0.2); }
+            .main-wrapper { margin-left: 0; padding: 1rem; }
+            .top-header { flex-direction: column-reverse; gap: 1rem; align-items: flex-start; }
+        }
+
+        .btn-modern {
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .profile-bubble {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: white;
+            border: 1px solid var(--border);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .profile-bubble:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(79, 70, 229, 0.1); }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="mainSidebar">
+        <div class="sidebar-logo">
+            <a class="navbar-brand fw-bold d-flex align-items-center text-primary" href="index.html">
+                <img src="image/mylogo.png" alt="QualiLearn Logo" style="height: 28px; width: auto;" class="me-2">
+                <span class="outfit">QualiLearn</span>
+            </a>
+        </div>
+        
+        <nav class="mt-4">
+            <a href="dashboard.html" class="nav-link active" data-i18n="nav_dashboard">
+                <i class="bi bi-grid-1x2-fill"></i> Dashboard
+            </a>
+            <a href="learning.html" class="nav-link" data-i18n="nav_subjects">
+                <i class="bi bi-book-half"></i> Subjects
+            </a>
+            <a href="assessment.html" class="nav-link" data-i18n="nav_past_questions">
+                <i class="bi bi-question-octagon"></i> Past Questions
+            </a>
+            <a href="flashcard.html" class="nav-link" data-i18n="nav_flashcards">
+                <i class="bi bi-card-text"></i> Flashcards
+            </a>
+            <a href="games.html" class="nav-link" data-i18n="nav_games">
+                <i class="bi bi-joystick"></i> Games
+            </a>
+            <a href="chat.html" class="nav-link" data-i18n="nav_ai_support">
+                <i class="bi bi-robot"></i> AI Support
+            </a>
+            
+            <div class="mt-5 border-top pt-4">
+                <a href="profile.html" class="nav-link" data-i18n="nav_profile">
+                    <i class="bi bi-person-circle"></i> Profile
+                </a>
+                <a href="settings.html" class="nav-link" data-i18n="nav_settings">
+                    <i class="bi bi-sliders"></i> Settings
+                </a>
+                <a href="javascript:void(0)" onclick="apiLogout()" class="nav-link text-danger" data-i18n="nav_logout">
+                    <i class="bi bi-box-arrow-right"></i> Logout
+                </a>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Content -->
+    <main class="main-wrapper">
+        
+        <!-- Top Navigation -->
+        <header class="top-header">
+            <div id="welcome-text">
+                <h2 class="fw-bold mb-1 outfit" id="welcome-greeting">Welcome!</h2>
+                <p class="text-muted" id="user-display-name"></p>
+                <script>
+                    (function() {
+                        try {
+                            const u = JSON.parse(localStorage.getItem('ql_user'));
+                            const p = localStorage.getItem('ql_last_progress');
+                            if (u) {
+                                document.getElementById('user-display-name').textContent = (u.first_name || u.firstName || '') + ' ' + (u.last_name || u.lastName || '');
+                                if (p !== null) {
+                                    document.getElementById('welcome-greeting').textContent = (p == 0) ? 'Welcome!' : 'Welcome back!';
+                                }
+                            } else {
+                                document.getElementById('user-display-name').textContent = 'Student';
+                            }
+                        } catch(e) { document.getElementById('user-display-name').textContent = 'Student'; }
+                    })();
+                </script>
+            </div>
+            
+            <div class="d-flex align-items-center gap-3">
+                <!-- Lang -->
+                <div class="dropdown">
+                    <button class="profile-bubble bg-light border-0" data-bs-toggle="dropdown">
+                        <i class="bi bi-translate text-primary"></i>
+                        <span class="fw-semibold">EN</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-4">
+                        <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="setLanguage('en')">English</a></li>
+                        <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="setLanguage('ha')">Hausa</a></li>
+                        <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="setLanguage('yo')">Yoruba</a></li>
+                        <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="setLanguage('ig')">Igbo</a></li>
+                        <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="setLanguage('pi')">Pidgin</a></li>
+                    </ul>
+                </div>
+                
+                <div class="dropdown">
+                    <div class="profile-bubble shadow-sm" data-bs-toggle="dropdown" id="user-initial">U</div>
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-4">
+                        <li><a class="dropdown-item py-2" href="profile.html"><i class="bi bi-person me-2"></i> Profile</a></li>
+                        <li><a class="dropdown-item py-2" href="settings.html"><i class="bi bi-sliders me-2"></i> Settings</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item py-2 text-danger" href="javascript:void(0)" onclick="apiLogout()"><i class="bi bi-box-arrow-right me-2"></i> Logout</a></li>
+                    </ul>
+                </div>
+                
+                <button class="btn btn-primary d-lg-none rounded-circle p-2" onclick="document.getElementById('mainSidebar').classList.toggle('active')">
+                    <i class="bi bi-list fs-4"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Stats Overview -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="icon-box bg-primary-subtle text-primary">
+                        <i class="bi bi-graph-up"></i>
+                    </div>
+                    <h6 class="text-muted mb-3" data-i18n="overall_progress">Overall Progress</h6>
+                    <div class="d-flex align-items-center justify-content-between">
+                        <h2 class="fw-bold mb-0" id="stat-progress">0%</h2>
+                        <div class="progress-circle" data-value="0%" style="--progress: 0deg;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="icon-box bg-success-subtle text-success">
+                        <i class="bi bi-clock-history"></i>
+                    </div>
+                    <h6 class="text-muted mb-3" data-i18n="study_time">Study Time (Month)</h6>
+                    <h2 class="fw-bold mb-0" id="stat-time">0h 0m</h2>
+                    <p class="small text-muted mt-2"><span data-i18n="study_time_today">Today</span>: <span id="stat-daily">0m</span></p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="icon-box bg-warning-subtle text-warning">
+                        <i class="bi bi-trophy"></i>
+                    </div>
+                    <h6 class="text-muted mb-3" data-i18n="assessments_passed">Assessments</h6>
+                    <h2 class="fw-bold mb-0" id="stat-passed">0</h2>
+                    <p class="small text-muted mt-2"><span data-i18n="accuracy">Accuracy</span>: <span id="stat-accuracy">0%</span></p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="icon-box bg-danger-subtle text-danger">
+                        <i class="bi bi-lightning-charge"></i>
+                    </div>
+                    <h6 class="text-muted mb-3" data-i18n="current_streak">Current Streak</h6>
+                    <h2 class="fw-bold mb-0" id="stat-streak">0</h2>
+                    <p class="small text-muted mt-2" data-i18n="new_record">New Record!</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <!-- Recent Activity / Resume -->
+            <div class="col-lg-8">
+                <div class="stat-card bg-white h-100">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h4 class="fw-bold mb-0 outfit" data-i18n="resume_topic">Resume Topic</h4>
+                        <a href="learning.html" class="btn btn-light btn-sm rounded-pill" data-i18n="view_all">View All</a>
+                    </div>
+                    
+                    <div id="resume-container">
+                        <!-- Dynamic content loaded via script -->
+                        <div class="text-center py-5">
+                            <div class="spinner-border text-primary opacity-25" role="status"></div>
+                        </div>
+                    </div>
+                    
+                    <h4 class="fw-bold mt-5 mb-4 outfit" data-i18n="explore_subjects">Explore Subjects</h4>
+                    <div class="row g-4 mb-5">
+                        <div class="col-md-4">
+                            <div class="subject-card p-4 border rounded-4 h-100">
+                                <div class="badge bg-primary-subtle text-primary mb-3">Core</div>
+                                <h5 class="fw-bold mb-2">Mathematics</h5>
+                                <p class="text-muted small mb-4">Master equations and geometry.</p>
+                                <div class="d-grid gap-2">
+                                    <a href="mathematics.html" class="btn btn-primary btn-sm rounded-pill fw-bold">Learn</a>
+                                    <a href="assessment.html?subject=Mathematics" class="btn btn-outline-primary btn-sm rounded-pill fw-bold">Test</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="subject-card p-4 border rounded-4 h-100">
+                                <div class="badge bg-success-subtle text-success mb-3">Core</div>
+                                <h5 class="fw-bold mb-2">English Language</h5>
+                                <p class="text-muted small mb-4">Grammar and literature.</p>
+                                <div class="d-grid gap-2">
+                                    <a href="english.html" class="btn btn-success text-white btn-sm rounded-pill fw-bold">Learn</a>
+                                    <a href="assessment.html?subject=English" class="btn btn-outline-success btn-sm rounded-pill fw-bold">Test</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="subject-card p-4 border rounded-4 h-100" onclick="window.location.href='science.html'">
+                                <div class="badge bg-warning-subtle text-warning mb-3">Core</div>
+                                <h5 class="fw-bold mb-2">Sciences</h5>
+                                <p class="text-muted small mb-4">Biology, Physics, and Chemistry hub.</p>
+                                <div class="d-grid gap-2">
+                                    <a href="science.html" class="btn btn-warning text-white btn-sm rounded-pill fw-bold">Learn</a>
+                                    <a href="assessment.html?subject=Science" class="btn btn-outline-warning btn-sm rounded-pill fw-bold">Test</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4 class="fw-bold mt-5 mb-4 outfit" data-i18n="quick_actions">Quick Actions</h4>
+                    <div class="row g-3">
+                        <div class="col-sm-6 col-md-4">
+                            <button class="btn btn-light w-100 p-4 border rounded-4 text-start h-100" onclick="window.location.href='assessment.html'">
+                                <i class="bi bi-pencil-square fs-3 text-primary mb-2 d-block"></i>
+                                <span class="fw-bold d-block" data-i18n="nav_past_questions">Take Exam</span>
+                            </button>
+                        </div>
+                        <div class="col-sm-6 col-md-4">
+                            <button class="btn btn-light w-100 p-4 border rounded-4 text-start h-100" onclick="window.location.href='flashcard.html'">
+                                <i class="bi bi-card-text fs-3 text-secondary mb-2 d-block"></i>
+                                <span class="fw-bold d-block" data-i18n="nav_flashcards">Flashcards</span>
+                            </button>
+                        </div>
+                        <div class="col-sm-6 col-md-4">
+                            <button class="btn btn-light w-100 p-4 border rounded-4 text-start h-100" onclick="window.location.href='chat.html'">
+                                <i class="bi bi-robot fs-3 text-info mb-2 d-block"></i>
+                                <span class="fw-bold d-block" data-i18n="nav_ai_support">Ask AI</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- News / Recommended -->
+            <div class="col-lg-4">
+                <div class="stat-card">
+                    <h4 class="fw-bold mb-4 outfit" data-i18n="for_you">For You</h4>
+                    
+                    
+                    <hr>
+                    
+                    <div class="alert alert-primary border-0 rounded-4 p-4 mt-4 shadow-sm animate__animated animate__pulse animate__infinite animate__slow">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="bg-primary text-white rounded-circle p-2 px-3">
+                                <i class="bi bi-megaphone-fill"></i>
+                            </div>
+                            <h5 class="fw-bold mb-0" data-i18n="waec_update_title">WAEC 2026 Update</h5>
+                        </div>
+                        <p class="small text-muted mb-3" data-i18n="waec_update_desc">The official examination timetable for the 2026 May/June WASSCE has been released. Science practicals begin on May 4th.</p>
+                        <ul class="list-unstyled small mb-3">
+                            <li><i class="bi bi-check2-circle text-success me-2"></i> <span data-i18n="timetable_confirmed">Timetable confirmed</span></li>
+                            <li><i class="bi bi-check2-circle text-success me-2"></i> <span data-i18n="registration_extended">Registration deadline extended</span></li>
+                        </ul>
+                        <button class="btn btn-primary btn-sm w-100 rounded-pill fw-bold" onclick="showToast('Downloading Timetable...')" data-i18n="download_timetable">Download Timetable</button>
+                    </div>
+
+                    <!-- Top Learners -->
+                    <div class="mt-5">
+                        <h4 class="fw-bold mb-4 outfit">Top Learners This Week</h4>
+                        <div class="bg-white rounded-4 border p-3 shadow-sm" id="leaderboard-container">
+                            <div class="text-center py-4">
+                                <div class="spinner-border text-primary spinner-border-sm" role="status"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Success Feedback Toasts -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="actionToast" class="toast border-0 shadow-lg rounded-4" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-body d-flex align-items-center gap-3 p-3">
+                <i class="bi bi-check-circle-fill text-success fs-4"></i>
+                <span id="toastMsg" class="fw-medium">Action successful!</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="api-config.js"></script>
+    <script src="translations.js"></script>
+    <script src="language-selector.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Robust user data sync
+            try {
+                const userRaw = localStorage.getItem('ql_user');
+                const user = userRaw ? JSON.parse(userRaw) : null;
+                if (user) {
+                    const firstName = user.first_name || user.firstName || '';
+                    const lastName = user.last_name || user.lastName || '';
+                    const fullName = (firstName + ' ' + lastName).trim() || user.email || 'Student';
+                    
+                    const nameEl = document.getElementById('user-display-name');
+                    if (nameEl) nameEl.textContent = fullName;
+                    
+                    const initialEl = document.getElementById('user-initial');
+                    if (initialEl && firstName) initialEl.textContent = firstName.charAt(0).toUpperCase();
+                }
+            } catch (e) { console.error('User name sync failed:', e); }
+
+            try {
+                // Initial load
+                await refreshDashboardStats();
+                
+                // Auto-refresh every 30 seconds for higher precision
+                setInterval(refreshDashboardStats, 30000);
+
+            } catch (err) { 
+                console.error('Dashboard Error:', err);
+            }
+        })
+
+        function renderLeaderboard(data, containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            if (!data || data.length === 0) {
+                container.innerHTML = `<p class="text-muted small text-center py-3">No activity this week yet. Be the first!</p>`;
+                return;
+            }
+            
+            container.innerHTML = data.map((user, index) => `
+                <div class="d-flex align-items-center gap-3 p-2 ${index < data.length - 1 ? 'border-bottom' : ''}">
+                    <span class="fw-bold ${index === 0 ? 'text-warning' : 'text-muted'}" style="width: 25px;">#${index + 1}</span>
+                    <div class="rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center fw-bold" style="width:35px; height:35px;">${user.initial}</div>
+                    <div class="flex-grow-1">
+                        <div class="fw-bold small text-truncate" style="max-width: 120px;">${user.name}</div>
+                    </div>
+                    <div class="badge bg-success-subtle text-success rounded-pill">${user.points.toLocaleString()} pts</div>
+                </div>
+            `).join('');
+        }
+
+        async function refreshDashboardStats() {
+            const response = await apiGetDashboard();
+            if (response.success) {
+                const stats = response.data;
+                localStorage.setItem('ql_last_progress', stats.overall_progress);
+                const lang = getCurrentLang();
+                const dict = translations[lang] || translations['en'];
+                
+                // Update welcome message for new users
+                const greeting = document.getElementById('welcome-greeting');
+                if (greeting) {
+                    // If progress is 0, they are considered new
+                    const isNew = (stats.overall_progress == 0);
+                    const greetingKey = isNew ? 'welcome_new' : 'welcome_msg';
+                    greeting.setAttribute('data-i18n', greetingKey);
+                    greeting.textContent = dict[greetingKey] || (isNew ? 'Welcome' : 'Welcome back');
+                }
+
+                document.getElementById('stat-progress').textContent = `${stats.overall_progress}%`;
+                document.getElementById('stat-time').textContent = stats.study_time;
+                document.getElementById('stat-daily').textContent = stats.daily_time;
+                document.getElementById('stat-passed').textContent = stats.assessments_passed;
+                document.getElementById('stat-accuracy').textContent = stats.accuracy;
+                document.getElementById('stat-streak').textContent = stats.current_streak;
+                
+                const circle = document.querySelector('.progress-circle');
+                if (circle) {
+                    const progVal = stats.overall_progress || 0;
+                    circle.setAttribute('data-value', `${progVal}%`);
+                    circle.style.setProperty('--progress', `${(progVal / 100) * 360}deg`);
+                }
+
+                // Dynamic Resume Topic
+                const resumeContainer = document.getElementById('resume-container');
+                const mat = stats.resume_topic;
+                
+                if (mat && resumeContainer) {
+                    resumeContainer.innerHTML = `
+                        <div class="p-4 rounded-4 border bg-light mb-4 animate__animated animate__fadeIn">
+                            <div class="d-flex align-items-center gap-4">
+                                <div class="bg-primary text-white rounded-4 p-3 fs-3">
+                                    <i class="bi ${mat.material_type === 'video_link' ? 'bi-play-circle' : 'bi-file-earmark-text'}"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h5 class="fw-bold mb-1">${mat.subject}: ${mat.title}</h5>
+                                    <p class="text-muted small mb-3"><span data-i18n="active_progress">${dict['active_progress'] || 'Active Progress'}</span> • ${dict['continue_left_off'] || 'Resume where you left off'}</p>
+                                    <div class="progress" style="height: 10px;">
+                                        <div class="progress-bar bg-primary rounded-pill progress-bar-striped progress-bar-animated" style="width: ${stats.overall_progress}%;"></div>
+                                    </div>
+                                </div>
+                                <a href="${mat.type === 'topic' ? 'topic-details.html' : 'learning.html'}?id=${mat.id}" class="btn btn-primary btn-modern px-5 rounded-pill shadow-sm" data-i18n="resume_learning">${dict['resume_learning'] || 'Resume Learning'}</a>
+                            </div>
+                        </div>
+                    `;
+                } else if (resumeContainer) {
+                    resumeContainer.innerHTML = `
+                        <div class="text-center py-5 border rounded-4 bg-light border-dashed">
+                            <i class="bi bi-rocket-takeoff text-muted opacity-50 fs-1 mb-3 d-block"></i>
+                            <h5 class="fw-bold outfit" data-i18n="no_active_progress">${dict['no_active_progress'] || 'No Active Progress'}</h5>
+                            <p class="text-muted small" data-i18n="start_journey">${dict['start_journey'] || 'Start your learning journey to see your progress here.'}</p>
+                            <a href="learning.html" class="btn btn-primary rounded-pill px-4 mt-2" data-i18n="browse_subjects">${dict['browse_subjects'] || 'Browse Subjects'}</a>
+                        </div>
+                    `;
+                }
+            }
+
+            // Fetch Leaderboard
+            try {
+                const lbRes = await apiGetLeaderboard();
+                if (lbRes.success) {
+                    renderLeaderboard(lbRes.data, 'leaderboard-container');
+                }
+            } catch (e) { console.error("Leaderboard Sync failed"); }
+        }
+        
+        async function handleResumeTopic() {
+            try {
+                const statsRes = await apiCall('/analytics/stats?portal=' + getCurrentPortal());
+                if (statsRes.success && statsRes.data.resume_topic) {
+                    const mat = statsRes.data.resume_topic;
+                    let page = 'learning.html';
+                    if (mat.type === 'topic') page = 'topic-details.html';
+                    if (mat.type === 'vocational') page = 'vocational.html';
+                    
+                    window.location.href = `${page}?id=${mat.id}`;
+                } else {
+                    window.location.href = 'learning.html';
+                }
+            } catch (e) {
+                window.location.href = 'learning.html';
+            }
+        }
+        
+        function showToast(msg) {
+            document.getElementById('toastMsg').innerText = msg;
+            const t = new bootstrap.Toast(document.getElementById('actionToast'));
+            t.show();
+        }
+    </script>
+</body>
+</html>
+
+

@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topic Lessons • QualiLearn</title>
+    <!-- Bootstrap 5.3 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #4f46e5; --secondary: #10b981; --dark: #0f172a; --light-bg: #f8fafc; --sidebar-width: 300px; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--light-bg); color: var(--dark); }
+        .sidebar { width: var(--sidebar-width); height: 100vh; position: fixed; background: white; border-right: 1px solid #e2e8f0; z-index: 1000; }
+        .nav-link { padding: 0.8rem 1.5rem; margin: 0.2rem 1rem; border-radius: 12px; color: #64748b; display: flex; align-items: center; transition: all 0.2s; }
+        .nav-link i { margin-right: 0.75rem; font-size: 1.2rem; }
+        .nav-link:hover { background: #f1f5f9; color: var(--primary); }
+        .nav-link.active { background: var(--primary); color: white !important; }
+        .content-main { margin-left: var(--sidebar-width); padding: 2rem; min-height: 100vh; }
+        .video-card { background: white; border-radius: 24px; border: 1px solid #e2e8f0; overflow: hidden; transition: 0.3s; }
+        .video-card:hover { transform: translateY(-5px); box-shadow: 0 12px 24px rgba(0,0,0,0.06); }
+        .ratio-16x9 { background: #000; }
+
+        .profile-bubble {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .profile-bubble:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(79, 70, 229, 0.3); }
+        @media (max-width: 991px) { .sidebar { transform: translateX(-100%); } .content-main { margin-left: 0; } }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="p-4 border-bottom">
+            <a class="navbar-brand fw-bold d-flex align-items-center text-primary" href="index.html">
+                <img src="image/mylogo.png" alt="QualiLearn Logo" style="height: 28px; width: auto;" class="me-2">
+                <span style="font-family: 'Outfit';">QualiLearn</span>
+            </a>
+        </div>
+        <nav class="mt-4">
+            <a href="dashboard.html" class="nav-link"><i class="bi bi-grid-1x2"></i> Dashboard</a>
+            <a href="learning.html" class="nav-link active"><i class="bi bi-book-half"></i> Subjects</a>
+            <a href="assessment.html" class="nav-link"><i class="bi bi-question-octagon"></i> Questions</a>
+            <a href="chat.html" class="nav-link"><i class="bi bi-robot"></i> AI Study</a>
+        </nav>
+    </aside>
+
+    <main class="content-main">
+        <header class="d-flex justify-content-between align-items-center mb-5 animate__animated animate__fadeIn">
+            <div>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="learning.html" class="text-decoration-none">Subjects</a></li>
+                        <li class="breadcrumb-item active" id="breadcrumb-topic">Topic</li>
+                    </ol>
+                </nav>
+                <h1 class="fw-bold mb-1 outfit display-5" id="topic-title">Loading Topic...</h1>
+                <p class="text-muted">Master the core concepts of this curriculum unit.</p>
+            </div>
+            <div class="d-flex align-items-center gap-3">
+                <div class="dropdown">
+                    <button class="btn btn-white border shadow-sm rounded-pill px-3" data-bs-toggle="dropdown">
+                        <i class="bi bi-translate text-primary me-2"></i> EN
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-4">
+                        <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="setLanguage('en'); location.reload();">English</a></li>
+                        <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="setLanguage('ha'); location.reload();">Hausa</a></li>
+                        <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="setLanguage('yo'); location.reload();">Yoruba</a></li>
+                        <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="setLanguage('ig'); location.reload();">Igbo</a></li>
+                        <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="setLanguage('pi'); location.reload();">Pidgin</a></li>
+                    </ul>
+                </div>
+
+                <div class="dropdown">
+                    <div class="profile-bubble shadow-sm" data-bs-toggle="dropdown" id="user-initial">U</div>
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-4">
+                        <li><a class="dropdown-item py-2" href="profile.html"><i class="bi bi-person me-2"></i> Profile</a></li>
+                        <li><a class="dropdown-item py-2" href="settings.html"><i class="bi bi-sliders me-2"></i> Settings</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item py-2 text-danger" href="javascript:void(0)" onclick="apiLogout()"><i class="bi bi-box-arrow-right me-2"></i> Logout</a></li>
+                    </ul>
+                </div>
+
+                <!-- Admin Only Button -->
+                <button class="btn btn-primary d-none align-items-center gap-2 rounded-pill px-4" data-bs-toggle="modal" data-bs-target="#addVideoModal" id="admin-add-video-btn">
+                    <i class="bi bi-plus-lg"></i> Add Video
+                </button>
+                <button class="btn btn-light d-lg-none rounded-circle" onclick="document.querySelector('.sidebar').style.transform = 'translateX(0)'">
+                    <i class="bi bi-list"></i>
+                </button>
+            </div>
+        </header>
+
+        <div class="row g-4 mb-5" id="video-grid">
+            <!-- Videos will be injected here -->
+        </div>
+
+        <div class="mt-5 pt-4 border-top">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="fw-bold outfit mb-0">Study Resources</h3>
+                <span class="badge bg-secondary-subtle text-secondary rounded-pill px-3 py-2 fw-bold" id="material-count">0 Documents</span>
+            </div>
+            <div class="row g-3" id="material-grid">
+                <!-- Materials will be injected here -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Add Video Modal -->
+    <div class="modal fade" id="addVideoModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 rounded-4 shadow">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold">Attach New Video</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">YouTube URL</label>
+                        <input type="text" id="videoUrl" class="form-control rounded-3" placeholder="https://youtube.com/watch?v=...">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Video Title (Optional)</label>
+                        <input type="text" id="videoTitle" class="form-control rounded-3" placeholder="e.g. Introduction to Algebra">
+                    </div>
+                    <button class="btn btn-primary w-100 rounded-3 py-2 fw-bold" onclick="addNewVideo()">Add to Topic</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="api-config.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const topicId = urlParams.get('id');
+        let studyStartTime = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!topicId) { window.location.href = 'learning.html'; return; }
+            
+            const user = JSON.parse(localStorage.getItem('ql_user'));
+            if (user) {
+                const initialEl = document.getElementById('user-initial');
+                if (initialEl) initialEl.textContent = user.first_name.charAt(0).toUpperCase();
+                
+                // Show admin button if role is admin
+                if (user.role === 'admin') {
+                    const btn = document.getElementById('admin-add-video-btn');
+                    if (btn) btn.classList.replace('d-none', 'd-md-flex');
+                }
+            }
+
+            loadVideos();
+            
+            // Mark as current resume topic
+            if (typeof apiTrackProgress === 'function') {
+                apiTrackProgress(topicId, 0); // 0 minutes initially, just to update resume_topic_id
+            }
+        });
+
+        async function loadVideos() {
+            const grid = document.getElementById('video-grid');
+            grid.innerHTML = '<div class="col-12 text-center py-5"><div class="spinner-border text-primary"></div></div>';
+            
+            try {
+                const topicsRes = await apiGetTopics();
+                if (topicsRes.success) {
+                    const allTopics = Object.values(topicsRes.data).flat();
+                    const topic = allTopics.find(t => t.id == topicId);
+                    if (topic) {
+                        document.getElementById('topic-title').innerText = topic.name;
+                        document.getElementById('breadcrumb-topic').innerText = topic.name;
+                    }
+                }
+
+                const res = await apiGetTopicVideos(topicId);
+                if (res.success) {
+                    const videos = res.data;
+                    if (videos.length === 0) {
+                        grid.innerHTML = '<div class="col-12 text-center py-5"><h4>No videos yet. Add the first one!</h4></div>';
+                    } else {
+                        grid.innerHTML = '';
+                        videos.forEach(v => {
+                            const col = document.createElement('div');
+                            col.className = 'col-md-6 animate__animated animate__fadeInUp';
+                            col.innerHTML = `
+                                <div class="video-card h-100 shadow-sm border-0">
+                                    <div class="ratio ratio-16x9">
+                                        <iframe src="${getEmbedUrl(v.embed_url || v.video_url)}" allowfullscreen></iframe>
+                                    </div>
+                                    <div class="p-4">
+                                        <h5 class="fw-bold mb-3 outfit">${v.video_title}</h5>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <button class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm" onclick="markCompleted('${v.id}')">
+                                                <i class="bi bi-check-circle me-2"></i> Mark Finished
+                                            </button>
+                                            ${JSON.parse(localStorage.getItem('ql_user'))?.role === 'admin' ? `
+                                                <button class="btn btn-outline-danger btn-sm rounded-circle" onclick="deleteVideo('${v.id}')">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            ` : ''}
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                            grid.appendChild(col);
+                        });
+                    }
+                }
+
+                // Load Materials
+                const matRes = await apiGetMaterials();
+                if (matRes.success) {
+                    const materials = matRes.data.filter(m => m.topic_id == topicId);
+                    document.getElementById('material-count').innerText = `${materials.length} Documents`;
+                    const mGrid = document.getElementById('material-grid');
+                    if (materials.length === 0) {
+                        mGrid.innerHTML = '<div class="col-12 text-center py-3 text-muted">No documents available for this topic yet.</div>';
+                    } else {
+                        mGrid.innerHTML = materials.map(m => `
+                            <div class="col-md-12">
+                                <div class="p-4 bg-white rounded-4 shadow-sm border d-flex justify-content-between align-items-center animate__animated animate__fadeIn">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="bg-primary bg-opacity-10 text-primary p-3 rounded-3">
+                                            <i class="bi bi-file-earmark-text fs-4"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="fw-bold mb-0 outfit">${m.title}</h5>
+                                            <p class="text-muted small mb-0">${m.material_type.toUpperCase()} • Last updated ${new Date(m.created_at).toLocaleDateString()}</p>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex gap-2">
+                                        ${m.resource_url ? `
+                                            <a href="${m.resource_url}" download class="btn btn-secondary rounded-pill px-4 fw-bold shadow-sm">
+                                                <i class="bi bi-download me-2"></i> Download
+                                            </a>
+                                        ` : ''}
+                                        ${JSON.parse(localStorage.getItem('ql_user'))?.role === 'admin' ? `
+                                            <button class="btn btn-outline-danger rounded-circle" onclick="deleteMaterial(${m.id})">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        ` : ''}
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('');
+                    }
+                }
+            } catch (e) { console.error(e); }
+        }
+
+        async function markCompleted(videoId) {
+            console.log(">>> MARKING LESSON COMPLETED:", videoId);
+            const res = await apiTrackActivity({
+                activity_type: 'topic_completion',
+                module: 'subject',
+                topic_id: parseInt(topicId),
+                video_id: parseInt(videoId),
+                completed: true
+            });
+            if (res.success) {
+                alert('Lesson marked as completed! Progress updated.');
+            }
+        }
+
+        async function addNewVideo() {
+            const url = document.getElementById('videoUrl').value;
+            const title = document.getElementById('videoTitle').value;
+            if (!url) return alert('URL required');
+            
+            const res = await apiAddTopicVideo(topicId, url, title);
+            if (res.success) {
+                bootstrap.Modal.getInstance(document.getElementById('addVideoModal')).hide();
+                loadVideos();
+            } else {
+                alert(res.message || 'Error adding video');
+            }
+        }
+
+        async function deleteVideo(id) {
+            if (!confirm('Are you sure?')) return;
+            const res = await apiDeleteTopicVideo(id);
+            if (res.success) loadVideos();
+        }
+
+        async function deleteMaterial(id) {
+            if (!confirm('Are you sure?')) return;
+            const res = await apiAdminDeleteMaterial(id);
+            if (res.success) loadVideos();
+        }
+
+        // Tracking Logic
+        function trackVideoStart(videoId) {
+            console.log(">>> TRACKING VIDEO LEARN START:", videoId);
+            studyStartTime = new Date().toISOString();
+            
+            // Log activity immediately
+            apiTrackActivity({
+                activity_type: 'video_learning',
+                module: 'learning', // Use learning to match mod_map
+                topic_id: parseInt(topicId),
+                video_id: parseInt(videoId),
+                completed: false
+            });
+        }
+        
+        // Since iframes don't support onplay easily, we'll track when the page loads or when they click 'Mark Finished'
+        window.addEventListener('load', () => {
+             // Optional: automatically start study timer for this topic
+             startStudyTimer(topicId);
+        });
+    </script>
+    <script src="translations.js"></script>
+    <script src="language-selector.js"></script>
+</body>
+</html>
+
+

@@ -1,0 +1,23 @@
+{
+  "name": "QualiLearn Hub",
+  "short_name": "QualiLearn",
+  "description": "Premium educational platform for academic and vocational training in Nigeria.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#fffbf5",
+  "theme_color": "#4f46e5",
+  "icons": [
+    {
+      "src": "./image/mylogo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./image/mylogo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

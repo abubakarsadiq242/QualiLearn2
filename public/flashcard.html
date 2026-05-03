@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Flashcards - QualiLearn. Interactive memorization tools.">
+    
+    <title>Study Vault • QualiLearn</title>
+
+    <!-- Bootstrap 5.3 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <script>
+        if (!localStorage.getItem('ql_token')) {
+            window.location.href = 'login.html';
+        }
+    </script>
+
+    <style>
+        :root {
+            --primary: #f59e0b;
+            --primary-dark: #d97706;
+            --dark: #0f172a;
+            --light-bg: #fffcf5;
+            --border: #fef3c7;
+            --sidebar-width: 280px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--dark);
+        }
+
+        h1, h2, h3, h4, .outfit { font-family: 'Outfit', sans-serif; }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            position: fixed;
+            background: white;
+            border-right: 1px solid #e2e8f0;
+            z-index: 1000;
+        }
+
+        .nav-link {
+            padding: 0.85rem 1.5rem;
+            margin: 0.25rem 1rem;
+            border-radius: 12px;
+            color: #64748b;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+        .nav-link i { margin-right: 0.75rem; font-size: 1.2rem; }
+        .nav-link.active { background: var(--primary); color: white !important; }
+
+        .content-main {
+            margin-left: var(--sidebar-width);
+            padding: 2.5rem;
+            min-height: 100vh;
+        }
+
+        /* Flashcard Component */
+        .card-perspective {
+            perspective: 1000px;
+            width: 100%;
+            max-width: 600px;
+            height: 380px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .card-inner.is-flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem;
+            border-radius: 32px;
+            box-shadow: 0 20px 50px rgba(245, 158, 11, 0.1);
+            border: 4px solid white;
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, white 0%, #fffbeb 100%);
+            color: var(--dark);
+        }
+
+        .card-back {
+            background: var(--primary);
+            color: white;
+            transform: rotateY(180deg);
+        }
+
+        .flash-controls button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: all 0.2s ease;
+        }
+        .flash-controls button:hover { transform: scale(1.1); }
+
+        @media (max-width: 991px) {
+            .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; }
+            .sidebar.active { transform: translateX(0); }
+            .content-main { margin-left: 0; padding: 1rem; }
+        .card-perspective { height: 320px; }
+        }
+
+        .profile-bubble {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .profile-bubble:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3); }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="mainSidebar">
+        <div class="p-4 border-bottom">
+            <a class="navbar-brand fw-bold d-flex align-items-center text-primary" href="index.html">
+                <img src="image/mylogo.png" alt="QualiLearn Logo" style="height: 28px; width: auto;" class="me-2">
+                <span class="outfit">QualiLearn</span>
+            </a>
+        </div>
+        
+        <nav class="mt-4">
+            <a href="dashboard.html" class="nav-link" data-i18n="nav_dashboard"><i class="bi bi-grid-1x2"></i> Dashboard</a>
+            <a href="learning.html" class="nav-link" data-i18n="nav_subjects"><i class="bi bi-book-half"></i> Subjects</a>
+            <a href="assessment.html" class="nav-link" data-i18n="nav_past_questions"><i class="bi bi-question-octagon"></i> Past Questions</a>
+            <a href="flashcard.html" class="nav-link active" data-i18n="nav_flashcards"><i class="bi bi-card-text"></i> Flashcards</a>
+            <a href="games.html" class="nav-link" data-i18n="nav_games"><i class="bi bi-joystick"></i> Games</a>
+            <a href="chat.html" class="nav-link" data-i18n="nav_ai_support"><i class="bi bi-robot"></i> AI Support</a>
+            
+            <div class="mt-5 border-top pt-4">
+                <a href="profile.html" class="nav-link" data-i18n="nav_profile"><i class="bi bi-person-circle"></i> Profile</a>
+                <a href="settings.html" class="nav-link" data-i18n="nav_settings"><i class="bi bi-sliders"></i> Settings</a>
+                <a href="javascript:void(0)" onclick="apiLogout()" class="nav-link text-danger" data-i18n="nav_logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="content-main">
+        
+        <header class="d-flex justify-content-between align-items-center mb-5">
+            <div>
+                <h1 class="fw-bold mb-1 outfit" data-i18n="nav_flashcards">Flashcards Hub</h1>
+                <p class="text-muted" id="current-deck-info" data-i18n="flash_select_subject">Choose a subject to start studying</p>
+            </div>
+            
+            <div class="d-flex align-items-center gap-3">
+                <div class="dropdown">
+                    <button class="btn btn-white border shadow-sm rounded-pill px-3" data-bs-toggle="dropdown">
+                        <i class="bi bi-translate text-primary me-2"></i> EN
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-4">
+                        <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="setLanguage('en')">English</a></li>
+                        <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="setLanguage('ha')">Hausa</a></li>
+                        <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="setLanguage('yo')">Yoruba</a></li>
+                        <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="setLanguage('ig')">Igbo</a></li>
+                        <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="setLanguage('pi')">Pidgin</a></li>
+                    </ul>
+                </div>
+
+                <div class="dropdown">
+                    <button class="btn btn-white border shadow-sm rounded-pill px-4 d-none d-md-block" data-bs-toggle="dropdown" id="subject-btn" data-i18n="subject_mathematics">
+                        Mathematics
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-4">
+                        <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="loadDeck('Mathematics')" data-i18n="subject_mathematics">Mathematics</a></li>
+                        <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="loadDeck('English')" data-i18n="subject_english">English Language</a></li>
+                        <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="loadDeck('Science')" data-i18n="subject_science">General Science</a></li>
+                    </ul>
+                </div>
+
+                <div class="dropdown">
+                    <div class="profile-bubble shadow-sm" data-bs-toggle="dropdown" id="user-initial">U</div>
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-4">
+                        <li><a class="dropdown-item py-2" href="profile.html"><i class="bi bi-person me-2"></i> Profile</a></li>
+                        <li><a class="dropdown-item py-2" href="settings.html"><i class="bi bi-sliders me-2"></i> Settings</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item py-2 text-danger" href="javascript:void(0)" onclick="apiLogout()"><i class="bi bi-box-arrow-right me-2"></i> Logout</a></li>
+                    </ul>
+                </div>
+
+                <button class="btn btn-primary d-lg-none rounded-circle" onclick="document.getElementById('mainSidebar').classList.toggle('active')">
+                    <i class="bi bi-list"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Flashcard View -->
+        <div class="py-4" id="flashcard-deck-container" style="display:none;">
+            <div class="card-perspective">
+                <div class="card-inner" id="flashCard" onclick="this.classList.toggle('is-flipped')">
+                    <div class="card-front" id="card-front-content">
+                        <!-- Front Content -->
+                    </div>
+                    <div class="card-back" id="card-back-content">
+                        <!-- Back Content -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <div class="d-flex justify-content-center align-items-center gap-4 mt-5 flash-controls">
+                <button class="btn btn-light border-0 shadow-sm text-secondary p-3 rounded-circle" onclick="prevCard()"><i class="bi bi-chevron-left"></i></button>
+                
+                <div class="d-flex gap-3 hstack">
+                    <button class="btn btn-danger rounded-pill px-4 d-flex align-items-center gap-2" onclick="reviewCard(false)">
+                        <i class="bi bi-x-circle"></i> <span data-i18n="btn_try_again">Try Again</span>
+                    </button>
+                    <button class="btn btn-success rounded-pill px-4 d-flex align-items-center gap-2" onclick="reviewCard(true)">
+                        <i class="bi bi-check-circle"></i> <span data-i18n="btn_got_it">Got It!</span>
+                    </button>
+                </div>
+
+                <button class="btn btn-light border-0 shadow-sm text-secondary p-3 rounded-circle" onclick="nextCard()"><i class="bi bi-chevron-right"></i></button>
+            </div>
+            
+            <div class="text-center mt-5">
+                <div class="mx-3 fw-bold outfit fs-5 mb-2" id="card-counter">0 / 0</div>
+                <div class="progress mx-auto" style="width: 250px; height: 8px;">
+                    <div class="progress-bar bg-warning rounded-pill progress-bar-striped" id="deck-progress" style="width: 0%;"></div>
+                </div>
+                <p class="text-muted small mt-2" data-i18n="study_time_tracked">Study time is automatically saved</p>
+            </div>
+        </div>
+
+        <div id="no-deck-placeholder" class="text-center py-5">
+            <i class="bi bi-layers text-muted opacity-25" style="font-size: 5rem;"></i>
+            <h4 class="fw-bold outfit mt-3" data-i18n="flash_select_subject">Select a Subject</h4>
+            <p class="text-muted" data-i18n="flash_pick_deck">Pick a deck to begin your interactive study session.</p>
+        </div>
+
+    </main>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="api-config.js"></script>
+    <script src="translations.js"></script>
+    <script src="language-selector.js"></script>
+    
+    <script>
+        let currentDeck = [];
+        let currentIndex = 0;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            applyLanguage(localStorage.getItem('ql_lang') || 'en');
+            // Try to load last selected or default
+            loadDeck('Mathematics');
+
+            const user = JSON.parse(localStorage.getItem('ql_user'));
+            if (user) {
+                document.getElementById('user-initial').textContent = user.first_name.charAt(0).toUpperCase();
+            }
+        });
+
+        async function loadDeck(subject) {
+            const btn = document.getElementById('subject-btn');
+            btn.innerText = subject;
+            const lang = localStorage.getItem('ql_lang') || 'en';
+            console.log(`[Flashcard] Loading deck: ${subject} (${lang})`);
+            
+            try {
+                const response = await apiGetFlashcards(subject, lang);
+                console.log('[Flashcard] API Response:', response);
+                
+                if (response.success && response.data && response.data.length > 0) {
+                    currentDeck = response.data;
+                    currentIndex = 0;
+                    document.getElementById('flashcard-deck-container').style.display = 'block';
+                    document.getElementById('no-deck-placeholder').style.display = 'none';
+                    
+                    const deckInfo = document.getElementById('current-deck-info');
+                    deckInfo.innerText = `${subject} • Deck of ${currentDeck.length} cards`;
+                    
+                    renderCard();
+                    startStudyTimer(null);
+                } else {
+                    console.warn(`[Flashcard] No cards found for subject: ${subject}, lang: ${lang}`);
+                    document.getElementById('flashcard-deck-container').style.display = 'none';
+                    document.getElementById('no-deck-placeholder').style.display = 'block';
+                    
+                    // Specific message for no cards
+                    const placeholderTitle = document.querySelector('#no-deck-placeholder h4');
+                    placeholderTitle.innerText = `No ${subject} Cards Yet`;
+                }
+            } catch (err) {
+                console.error('[Flashcard] Deck load error:', err);
+                document.getElementById('flashcard-deck-container').style.display = 'none';
+                document.getElementById('no-deck-placeholder').style.display = 'block';
+            }
+        }
+
+        function renderCard() {
+            const card = currentDeck[currentIndex];
+            const inner = document.getElementById('flashCard');
+            inner.classList.remove('is-flipped');
+            
+            document.getElementById('card-front-content').innerHTML = `
+                <div class="animate__animated animate__fadeIn">
+                    <span class="badge bg-warning-subtle text-warning mb-4 rounded-pill px-3 py-2 fw-bold" data-i18n="flash_concept">Concept</span>
+                    <h2 class="fw-bold outfit px-3">${card.front}</h2>
+                    <p class="text-muted small mt-3" data-i18n="flash_reveal">Click to reveal definition</p>
+                </div>
+            `;
+            
+            document.getElementById('card-back-content').innerHTML = `
+                <div class="animate__animated animate__fadeIn">
+                    <span class="badge bg-primary-subtle text-primary mb-4 rounded-pill px-3 py-2 fw-bold" data-i18n="flash_definition">Definition</span>
+                    <h2 class="fw-bold outfit fs-3 px-3">${card.back}</h2>
+                    <p class="text-muted small mt-3" data-i18n="flash_practice">Keep practicing!</p>
+                </div>
+            `;
+            
+            applyLanguage(localStorage.getItem('ql_lang') || 'en');
+            
+            document.getElementById('card-counter').innerText = `${currentIndex + 1} / ${currentDeck.length}`;
+            const progress = ((currentIndex + 1) / currentDeck.length) * 100;
+            document.getElementById('deck-progress').style.width = `${progress}%`;
+        }
+
+        async function nextCard() {
+            if (currentIndex < currentDeck.length - 1) {
+                currentIndex++;
+                renderCard();
+            }
+        }
+
+        async function reviewCard(gotIt) {
+            const card = currentDeck[currentIndex];
+            try {
+                // Track activity
+                await apiTrackActivity({
+                    activity_type: 'flashcard_review',
+                    module: 'flashcards',
+                    score: gotIt ? 100 : 0,
+                    completed: true
+                });
+
+                await apiReviewFlashcard(card.id, gotIt);
+                if (gotIt) {
+                    // Visual feedback would be nice, but simple next for now
+                    nextCard();
+                } else {
+                    // Shuffle or show again later? Just flip back for now
+                    document.getElementById('flashCard').classList.remove('is-flipped');
+                }
+            } catch (e) {
+                console.error(e);
+                nextCard();
+            }
+        }
+
+        function prevCard() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                renderCard();
+            }
+        }
+    </script>
+</body>
+</html>
+
+

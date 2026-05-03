@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management • QualiLearn Admin</title>
+
+    <!-- Bootstrap 5.3 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #0f172a;
+            --accent: #4f46e5;
+            --sidebar-width: 280px;
+            --bg-light: #f1f5f9;
+            --card-shadow: 0 10px 30px -5px rgba(0,0,0,0.04), 0 4px 10px -2px rgba(0,0,0,0.02);
+        }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-light); color: var(--primary); }
+        h1, h2, h3, h4, .outfit { font-family: 'Outfit', sans-serif; }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: #0f172a;
+            color: white;
+            z-index: 1000;
+        }
+
+        .sidebar-header { padding: 2.5rem 2rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
+
+        .nav-link {
+            padding: 0.85rem 1.75rem;
+            margin: 0.2rem 1rem;
+            color: #94a3b8;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.2s ease;
+            border-radius: 12px;
+        }
+
+        .nav-link.active {
+            color: white;
+            background: var(--accent);
+            box-shadow: 0 10px 20px -5px rgba(79, 70, 229, 0.4);
+        }
+
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 3rem;
+        }
+
+        .table-custom-wrapper {
+            background: white;
+            border-radius: 24px;
+            padding: 1rem;
+            border: 1px solid rgba(226, 232, 240, 0.6);
+            box-shadow: var(--card-shadow);
+        }
+
+        .table-custom thead th {
+            background: #f8fafc;
+            border: none;
+            padding: 1.25rem 1rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #64748b;
+        }
+
+        .table-custom tbody td {
+            padding: 1.25rem 1rem;
+            border-bottom: 1px solid #f1f5f9;
+            vertical-align: middle;
+        }
+
+        .avatar-circle {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <a class="navbar-brand fw-bold text-white d-flex align-items-center" href="admin.html">
+                <img src="image/mylogo.png" alt="Logo" style="height: 35px;" class="me-3">
+                <span class="outfit fs-4">QualiLearn</span>
+            </a>
+        </div>
+        <nav class="mt-4">
+            <a href="admin.html" class="nav-link"><i class="bi bi-grid-1x2-fill"></i> Dashboard Overview</a>
+            <a href="admin-curriculum.html" class="nav-link"><i class="bi bi-journal-bookmark-fill"></i> Curriculum Hub</a>
+            <a href="admin-content.html" class="nav-link"><i class="bi bi-play-circle-fill"></i> Content Library</a>
+            <a href="admin-assessments.html" class="nav-link"><i class="bi bi-patch-question-fill"></i> Assessments</a>
+            <a href="admin-vocational.html" class="nav-link"><i class="bi bi-hammer"></i> Vocational Skills</a>
+            <a href="admin-users.html" class="nav-link active"><i class="bi bi-people-fill"></i> User Management</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="d-flex justify-content-between align-items-center mb-5">
+            <div>
+                <h1 class="fw-bold outfit mb-1 display-6">User Management</h1>
+                <p class="text-muted mb-0 fw-medium">Monitoring the pulse of our learning community.</p>
+            </div>
+            <div class="d-flex gap-2">
+                <button class="btn btn-primary bg-accent border-0 rounded-pill px-4 shadow-sm" onclick="location.reload()">
+                    <i class="bi bi-arrow-clockwise me-2"></i> Sync Data
+                </button>
+            </div>
+        </header>
+
+        <div class="table-custom-wrapper">
+            <div class="table-responsive">
+                <table class="table table-custom">
+                    <thead>
+                        <tr>
+                            <th>Learner</th>
+                            <th>Email Address</th>
+                            <th>Academic Level</th>
+                            <th>Role</th>
+                            <th>Join Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="user-table-body">
+                        <!-- Dynamic rows -->
+                        <tr id="loading-row">
+                            <td colspan="6" class="text-center py-5">
+                                <div class="spinner-border text-accent"></div>
+                                <p class="mt-2 text-muted fw-bold">Connecting to User Database...</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script src="api-config.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', loadUsers);
+
+        async function loadUsers() {
+            try {
+                const res = await apiAdminGetUsers();
+                if (res.success) {
+                    renderUsers(res.data);
+                }
+            } catch (err) {
+                document.getElementById('user-table-body').innerHTML = `<tr><td colspan="6" class="text-center text-danger">Connection Failed: ${err.message}</td></tr>`;
+            }
+        }
+
+        function renderUsers(users) {
+            const body = document.getElementById('user-table-body');
+            if (users.length === 0) {
+                body.innerHTML = '<tr><td colspan="6" class="text-center py-5 text-muted">No learners registered in the system.</td></tr>';
+                return;
+            }
+
+            body.innerHTML = users.map(u => `
+                <tr>
+                    <td>
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="avatar-circle">${u.first_name.charAt(0).toUpperCase()}</div>
+                            <div>
+                                <p class="fw-bold mb-0">${u.first_name} ${u.last_name}</p>
+                                <p class="text-muted small mb-0">UID: ${u.id}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="small fw-medium">${u.email}</td>
+                    <td><span class="badge bg-light text-primary border border-primary border-opacity-10 px-3 py-2 rounded-pill">${u.education_level || 'General'}</span></td>
+                    <td><span class="badge bg-secondary bg-opacity-10 text-secondary px-3 py-2 rounded-pill">${u.role.toUpperCase()}</span></td>
+                    <td class="text-muted small">${new Date(u.created_at).toLocaleDateString()}</td>
+                    <td>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-sm btn-light border-0 shadow-sm rounded-circle p-2" title="Inspect Profile"><i class="bi bi-eye-fill text-accent"></i></button>
+                            <button class="btn btn-sm btn-light border-0 shadow-sm rounded-circle p-2" title="Deactivate"><i class="bi bi-slash-circle text-danger"></i></button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+    </script>
+</body>
+</html>

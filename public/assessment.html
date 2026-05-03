@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Assessment Center - QualiLearn. Practice past questions and master your exams.">
+    
+    <title>Assessment Center • QualiLearn</title>
+
+    <!-- Bootstrap 5.3 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <script>
+        if (!localStorage.getItem('ql_token')) {
+            window.location.href = 'login.html';
+        }
+    </script>
+
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --secondary: #10b981;
+            --accent: #ef4444;
+            --dark: #0f172a;
+            --light-bg: #f8fafc;
+            --active-card: #eff6ff;
+            --sidebar-width: 280px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--dark);
+        }
+
+        h1, h2, h3, h4, .outfit { font-family: 'Outfit', sans-serif; }
+
+        /* Sidebar Glassmorphism */
+        .sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            position: fixed;
+            background: white;
+            border-right: 1px solid #e2e8f0;
+            z-index: 1000;
+        }
+
+        .nav-link {
+            padding: 0.85rem 1.5rem;
+            margin: 0.25rem 1rem;
+            border-radius: 12px;
+            color: #64748b;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+        .nav-link i { margin-right: 0.75rem; font-size: 1.2rem; }
+        .nav-link.active { background: var(--primary); color: white !important; }
+
+        /* Main Center */
+        .assessment-main {
+            margin-left: var(--sidebar-width);
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        /* Modern Exam Interface */
+        .exam-panel {
+            background: white;
+            border-radius: 24px;
+            border: 1px solid #e2e8f0;
+            padding: 2.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .exam-timer {
+            background: #fff1f2;
+            color: var(--accent);
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.25rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .question-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-right: 15px;
+        }
+
+        .option-card {
+            background: #f8fafc;
+            border: 2px solid #f1f5f9;
+            border-radius: 16px;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .option-card:hover {
+            border-color: var(--primary);
+            background: var(--active-card);
+        }
+        .option-card.active {
+            border-color: var(--primary);
+            background: var(--active-card);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.1);
+        }
+
+        .option-letter {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #64748b;
+        }
+        .option-card.active .option-letter {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .profile-bubble {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .profile-bubble:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(79, 70, 229, 0.3); }
+
+        @media (max-width: 991px) {
+            .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; }
+            .sidebar.active { transform: translateX(0); }
+            .assessment-main { margin-left: 0; padding: 1rem; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="mainSidebar">
+        <div class="p-4 border-bottom">
+            <a class="navbar-brand fw-bold d-flex align-items-center text-primary" href="index.html">
+                <img src="image/mylogo.png" alt="QualiLearn Logo" style="height: 28px; width: auto;" class="me-2">
+                <span class="outfit">QualiLearn</span>
+            </a>
+        </div>
+        
+        <nav class="mt-4">
+            <a href="dashboard.html" class="nav-link" data-i18n="nav_dashboard"><i class="bi bi-grid-1x2"></i> Dashboard</a>
+            <a href="learning.html" class="nav-link" data-i18n="nav_subjects"><i class="bi bi-book-half"></i> Subjects</a>
+            <a href="assessment.html" class="nav-link active" data-i18n="nav_past_questions"><i class="bi bi-question-octagon"></i> Past Questions</a>
+            <a href="flashcard.html" class="nav-link" data-i18n="nav_flashcards"><i class="bi bi-card-text"></i> Flashcards</a>
+            <a href="games.html" class="nav-link" data-i18n="nav_games"><i class="bi bi-joystick"></i> Games</a>
+            <a href="chat.html" class="nav-link" data-i18n="nav_ai_support"><i class="bi bi-robot"></i> AI Support</a>
+            
+            <div class="mt-5 border-top pt-4">
+                <a href="profile.html" class="nav-link" data-i18n="nav_profile"><i class="bi bi-person-circle"></i> Profile</a>
+                <a href="settings.html" class="nav-link" data-i18n="nav_settings"><i class="bi bi-sliders"></i> Settings</a>
+                <a href="javascript:void(0)" onclick="apiLogout()" class="nav-link text-danger" data-i18n="nav_logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="assessment-main">
+        
+        <header class="d-flex justify-content-between align-items-center mb-5">
+            <div>
+                <h1 class="fw-bold mb-1 outfit" data-i18n="nav_past_questions">Past Questions</h1>
+                <p class="text-muted" id="current-assessment-info"><span data-i18n="subject_mathematics">Mathematics</span> • <span data-i18n="all_years">All Years</span> • <span data-i18n="practice">Practice</span></p>
+            </div>
+            
+            <div class="d-flex align-items-center gap-3">
+                <div class="exam-timer shadow-sm me-3 d-none d-md-flex bg-primary-subtle text-primary border-primary">
+                    <i class="bi bi-stopwatch-fill"></i>
+                    <span id="studyTimerDisplay">00:00</span>
+                </div>
+                
+                <div class="exam-timer shadow-sm d-none d-md-flex">
+                    <i class="bi bi-alarm-fill animate__animated animate__pulse animate__infinite"></i>
+                    <span id="timer">60:00</span>
+                </div>
+                
+                <div class="dropdown d-none d-md-block">
+                    <button class="btn btn-white border shadow-sm rounded-pill px-4 outfit fw-bold" data-bs-toggle="dropdown" id="subject-btn" data-i18n="subject_mathematics">
+                        Mathematics
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-4">
+                        <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="loadSubject('Mathematics')" data-i18n="subject_mathematics">Mathematics</a></li>
+                        <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="loadSubject('English')" data-i18n="subject_english">English Language</a></li>
+                        <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="loadSubject('Science')">Sciences (Bio, Phys, Chem)</a></li>
+                    </ul>
+                </div>
+
+                <div class="dropdown">
+                    <button class="btn btn-white border shadow-sm rounded-pill px-3" data-bs-toggle="dropdown" id="lang-btn">
+                        <i class="bi bi-translate text-primary me-2"></i> EN
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-4">
+                        <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="changeAssessmentLang('en')">English</a></li>
+                        <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="changeAssessmentLang('ha')">Hausa</a></li>
+                        <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="changeAssessmentLang('yo')">Yoruba</a></li>
+                        <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="changeAssessmentLang('ig')">Igbo</a></li>
+                        <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="changeAssessmentLang('pi')">Pidgin</a></li>
+                    </ul>
+                </div>
+
+                <div class="dropdown">
+                    <div class="profile-bubble shadow-sm" data-bs-toggle="dropdown" id="user-initial">U</div>
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-4">
+                        <li><a class="dropdown-item py-2" href="profile.html"><i class="bi bi-person me-2"></i> Profile</a></li>
+                        <li><a class="dropdown-item py-2" href="settings.html"><i class="bi bi-sliders me-2"></i> Settings</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item py-2 text-danger" href="javascript:void(0)" onclick="apiLogout()"><i class="bi bi-box-arrow-right me-2"></i> Logout</a></li>
+                    </ul>
+                </div>
+
+                <button class="btn btn-primary d-lg-none rounded-circle" onclick="document.getElementById('mainSidebar').classList.toggle('active')">
+                    <i class="bi bi-list"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Exam Panel -->
+        <article class="exam-panel">
+            <div class="text-center py-5">
+                <div class="spinner-border text-primary mb-3"></div>
+                <p class="text-muted" data-i18n="loading_questions">Loading Past Questions...</p>
+            </div>
+        </article>
+
+        <!-- Navigation Map -->
+        <div class="mt-5 max-w-900 mx-auto text-center" id="nav-map-container" style="display:none;">
+            <h6 class="text-muted mb-4 small fw-bold text-uppercase ls-wide">Question Navigator</h6>
+            <div class="d-flex flex-wrap justify-content-center gap-2" id="question-navigator">
+                <!-- Dots generated here -->
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Results Modal -->
+    <div class="modal fade" id="submitModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 rounded-4 shadow-lg overflow-hidden">
+                <div class="modal-body p-0">
+                    <div class="p-5" id="scoreResult">
+                        <!-- Dynamic Score Here -->
+                    </div>
+                    <div class="p-4 bg-light d-flex gap-3">
+                        <button class="btn btn-primary flex-grow-1 rounded-pill py-3 fw-bold" onclick="window.location.reload()" data-i18n="start_new_exam">Start New Exam</button>
+                        <a href="dashboard.html" class="btn btn-white border flex-grow-1 rounded-pill py-3 fw-bold" data-i18n="nav_dashboard">Dashboard</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="api-config.js"></script>
+    <script src="translations.js"></script>
+    <script src="language-selector.js"></script>
+    <script>
+        let currentAssessmentId = null; // Default to null for Past Questions pool
+        let questions = [];
+        let currentIndex = 0;
+        let answers = {};
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const params = new URLSearchParams(window.location.search);
+            const subject = params.get('subject') || 'Mathematics';
+            const lang = localStorage.getItem('ql_lang') || 'en';
+            
+            document.getElementById('lang-btn').innerHTML = `<i class="bi bi-translate text-primary me-2"></i> ${lang.toUpperCase()}`;
+            loadSubject(subject);
+            applyLanguage(lang);
+
+            const user = JSON.parse(localStorage.getItem('ql_user'));
+            if (user) {
+                document.getElementById('user-initial').textContent = user.first_name.charAt(0).toUpperCase();
+            }
+        });
+
+        async function loadSubject(subject) {
+            const lang = localStorage.getItem('ql_lang') || 'en';
+            document.getElementById('subject-btn').innerText = subject;
+            document.getElementById('current-assessment-info').innerText = `${subject} • All Years • Practice`;
+            
+            try {
+                // Remove the restrictive '2024' year filter to show all seeded questions
+                const response = await apiGetPastQuestions(subject, '', lang);
+                if (response.success && response.data.length > 0) {
+                    questions = response.data;
+                    answers = {};
+                    renderQuestion(0);
+                    
+                    // Persistent Countdown timer
+                    if (!localStorage.getItem('ql_exam_start') || localStorage.getItem('ql_exam_duration') !== '3600') {
+                        localStorage.setItem('ql_exam_start', Date.now());
+                        localStorage.setItem('ql_exam_duration', 60 * 60);
+                    }
+                    
+                    const timerEl = document.getElementById('timer');
+                    const timerInterval = setInterval(() => {
+                        const start = parseInt(localStorage.getItem('ql_exam_start'));
+                        const duration = parseInt(localStorage.getItem('ql_exam_duration'));
+                        const elapsed = Math.floor((Date.now() - start) / 1000);
+                        const timeLeft = duration - elapsed;
+                        
+                        if (timeLeft <= 0) {
+                            clearInterval(timerInterval);
+                            localStorage.removeItem('ql_exam_start');
+                            localStorage.removeItem('ql_exam_duration');
+                            finalSubmit();
+                        } else {
+                            const mins = Math.floor(timeLeft / 60);
+                            const secs = timeLeft % 60;
+                            timerEl.innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+                        }
+                    }, 1000);
+                    
+                    // Also start the global study timer
+                    startStudyTimer('Assessment');
+                } else {
+                    document.querySelector('.exam-panel').innerHTML = `
+                        <div class="text-center py-5">
+                            <i class="bi bi-info-circle fs-1 text-muted"></i>
+                            <h4 class="mt-3">No ${subject} questions found in ${lang.toUpperCase()}.</h4>
+                            <p class="text-muted">Try switching subjects or languages.</p>
+                        </div>`;
+                }
+            } catch (err) {
+                console.error('Fetch error:', err);
+            }
+        }
+
+        async function changeAssessmentLang(lang) {
+            localStorage.setItem('ql_lang', lang);
+            document.getElementById('lang-btn').innerHTML = `<i class="bi bi-translate text-primary me-2"></i> ${lang.toUpperCase()}`;
+            applyLanguage(lang);
+            const currentSub = document.getElementById('subject-btn').innerText;
+            loadSubject(currentSub);
+        }
+
+        function renderQuestion(index) {
+            currentIndex = index;
+            const q = questions[index];
+            if (!q) return;
+            const panel = document.querySelector('.exam-panel');
+            
+            const qText = q.question_text || q.text;
+            const correctAns = q.correct_answer || q.correct_option;
+
+            panel.innerHTML = `
+                <div class="mb-5 animate__animated animate__fadeIn">
+                    <div class="d-flex align-items-center mb-4">
+                        <span class="question-number">${index + 1}</span>
+                        <h5 class="fw-bold mb-0 outfit" style="line-height: 1.4;">${qText}</h5>
+                    </div>
+                </div>
+
+                <div class="options-container mb-5">
+                    ${['A', 'B', 'C', 'D'].map(opt => {
+                        const optText = q.options ? q.options[opt] : (q['option_'+opt.toLowerCase()]);
+                        if (!optText) return '';
+                        return `
+                            <div class="option-card ${answers[q.id] === opt ? 'active' : ''}" onclick="selectOption(this, '${opt}', ${q.id})">
+                                <div class="option-letter">${opt}</div>
+                                <div class="fw-medium">${optText}</div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center pt-4 border-top">
+                    <button class="btn btn-light rounded-pill px-4 py-2 fw-semibold" onclick="renderQuestion(${index - 1})" ${index === 0 ? 'disabled' : ''}>
+                        <i class="bi bi-arrow-left me-2"></i> Previous
+                    </button>
+                    
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-primary rounded-pill px-5 py-2 fw-bold" onclick="finalSubmit()" ${Object.keys(answers).length === 0 ? 'disabled' : ''}>Submit Exam</button>
+                    </div>
+
+                    <button class="btn btn-light rounded-pill px-4 py-2 fw-semibold" onclick="renderQuestion(${index + 1})" ${index === questions.length - 1 ? 'disabled' : ''}>
+                        Next <i class="bi bi-arrow-right ms-2"></i>
+                    </button>
+                </div>
+            `;
+        }
+
+        function selectOption(el, opt, qId) {
+            document.querySelectorAll('.option-card').forEach(c => c.classList.remove('active'));
+            el.classList.add('active');
+            answers[qId] = opt;
+            document.querySelector('[onclick="finalSubmit()"]').disabled = false;
+        }
+        
+        async function finalSubmit() {
+            let score = 0;
+            questions.forEach(q => {
+                const correctAns = q.correct_answer || q.correct_option;
+                if (answers[q.id] === correctAns) {
+                    score++;
+                }
+            });
+            
+            const percentage = Math.round((score / questions.length) * 100);
+            
+            document.getElementById('scoreResult').innerHTML = `
+                <div class="text-center mb-4">
+                    <h1 class="display-3 fw-bold text-primary mb-0">${percentage}%</h1>
+                    <p class="text-muted">You got ${score} out of ${questions.length} correct</p>
+                </div>
+                <div class="list-group list-group-flush rounded-4 overflow-hidden border">
+                    ${questions.map((q, i) => {
+                        const qText = q.question_text || q.text;
+                        const correctAns = q.correct_answer || q.correct_option;
+                        return `
+                        <div class="list-group-item d-flex justify-content-between align-items-center py-3">
+                            <div class="small">
+                                <span class="fw-bold">Q${i+1}:</span> ${qText.substring(0, 40)}...
+                            </div>
+                            <div>
+                                ${answers[q.id] === correctAns 
+                                    ? '<span class="badge bg-success-subtle text-success rounded-pill"><i class="bi bi-check-circle-fill"></i> Correct</span>' 
+                                    : `<span class="badge bg-danger-subtle text-danger rounded-pill"><i class="bi bi-x-circle-fill"></i> Wrong (${correctAns})</span>`}
+                            </div>
+                        </div>
+                    `}).join('')}
+                </div>
+            `;
+            
+            try {
+                // Track as activity for stats
+                await apiTrackActivity({
+                    activity_type: 'assessment_completion',
+                    module: 'assessment',
+                    score: percentage,
+                    topic_id: questions[0]?.topic_id || null,
+                    completed: true
+                });
+
+                // Save to backend: send the currentAssessmentId and the answers object
+                // If it's a Past Questions pool study, we still want it to count
+                await apiSubmitAssessment(currentAssessmentId || null, answers); 
+                await apiTrackProgress(0, 15); // Add study time
+                
+                const m = new bootstrap.Modal(document.getElementById('submitModal'));
+                m.show();
+            } catch (err) {
+                console.error('Submit error:', err);
+                const m = new bootstrap.Modal(document.getElementById('submitModal'));
+                m.show();
+            }
+        }
+    </script>
+</body>
+</html>
+
+
