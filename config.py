@@ -15,12 +15,29 @@ class Config:
         _db_url = _db_url.replace("postgres://", "postgresql://", 1)
         
     instance_path = os.path.join(basedir, 'instance')
-    try:
+    db_filename = 'qualilearn_v2.db'
+    source_db = os.path.join(instance_path, db_filename)
+    
+    # Check if we are in a read-only environment (like Vercel)
+    # Vercel typically uses /var/task as the root
+    if os.environ.get('VERCEL') or not os.access(basedir, os.W_OK):
+        import shutil
+        db_path = f'/tmp/{db_filename}'
+        # Copy the pre-filled database to the writable /tmp folder if it exists in the codebase
+        # but don't overwrite if it's already there (to persist across hot-reloads in the same container)
+        if not os.path.exists(db_path) and os.path.exists(source_db):
+            try:
+                shutil.copy2(source_db, db_path)
+                print(f" * Copied DB to {db_path} for writable access.")
+            except Exception as e:
+                print(f" * Failed to copy DB: {e}")
+        elif not os.path.exists(db_path):
+            # If source doesn't exist, we'll let SQLAlchemy create it empty in /tmp
+            pass
+    else:
+        # Local development environment
         os.makedirs(instance_path, exist_ok=True)
-        db_path = os.path.join(instance_path, 'qualilearn_v2.db')
-    except OSError:
-        # Fallback to /tmp for serverless read-only environments (e.g. Vercel)
-        db_path = '/tmp/qualilearn_v2.db'
+        db_path = source_db
     
     SQLALCHEMY_DATABASE_URI = _db_url or 'sqlite:///' + db_path
     SQLALCHEMY_TRACK_MODIFICATIONS = False
