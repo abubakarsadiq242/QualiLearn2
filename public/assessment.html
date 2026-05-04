@@ -329,23 +329,15 @@
                     answers = {};
                     renderQuestion(0);
                     
-                    // Persistent Countdown timer
-                    if (!localStorage.getItem('ql_exam_start') || localStorage.getItem('ql_exam_duration') !== '3600') {
-                        localStorage.setItem('ql_exam_start', Date.now());
-                        localStorage.setItem('ql_exam_duration', 60 * 60);
-                    }
-                    
+                    // Simple 60-minute countdown timer (resets on page load)
+                    let timeLeft = 60 * 60;
                     const timerEl = document.getElementById('timer');
+                    
                     const timerInterval = setInterval(() => {
-                        const start = parseInt(localStorage.getItem('ql_exam_start'));
-                        const duration = parseInt(localStorage.getItem('ql_exam_duration'));
-                        const elapsed = Math.floor((Date.now() - start) / 1000);
-                        const timeLeft = duration - elapsed;
+                        timeLeft--;
                         
                         if (timeLeft <= 0) {
                             clearInterval(timerInterval);
-                            localStorage.removeItem('ql_exam_start');
-                            localStorage.removeItem('ql_exam_duration');
                             finalSubmit();
                         } else {
                             const mins = Math.floor(timeLeft / 60);
@@ -478,7 +470,11 @@
                 // Save to backend: send the currentAssessmentId and the answers object
                 // If it's a Past Questions pool study, we still want it to count
                 await apiSubmitAssessment(currentAssessmentId || null, answers); 
-                await apiTrackProgress(0, 15); // Add study time
+                
+                // Stop the global study timer properly so it accurately logs the exact time spent
+                if (typeof stopStudyTimer === 'function') {
+                    stopStudyTimer();
+                }
                 
                 const m = new bootstrap.Modal(document.getElementById('submitModal'));
                 m.show();
