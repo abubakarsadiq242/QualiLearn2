@@ -35,6 +35,21 @@ def create_app(config_name):
             "message": "Internal server error"
         }), 500
 
+    @app.errorhandler(Exception)
+    def handle_exception(e):
+        # Pass through HTTP errors
+        from werkzeug.exceptions import HTTPException
+        if isinstance(e, HTTPException):
+            return e
+        
+        # Log the error (would be captured by Vercel logs)
+        print(f"Unhandled Exception: {str(e)}")
+        
+        return jsonify({
+            "success": False,
+            "message": f"Server error: {str(e)}"
+        }), 500
+
     @app.errorhandler(401)
     def unauthorized(error):
         return jsonify({
