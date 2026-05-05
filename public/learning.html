@@ -319,7 +319,7 @@
             const user = JSON.parse(localStorage.getItem('ql_user'));
             if (user) {
                 document.getElementById('user-initial').textContent = user.first_name.charAt(0).toUpperCase();
-                renderSciencePortal(user.education_level);
+                renderSubjectPortals(user.education_level);
             }
             
             // Stop timer/video when modal closed
@@ -329,14 +329,17 @@
             });
         });
 
-        function renderSciencePortal(level = 'SSS') {
+        function renderSubjectPortals(level = 'SSS') {
             const portal = document.getElementById('science-portal-dynamic');
             if (!portal) return;
 
             const isSSS = level && level.toUpperCase().includes('SSS');
             
+            let html = '';
+
+            // 1. Science/Biology/Physics/Chemistry
             if (isSSS) {
-                portal.innerHTML = `
+                html += `
                     <div class="col-md-6 col-lg-4">
                         <div class="subject-card" onclick="window.location.href='learning.html?subject=Biology'">
                             <div class="subject-banner bg-danger bg-gradient"><i class="bi bi-heart-pulse"></i></div>
@@ -368,8 +371,53 @@
                         </div>
                     </div>
                 `;
+
+                // Add Arts & Social Sciences for SSS
+                html += `
+                    <div class="col-md-6 col-lg-4">
+                        <div class="subject-card" onclick="window.location.href='learning.html?subject=Economics'">
+                            <div class="subject-banner bg-success bg-gradient"><i class="bi bi-graph-up-arrow"></i></div>
+                            <div class="p-4">
+                                <h4 class="fw-bold mb-2">Economics</h4>
+                                <p class="text-muted small mb-4">Market systems, scarcity, and finance.</p>
+                                <button class="btn btn-success btn-modern text-white">View Curriculum</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="subject-card" onclick="window.location.href='learning.html?subject=Government'">
+                            <div class="subject-banner bg-primary bg-gradient"><i class="bi bi-bank"></i></div>
+                            <div class="p-4">
+                                <h4 class="fw-bold mb-2">Government</h4>
+                                <p class="text-muted small mb-4">Political systems and citizenship.</p>
+                                <button class="btn btn-primary btn-modern text-white">View Curriculum</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="subject-card" onclick="window.location.href='learning.html?subject=Commerce'">
+                            <div class="subject-banner bg-dark bg-gradient"><i class="bi bi-shop"></i></div>
+                            <div class="p-4">
+                                <h4 class="fw-bold mb-2">Commerce</h4>
+                                <p class="text-muted small mb-4">Trade, aids to trade, and business.</p>
+                                <button class="btn btn-dark btn-modern text-white">View Curriculum</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="subject-card" onclick="window.location.href='learning.html?subject=Geography'">
+                            <div class="subject-banner bg-secondary bg-gradient"><i class="bi bi-globe"></i></div>
+                            <div class="p-4">
+                                <h4 class="fw-bold mb-2">Geography</h4>
+                                <p class="text-muted small mb-4">The earth, maps, and environment.</p>
+                                <button class="btn btn-secondary btn-modern text-white">View Curriculum</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
             } else {
-                portal.innerHTML = `
+                // JSS Portal
+                html += `
                     <div class="col-md-6 col-lg-4">
                         <div class="subject-card" onclick="window.location.href='learning.html?subject=Science'">
                             <div class="subject-banner bg-warning bg-gradient"><i class="bi bi-beaker"></i></div>
@@ -380,8 +428,34 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="subject-card" onclick="window.location.href='learning.html?subject=Social Studies'">
+                            <div class="subject-banner bg-success bg-gradient"><i class="bi bi-people"></i></div>
+                            <div class="p-4">
+                                <h4 class="fw-bold mb-2">Social Studies</h4>
+                                <p class="text-muted small mb-4">Human environment and social relations.</p>
+                                <button class="btn btn-success btn-modern text-white">View Curriculum</button>
+                            </div>
+                        </div>
+                    </div>
                 `;
             }
+
+            // Always add Agric Science if available for both
+            html += `
+                <div class="col-md-6 col-lg-4">
+                    <div class="subject-card" onclick="window.location.href='learning.html?subject=Agricultural Science'">
+                        <div class="subject-banner bg-success bg-gradient"><i class="bi bi-leaf"></i></div>
+                        <div class="p-4">
+                            <h4 class="fw-bold mb-2">Agricultural Science</h4>
+                            <p class="text-muted small mb-4">Crop production and animal husbandry.</p>
+                            <button class="btn btn-success btn-modern text-white">View Curriculum</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            portal.innerHTML = html;
         }
 
         async function loadMaterials(subject = '') {

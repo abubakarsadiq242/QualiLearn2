@@ -177,6 +177,52 @@ def seed_data():
             ]
         }
 
+        # --- Arts & Social Science Topics ---
+        economics_topics = {
+            'en': [
+                ('Introduction to Economics', 'Basic concepts of Scarcity, Choice and Opportunity Cost.', 'https://www.youtube.com/embed/L_4_bUq1vN0', 'SSS'),
+                ('Theory of Demand', 'Mastering the Law of Demand and factors affecting it.', 'https://www.youtube.com/embed/kn83BA7cRNM', 'SSS'),
+                ('Theory of Supply', 'Mastering the Law of Supply and supply schedules.', 'https://www.youtube.com/embed/KzfWUEJjG18', 'SSS')
+            ]
+        }
+
+        government_topics = {
+            'en': [
+                ('Meaning of Government', 'Fundamental principles and organs of government.', 'https://www.youtube.com/embed/F_fP4UeG7rM', 'SSS'),
+                ('Types of Government', 'Exploring Unitary, Federal and Confederal systems.', 'https://www.youtube.com/embed/mc979OhitAg', 'SSS'),
+                ('Arms of Government', 'Roles of the Legislature, Executive and Judiciary.', 'https://www.youtube.com/embed/7_mZInLh-64', 'SSS')
+            ]
+        }
+
+        commerce_topics = {
+            'en': [
+                ('Scope of Commerce', 'Introduction to Trade and Aids to Trade.', 'https://www.youtube.com/embed/7z-r5O-S9qI', 'SSS'),
+                ('Occupation', 'Classification of jobs and professional tracks.', 'https://www.youtube.com/embed/kn83BA7cRNM', 'SSS')
+            ]
+        }
+
+        agric_topics = {
+            'en': [
+                ('Introduction to Agriculture', 'Importance and branches of agricultural science.', 'https://www.youtube.com/embed/R2_1cMh2gM0', 'SSS'),
+                ('Crop Production', 'Techniques for planting and harvesting major crops.', 'https://www.youtube.com/embed/URUJD5NEXC8', 'JSS'),
+                ('Animal Husbandry', 'Principles of rearing livestock and animal health.', 'https://www.youtube.com/embed/f9ONXd_-anM', 'SSS')
+            ]
+        }
+
+        geography_topics = {
+            'en': [
+                ('Introduction to Geography', 'The solar system and the earth\'s structure.', 'https://www.youtube.com/embed/R9K-J0l0L44', 'SSS'),
+                ('Map Reading', 'Mastering scale, bearings and relief representation.', 'https://www.youtube.com/embed/74RcUjxErCg', 'SSS')
+            ]
+        }
+
+        social_studies_topics = {
+            'en': [
+                ('Nigerian Culture', 'Understanding the diversity and heritage of Nigeria.', 'https://www.youtube.com/embed/D-h5e1g4tHw', 'JSS'),
+                ('Social Issues', 'Exploring community development and leadership.', 'https://www.youtube.com/embed/kn83BA7cRNM', 'JSS')
+            ]
+        }
+
         from app.models.topics import Topic, TopicVideo
 
         # Seed all learning materials and topics
@@ -210,23 +256,57 @@ def seed_data():
                 db.session.flush()
                 db.session.add(TopicVideo(topic_id=topic.id, video_url=url, video_title=title))
             
-            # Also add Physics and Chemistry topics
+            # Seed Physics
             for title, content, url, level in physics_topics.get(lang, physics_topics['en']):
                 subj = 'Physics' if level == 'SSS' else 'Science'
                 db.session.add(LearningMaterial(title=title, content=content, resource_url=url, subject=subj, language=lang, material_type='video_link', education_level=level))
-                
                 topic = Topic(name=title, subject=subj, education_level=level)
-                db.session.add(topic)
-                db.session.flush()
+                db.session.add(topic); db.session.flush()
                 db.session.add(TopicVideo(topic_id=topic.id, video_url=url, video_title=title))
             
+            # Seed Chemistry
             for title, content, url, level in chemistry_topics.get(lang, chemistry_topics['en']):
                 subj = 'Chemistry' if level == 'SSS' else 'Science'
                 db.session.add(LearningMaterial(title=title, content=content, resource_url=url, subject=subj, language=lang, material_type='video_link', education_level=level))
-                
                 topic = Topic(name=title, subject=subj, education_level=level)
-                db.session.add(topic)
-                db.session.flush()
+                db.session.add(topic); db.session.flush()
+                db.session.add(TopicVideo(topic_id=topic.id, video_url=url, video_title=title))
+
+            # Seed Arts & Social Sciences
+            for title, content, url, level in economics_topics.get(lang, economics_topics['en']):
+                db.session.add(LearningMaterial(title=title, content=content, resource_url=url, subject='Economics', language=lang, material_type='video_link', education_level=level))
+                topic = Topic(name=title, subject='Economics', education_level=level)
+                db.session.add(topic); db.session.flush()
+                db.session.add(TopicVideo(topic_id=topic.id, video_url=url, video_title=title))
+
+            for title, content, url, level in government_topics.get(lang, government_topics['en']):
+                db.session.add(LearningMaterial(title=title, content=content, resource_url=url, subject='Government', language=lang, material_type='video_link', education_level=level))
+                topic = Topic(name=title, subject='Government', education_level=level)
+                db.session.add(topic); db.session.flush()
+                db.session.add(TopicVideo(topic_id=topic.id, video_url=url, video_title=title))
+
+            for title, content, url, level in commerce_topics.get(lang, commerce_topics['en']):
+                db.session.add(LearningMaterial(title=title, content=content, resource_url=url, subject='Commerce', language=lang, material_type='video_link', education_level=level))
+                topic = Topic(name=title, subject='Commerce', education_level=level)
+                db.session.add(topic); db.session.flush()
+                db.session.add(TopicVideo(topic_id=topic.id, video_url=url, video_title=title))
+
+            for title, content, url, level in agric_topics.get(lang, agric_topics['en']):
+                db.session.add(LearningMaterial(title=title, content=content, resource_url=url, subject='Agricultural Science', language=lang, material_type='video_link', education_level=level))
+                topic = Topic(name=title, subject='Agricultural Science', education_level=level)
+                db.session.add(topic); db.session.flush()
+                db.session.add(TopicVideo(topic_id=topic.id, video_url=url, video_title=title))
+
+            for title, content, url, level in geography_topics.get(lang, geography_topics['en']):
+                db.session.add(LearningMaterial(title=title, content=content, resource_url=url, subject='Geography', language=lang, material_type='video_link', education_level=level))
+                topic = Topic(name=title, subject='Geography', education_level=level)
+                db.session.add(topic); db.session.flush()
+                db.session.add(TopicVideo(topic_id=topic.id, video_url=url, video_title=title))
+
+            for title, content, url, level in social_studies_topics.get(lang, social_studies_topics['en']):
+                db.session.add(LearningMaterial(title=title, content=content, resource_url=url, subject='Social Studies', language=lang, material_type='video_link', education_level=level))
+                topic = Topic(name=title, subject='Social Studies', education_level=level)
+                db.session.add(topic); db.session.flush()
                 db.session.add(TopicVideo(topic_id=topic.id, video_url=url, video_title=title))
 
             # Redundant sections removed

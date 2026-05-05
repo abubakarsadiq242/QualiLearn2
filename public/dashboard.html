@@ -382,39 +382,31 @@
                     </div>
                     
                     <h4 class="fw-bold mt-5 mb-4 outfit" data-i18n="explore_subjects">Explore Subjects</h4>
-                    <div class="row g-4 mb-5">
+                    <div class="row g-4 mb-5" id="dashboard-subject-cards">
                         <div class="col-md-4">
-                            <div class="subject-card p-4 border rounded-4 h-100">
+                            <div class="subject-card p-4 border rounded-4 h-100" onclick="window.location.href='learning.html?subject=Mathematics'">
                                 <div class="badge bg-primary-subtle text-primary mb-3">Core</div>
                                 <h5 class="fw-bold mb-2">Mathematics</h5>
                                 <p class="text-muted small mb-4">Master equations and geometry.</p>
                                 <div class="d-grid gap-2">
-                                    <a href="mathematics.html" class="btn btn-primary btn-sm rounded-pill fw-bold">Learn</a>
+                                    <a href="learning.html?subject=Mathematics" class="btn btn-primary btn-sm rounded-pill fw-bold">Learn</a>
                                     <a href="assessment.html?subject=Mathematics" class="btn btn-outline-primary btn-sm rounded-pill fw-bold">Test</a>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <div class="subject-card p-4 border rounded-4 h-100">
+                            <div class="subject-card p-4 border rounded-4 h-100" onclick="window.location.href='learning.html?subject=English'">
                                 <div class="badge bg-success-subtle text-success mb-3">Core</div>
                                 <h5 class="fw-bold mb-2">English Language</h5>
                                 <p class="text-muted small mb-4">Grammar and literature.</p>
                                 <div class="d-grid gap-2">
-                                    <a href="english.html" class="btn btn-success text-white btn-sm rounded-pill fw-bold">Learn</a>
+                                    <a href="learning.html?subject=English" class="btn btn-success text-white btn-sm rounded-pill fw-bold">Learn</a>
                                     <a href="assessment.html?subject=English" class="btn btn-outline-success btn-sm rounded-pill fw-bold">Test</a>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="subject-card p-4 border rounded-4 h-100" onclick="window.location.href='science.html'">
-                                <div class="badge bg-warning-subtle text-warning mb-3">Core</div>
-                                <h5 class="fw-bold mb-2">Sciences</h5>
-                                <p class="text-muted small mb-4">Biology, Physics, and Chemistry hub.</p>
-                                <div class="d-grid gap-2">
-                                    <a href="science.html" class="btn btn-warning text-white btn-sm rounded-pill fw-bold">Learn</a>
-                                    <a href="assessment.html?subject=Science" class="btn btn-outline-warning btn-sm rounded-pill fw-bold">Test</a>
-                                </div>
-                            </div>
+                        <div id="dashboard-science-portal" class="col-12 p-0 m-0 row g-4">
+                             <!-- Dynamic Science Cards -->
                         </div>
                     </div>
 
@@ -516,6 +508,12 @@
             } catch (e) { console.error('User name sync failed:', e); }
 
             try {
+                const userRaw = localStorage.getItem('ql_user');
+                const user = userRaw ? JSON.parse(userRaw) : null;
+                if (user) {
+                    renderDashboardPortals(user.education_level);
+                }
+                
                 // Initial load
                 await refreshDashboardStats();
                 
@@ -641,6 +639,97 @@
             }
         }
         
+        function renderDashboardPortals(level = 'SSS') {
+            const portal = document.getElementById('dashboard-science-portal');
+            if (!portal) return;
+
+            const isSSS = level && level.toUpperCase().includes('SSS');
+            let html = '';
+
+            // 1. Science Stream
+            if (isSSS) {
+                html += `
+                    <div class="col-md-4">
+                        <div class="subject-card p-4 border rounded-4 h-100" onclick="window.location.href='learning.html?subject=Biology'">
+                            <div class="badge bg-danger-subtle text-danger mb-3">Science</div>
+                            <h5 class="fw-bold mb-2">Biology</h5>
+                            <p class="text-muted small mb-4">Life sciences and anatomy.</p>
+                            <div class="d-grid gap-2"><a href="learning.html?subject=Biology" class="btn btn-danger text-white btn-sm rounded-pill fw-bold">Learn</a></div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="subject-card p-4 border rounded-4 h-100" onclick="window.location.href='learning.html?subject=Physics'">
+                            <div class="badge bg-info-subtle text-info mb-3">Science</div>
+                            <h5 class="fw-bold mb-2">Physics</h5>
+                            <p class="text-muted small mb-4">Mechanics and physical laws.</p>
+                            <div class="d-grid gap-2"><a href="learning.html?subject=Physics" class="btn btn-info text-white btn-sm rounded-pill fw-bold">Learn</a></div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="subject-card p-4 border rounded-4 h-100" onclick="window.location.href='learning.html?subject=Chemistry'">
+                            <div class="badge bg-warning-subtle text-warning mb-3">Science</div>
+                            <h5 class="fw-bold mb-2">Chemistry</h5>
+                            <p class="text-muted small mb-4">Matter and chemical reactions.</p>
+                            <div class="d-grid gap-2"><a href="learning.html?subject=Chemistry" class="btn btn-warning text-white btn-sm rounded-pill fw-bold">Learn</a></div>
+                        </div>
+                    </div>
+                `;
+
+                // Arts & Social Science
+                html += `
+                    <div class="col-md-4">
+                        <div class="subject-card p-4 border rounded-4 h-100" onclick="window.location.href='learning.html?subject=Economics'">
+                            <div class="badge bg-success-subtle text-success mb-3">Social Science</div>
+                            <h5 class="fw-bold mb-2">Economics</h5>
+                            <p class="text-muted small mb-4">Market systems and finance.</p>
+                            <div class="d-grid gap-2"><a href="learning.html?subject=Economics" class="btn btn-success text-white btn-sm rounded-pill fw-bold">Learn</a></div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="subject-card p-4 border rounded-4 h-100" onclick="window.location.href='learning.html?subject=Government'">
+                            <div class="badge bg-primary-subtle text-primary mb-3">Arts</div>
+                            <h5 class="fw-bold mb-2">Government</h5>
+                            <p class="text-muted small mb-4">Politics and citizenship.</p>
+                            <div class="d-grid gap-2"><a href="learning.html?subject=Government" class="btn btn-primary text-white btn-sm rounded-pill fw-bold">Learn</a></div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                html += `
+                    <div class="col-md-4">
+                        <div class="subject-card p-4 border rounded-4 h-100" onclick="window.location.href='learning.html?subject=Science'">
+                            <div class="badge bg-warning-subtle text-warning mb-3">Core</div>
+                            <h5 class="fw-bold mb-2">Basic Science</h5>
+                            <p class="text-muted small mb-4">Introduction to life sciences.</p>
+                            <div class="d-grid gap-2"><a href="learning.html?subject=Science" class="btn btn-warning text-white btn-sm rounded-pill fw-bold">Learn</a></div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="subject-card p-4 border rounded-4 h-100" onclick="window.location.href='learning.html?subject=Social Studies'">
+                            <div class="badge bg-success-subtle text-success mb-3">Core</div>
+                            <h5 class="fw-bold mb-2">Social Studies</h5>
+                            <p class="text-muted small mb-4">Human and social relations.</p>
+                            <div class="d-grid gap-2"><a href="learning.html?subject=Social Studies" class="btn btn-success text-white btn-sm rounded-pill fw-bold">Learn</a></div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Always add Agric for both
+            html += `
+                <div class="col-md-4">
+                    <div class="subject-card p-4 border rounded-4 h-100" onclick="window.location.href='learning.html?subject=Agricultural Science'">
+                        <div class="badge bg-success-subtle text-success mb-3">Vocational</div>
+                        <h5 class="fw-bold mb-2">Agricultural Science</h5>
+                        <p class="text-muted small mb-4">Crops and animal health.</p>
+                        <div class="d-grid gap-2"><a href="learning.html?subject=Agricultural Science" class="btn btn-success text-white btn-sm rounded-pill fw-bold">Learn</a></div>
+                    </div>
+                </div>
+            `;
+
+            portal.innerHTML = html;
+        }
+
         function showToast(msg) {
             document.getElementById('toastMsg').innerText = msg;
             const t = new bootstrap.Toast(document.getElementById('actionToast'));
