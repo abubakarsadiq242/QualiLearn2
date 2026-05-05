@@ -566,6 +566,9 @@
         }
 
         async function refreshDashboardStats() {
+            // Flush pending analytics first
+            if (typeof flushAnalyticsQueue === 'function') await flushAnalyticsQueue();
+            
             const response = await apiGetDashboard();
             if (response.success) {
                 const stats = response.data;

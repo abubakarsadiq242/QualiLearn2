@@ -320,12 +320,17 @@ async function apiTrackActivity(data) {
         created_at: new Date().toISOString()
     };
     
-    // Add to offline queue first
+    // Attempt immediate real-time sync
+    try {
+        const res = await apiCall('/analytics/batch-track', 'POST', { events: [payload] });
+        if (res.success) return res;
+    } catch (e) {}
+
+    // Fallback to queue if offline
     const queue = JSON.parse(localStorage.getItem('ql_analytics_queue') || '[]');
     queue.push(payload);
     localStorage.setItem('ql_analytics_queue', JSON.stringify(queue));
-    
-    return await flushAnalyticsQueue();
+    return { success: false, queued: true };
 }
 
 async function flushAnalyticsQueue() {

@@ -321,12 +321,18 @@ def get_dashboard_stats():
         
         # Formatting Time
         def format_time(seconds):
+            if seconds > 0 and seconds < 60: return "0h 1m" # Show at least 1 min for feedback
             h = int(seconds // 3600)
             m = int((seconds % 3600) // 60)
             return f"{h}h {m}m"
 
+        # Round up progress for better UI feedback
+        display_progress = round(min(progress_pct, 100.0), 1)
+        if progress_pct > 0 and display_progress == 0:
+            display_progress = 0.1
+
         stats = {
-            "overall_progress": round(min(progress_pct, 100.0), 1),
+            "overall_progress": display_progress,
             "study_time": format_time(total_sec),
             "daily_time": format_time(today_sec),
             "assessments_passed": Assessment.query.filter_by(user_id=user_id, portal_type=portal, passed=True).count(),

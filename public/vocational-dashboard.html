@@ -298,6 +298,9 @@
         });
 
         async function refreshStats() {
+            // Flush pending analytics first
+            if (typeof flushAnalyticsQueue === 'function') await flushAnalyticsQueue();
+
             try {
                 const response = await apiGetDashboard();
                 if (response.success) {
