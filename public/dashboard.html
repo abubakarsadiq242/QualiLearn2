@@ -267,7 +267,7 @@
         <!-- Top Navigation -->
         <header class="top-header">
             <div id="welcome-text">
-                <h2 class="fw-bold mb-1 outfit" id="welcome-greeting">Welcome!</h2>
+                <h2 class="fw-bold mb-1 outfit" id="welcome-greeting" data-i18n="welcome_msg">Welcome!</h2>
                 <p class="text-muted" id="user-display-name"></p>
                 <script>
                     (function() {
@@ -292,7 +292,7 @@
                 <div class="dropdown">
                     <button class="profile-bubble bg-light border-0" data-bs-toggle="dropdown">
                         <i class="bi bi-translate text-primary"></i>
-                        <span class="fw-semibold">EN</span>
+                        <span class="fw-semibold" id="current-lang-display">EN</span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-4">
                         <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="setLanguage('en')">English</a></li>
@@ -459,7 +459,7 @@
 
                     <!-- Top Learners -->
                     <div class="mt-5">
-                        <h4 class="fw-bold mb-4 outfit">Top Learners This Week</h4>
+                        <h4 class="fw-bold mb-4 outfit" data-i18n="overall_progress">Top Learners This Week</h4>
                         <div class="bg-white rounded-4 border p-3 shadow-sm" id="leaderboard-container">
                             <div class="text-center py-4">
                                 <div class="spinner-border text-primary spinner-border-sm" role="status"></div>
@@ -516,6 +516,8 @@
                 
                 // Initial load
                 await refreshDashboardStats();
+                applyLanguage(localStorage.getItem('ql_lang') || 'en');
+                document.getElementById('current-lang-display').textContent = (localStorage.getItem('ql_lang') || 'en').toUpperCase();
                 
                 // Auto-refresh every 30 seconds for higher precision
                 setInterval(refreshDashboardStats, 30000);
@@ -651,26 +653,26 @@
                 html += `
                     <div class="col-md-4">
                         <div class="subject-card p-4 border rounded-4 h-100" onclick="window.location.href='learning.html?subject=Biology'">
-                            <div class="badge bg-danger-subtle text-danger mb-3">Science</div>
-                            <h5 class="fw-bold mb-2">Biology</h5>
-                            <p class="text-muted small mb-4">Life sciences and anatomy.</p>
-                            <div class="d-grid gap-2"><a href="learning.html?subject=Biology" class="btn btn-danger text-white btn-sm rounded-pill fw-bold">Learn</a></div>
+                            <div class="badge bg-danger-subtle text-danger mb-3" data-i18n="subject_science">Science</div>
+                            <h4 class="fw-bold mb-2">Biology</h4>
+                            <p class="text-muted small mb-4" data-i18n="feature_multilingual_desc">Life sciences and anatomy.</p>
+                            <div class="d-grid gap-2"><a href="learning.html?subject=Biology" class="btn btn-danger text-white btn-sm rounded-pill fw-bold" data-i18n="start_learning">Learn</a></div>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="subject-card p-4 border rounded-4 h-100" onclick="window.location.href='learning.html?subject=Physics'">
-                            <div class="badge bg-info-subtle text-info mb-3">Science</div>
-                            <h5 class="fw-bold mb-2">Physics</h5>
-                            <p class="text-muted small mb-4">Mechanics and physical laws.</p>
-                            <div class="d-grid gap-2"><a href="learning.html?subject=Physics" class="btn btn-info text-white btn-sm rounded-pill fw-bold">Learn</a></div>
+                            <div class="badge bg-info-subtle text-info mb-3" data-i18n="subject_science">Science</div>
+                            <h4 class="fw-bold mb-2">Physics</h4>
+                            <p class="text-muted small mb-4" data-i18n="feature_multilingual_desc">Mechanics and physical laws.</p>
+                            <div class="d-grid gap-2"><a href="learning.html?subject=Physics" class="btn btn-info text-white btn-sm rounded-pill fw-bold" data-i18n="start_learning">Learn</a></div>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="subject-card p-4 border rounded-4 h-100" onclick="window.location.href='learning.html?subject=Chemistry'">
-                            <div class="badge bg-warning-subtle text-warning mb-3">Science</div>
-                            <h5 class="fw-bold mb-2">Chemistry</h5>
-                            <p class="text-muted small mb-4">Matter and chemical reactions.</p>
-                            <div class="d-grid gap-2"><a href="learning.html?subject=Chemistry" class="btn btn-warning text-white btn-sm rounded-pill fw-bold">Learn</a></div>
+                            <div class="badge bg-warning-subtle text-warning mb-3" data-i18n="subject_science">Science</div>
+                            <h4 class="fw-bold mb-2">Chemistry</h4>
+                            <p class="text-muted small mb-4" data-i18n="feature_multilingual_desc">Matter and chemical reactions.</p>
+                            <div class="d-grid gap-2"><a href="learning.html?subject=Chemistry" class="btn btn-warning text-white btn-sm rounded-pill fw-bold" data-i18n="start_learning">Learn</a></div>
                         </div>
                     </div>
                 `;
@@ -706,10 +708,10 @@
                     </div>
                     <div class="col-md-4">
                         <div class="subject-card p-4 border rounded-4 h-100" onclick="window.location.href='learning.html?subject=Social Studies'">
-                            <div class="badge bg-success-subtle text-success mb-3">Core</div>
-                            <h5 class="fw-bold mb-2">Social Studies</h5>
-                            <p class="text-muted small mb-4">Human and social relations.</p>
-                            <div class="d-grid gap-2"><a href="learning.html?subject=Social Studies" class="btn btn-success text-white btn-sm rounded-pill fw-bold">Learn</a></div>
+                            <div class="badge bg-success-subtle text-success mb-3" data-i18n="nav_subjects">Core</div>
+                            <h4 class="fw-bold mb-2">Social Studies</h4>
+                            <p class="text-muted small mb-4" data-i18n="feature_multilingual_desc">Human and social relations.</p>
+                            <div class="d-grid gap-2"><a href="learning.html?subject=Social Studies" class="btn btn-success text-white btn-sm rounded-pill fw-bold" data-i18n="start_learning">Learn</a></div>
                         </div>
                     </div>
                 `;
@@ -719,10 +721,10 @@
             html += `
                 <div class="col-md-4">
                     <div class="subject-card p-4 border rounded-4 h-100" onclick="window.location.href='learning.html?subject=Agricultural Science'">
-                        <div class="badge bg-success-subtle text-success mb-3">Vocational</div>
-                        <h5 class="fw-bold mb-2">Agricultural Science</h5>
-                        <p class="text-muted small mb-4">Crops and animal health.</p>
-                        <div class="d-grid gap-2"><a href="learning.html?subject=Agricultural Science" class="btn btn-success text-white btn-sm rounded-pill fw-bold">Learn</a></div>
+                        <div class="badge bg-success-subtle text-success mb-3" data-i18n="nav_vocational">Vocational</div>
+                        <h4 class="fw-bold mb-2">Agricultural Science</h4>
+                        <p class="text-muted small mb-4" data-i18n="feature_multilingual_desc">Crops and animal health.</p>
+                        <div class="d-grid gap-2"><a href="learning.html?subject=Agricultural Science" class="btn btn-success text-white btn-sm rounded-pill fw-bold" data-i18n="start_learning">Learn</a></div>
                     </div>
                 </div>
             `;

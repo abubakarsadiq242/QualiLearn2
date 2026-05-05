@@ -179,7 +179,7 @@
             <div class="d-flex align-items-center gap-3">
                 <div class="dropdown">
                     <button class="btn btn-white border shadow-sm rounded-pill px-3" data-bs-toggle="dropdown">
-                        <i class="bi bi-translate text-primary me-2"></i> EN
+                        <i class="bi bi-translate text-primary me-2"></i> <span id="current-lang-display">EN</span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-4">
                         <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="setLanguage('en')">English</a></li>
@@ -207,7 +207,7 @@
         </header>
 
         <section id="categories" class="d-flex gap-2 mb-5 overflow-auto pb-2">
-            <button class="btn btn-primary rounded-pill px-4 active" onclick="filterVocational(this, '')" data-i18n="view_all">All Skills</button>
+            <button class="btn btn-primary rounded-pill px-4 active" onclick="filterVocational(this, '')" data-i18n="all_skills">All Skills</button>
             <button class="btn btn-white border rounded-pill px-4" onclick="filterVocational(this, 'Technology')" data-i18n="cat_technology">Technology</button>
             <button class="btn btn-white border rounded-pill px-4" onclick="filterVocational(this, 'Fashion')" data-i18n="cat_fashion">Fashion</button>
             <button class="btn btn-white border rounded-pill px-4" onclick="filterVocational(this, 'Culinary')" data-i18n="cat_culinary">Culinary</button>
@@ -221,7 +221,7 @@
 
     <!-- Video Player Modal -->
     <div class="modal fade" id="videoModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content border-0 rounded-4 shadow-lg overflow-hidden">
                 <div class="modal-header border-0 pb-0 px-4 pt-4">
                 <h5 class="modal-title fw-bold outfit" id="modalTitle">Skill Training</h5>
@@ -263,6 +263,7 @@
 
             videoModal = new bootstrap.Modal(document.getElementById('videoModal'));
             const lang = localStorage.getItem('ql_lang') || 'en';
+            document.getElementById('current-lang-display').textContent = lang.toUpperCase();
             if (typeof applyLanguage === 'function') applyLanguage(lang);
             
             const params = new URLSearchParams(window.location.search);
@@ -317,7 +318,7 @@
             const dict = (typeof translations !== 'undefined') ? (translations[lang] || translations['en']) : {};
             
             try {
-                grid.innerHTML = '<div class="col-12 text-center py-5"><div class="spinner-border text-primary"></div></div>';
+                grid.innerHTML = `<div class="col-12 text-center py-5"><div class="spinner-border text-primary"></div><p class="mt-2 text-muted">${dict['loading_skills'] || 'Loading Skills...'}</p></div>`;
                 
                 const response = await apiGetVocational(category, lang);
                 
@@ -326,7 +327,7 @@
                     grid.innerHTML = '';
                     
                     if (skills.length === 0) {
-                         grid.innerHTML = `<div class="col-12 text-center py-5"><h5>No skills found in this language.</h5></div>`;
+                         grid.innerHTML = `<div class="col-12 text-center py-5"><h5>${dict['no_skills_found'] || 'No skills found in this language.'}</h5></div>`;
                          return;
                     }
 
@@ -352,7 +353,7 @@
                                     <p class="text-muted small mb-4">${s.description}</p>
                                     <div class="d-flex justify-content-between align-items-center mt-auto">
                                         <div class="d-flex align-items-center text-primary small fw-bold" onclick="openVideo('${s.resource_url}', '${s.title}', '${s.id}')">
-                                            <span>Watch Workshop</span>
+                                            <span>${dict['watch_workshop'] || 'Watch Workshop'}</span>
                                             <i class="bi bi-arrow-right ms-2"></i>
                                         </div>
                                         ${s.resource_url && s.resource_url.includes('/uploads/') ? `

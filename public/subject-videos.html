@@ -183,12 +183,12 @@
             <div>
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="learning.html" class="text-decoration-none">Subjects</a></li>
+                        <li class="breadcrumb-item"><a href="learning.html" class="text-decoration-none" data-i18n="nav_subjects">Subjects</a></li>
                         <li class="breadcrumb-item active" id="breadcrumb-subject">Subject</li>
                     </ol>
                 </nav>
-                <h1 class="fw-bold mb-1 outfit display-5" id="subject-title">Loading Subject...</h1>
-                <p class="text-muted">Explore all video lessons for this subject.</p>
+                <h1 class="fw-bold mb-1 outfit display-5" id="subject-title" data-i18n="loading_subject">Loading Subject...</h1>
+                <p class="text-muted" data-i18n="hero_subtitle">Explore all video lessons for this subject.</p>
             </div>
             <div class="d-flex align-items-center gap-3">
                 <div class="dropdown">
@@ -227,12 +227,12 @@
                         <span class="input-group-text bg-transparent border-end-0 rounded-start-pill ps-4">
                             <i class="bi bi-search text-muted"></i>
                         </span>
-                        <input type="text" id="videoSearch" class="form-control border-start-0 rounded-end-pill py-3" placeholder="Search lessons..." onkeyup="filterVideos()">
+                        <input type="text" id="videoSearch" class="form-control border-start-0 rounded-end-pill py-3" placeholder="Search lessons..." data-i18n-placeholder="search_lessons" onkeyup="filterVideos()">
                     </div>
                 </div>
                 <div class="col-md-4">
                     <select id="topicFilter" class="form-select rounded-pill py-3 px-4" onchange="filterVideos()">
-                        <option value="all">All Topics</option>
+                        <option value="all" data-i18n="all_topics">All Topics</option>
                     </select>
                 </div>
             </div>
@@ -242,6 +242,28 @@
             <!-- Videos will be injected here -->
         </div>
     </main>
+
+    <!-- Video Player Modal -->
+    <div class="modal fade" id="videoPlayerModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content bg-dark border-0 rounded-4 overflow-hidden shadow-lg">
+                <div class="modal-header border-0 p-3 position-absolute top-0 end-0 z-3">
+                    <button type="button" class="btn-close btn-close-white bg-dark rounded-circle p-2" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-0 bg-black">
+                    <div class="ratio ratio-16x9" id="modal-video-container">
+                        <!-- Iframe will be injected here -->
+                    </div>
+                    <div class="p-4 bg-dark text-white d-flex justify-content-between align-items-center">
+                        <h4 class="fw-bold mb-0 outfit" id="modal-video-title">Video Title</h4>
+                        <button class="btn btn-primary rounded-pill px-5 py-2 fw-bold" id="modal-mark-finished-btn">
+                            <i class="bi bi-check-circle me-2"></i> <span data-i18n="mark_finished">Mark Finished</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="api-config.js"></script>
@@ -257,6 +279,7 @@
             if (!subject) { window.location.href = 'learning.html'; return; }
             
             document.getElementById('subject-title').innerText = subject;
+            document.getElementById('subject-title').removeAttribute('data-i18n'); 
             document.getElementById('breadcrumb-subject').innerText = subject;
 
             const user = JSON.parse(localStorage.getItem('ql_user'));
@@ -318,7 +341,7 @@
                 col.style.animationDelay = `${index * 0.05}s`;
                 col.innerHTML = `
                     <div class="video-card h-100 shadow-sm border-0">
-                        <div class="ratio ratio-16x9 thumbnail-container" id="container-${v.id}" onclick="playVideo('${v.id}', '${v.video_url || v.embed_url}')">
+                        <div class="ratio ratio-16x9 thumbnail-container" data-bs-toggle="modal" data-bs-target="#videoPlayerModal" onclick="playVideo('${v.id}', '${v.video_url || v.embed_url}', '${v.video_title.replace(/'/g, "\\'")}', '${v.topic_id}')">
                             <img src="${thumbnailUrl}" class="w-100 h-100 object-fit-cover" alt="${v.video_title}" onerror="this.src='https://img.youtube.com/vi/${videoId}/hqdefault.jpg'">
                             <div class="play-overlay">
                                 <div class="play-btn-glass">
@@ -331,7 +354,7 @@
                             <h5 class="fw-bold mb-3 outfit">${v.video_title}</h5>
                             <div class="d-flex justify-content-between align-items-center mt-3">
                                 <button class="btn btn-finish rounded-pill px-4 py-2 fw-bold small d-flex align-items-center gap-2" onclick="markCompleted('${v.id}', '${v.topic_id}')" id="btn-finish-${v.id}">
-                                    <i class="bi bi-check-circle"></i> Mark Finished
+                                    <i class="bi bi-check-circle"></i> <span data-i18n="mark_finished">Mark Finished</span>
                                 </button>
                             </div>
                         </div>
@@ -354,18 +377,37 @@
             renderVideos(filtered);
         }
 
-        function playVideo(id, url) {
-            const container = document.getElementById(`container-${id}`);
+        function playVideo(id, url, title, topicId) {
+            const container = document.getElementById('modal-video-container');
+            const titleEl = document.getElementById('modal-video-title');
+            const markBtn = document.getElementById('modal-mark-finished-btn');
+            
             const embedUrl = getEmbedUrl(url);
             container.innerHTML = `<iframe src="${embedUrl}&autoplay=1" allow="autoplay" allowfullscreen></iframe>`;
-            container.onclick = null;
+            titleEl.innerText = title;
+            
+            // Reset modal button
+            markBtn.onclick = () => markCompleted(id, topicId);
+            markBtn.className = 'btn btn-primary rounded-pill px-5 py-2 fw-bold';
+            markBtn.innerHTML = `<i class="bi bi-check-circle me-2"></i> <span>${translations[getCurrentLang()]['mark_finished']}</span>`;
         }
+
+        // Clean up modal video when closed
+        document.getElementById('videoPlayerModal').addEventListener('hidden.bs.modal', () => {
+            document.getElementById('modal-video-container').innerHTML = '';
+        });
 
         async function markCompleted(videoId, topicId) {
             const btn = document.getElementById(`btn-finish-${videoId}`);
+            const modalBtn = document.getElementById('modal-mark-finished-btn');
+            
             if (btn) {
                 btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> Completed';
                 btn.classList.add('completed');
+            }
+            if (modalBtn) {
+                modalBtn.classList.replace('btn-primary', 'btn-success');
+                modalBtn.innerHTML = '<i class="bi bi-check-circle-fill me-2"></i> Completed';
             }
 
             const res = await apiTrackActivity({

@@ -222,19 +222,19 @@
                     <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-4">
                         <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="loadSubject('Mathematics')" data-i18n="subject_mathematics">Mathematics</a></li>
                         <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="loadSubject('English')" data-i18n="subject_english">English Language</a></li>
-                        <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="loadSubject('Biology')">Biology</a></li>
-                        <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="loadSubject('Physics')">Physics</a></li>
-                        <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="loadSubject('Chemistry')">Chemistry</a></li>
-                        <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="loadSubject('Economics')">Economics</a></li>
-                        <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="loadSubject('Government')">Government</a></li>
-                        <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="loadSubject('Agricultural Science')">Agricultural Science</a></li>
-                        <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="loadSubject('Social Studies')">Social Studies</a></li>
+                        <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="loadSubject('Biology')" data-i18n="subject_biology">Biology</a></li>
+                        <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="loadSubject('Physics')" data-i18n="subject_physics">Physics</a></li>
+                        <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="loadSubject('Chemistry')" data-i18n="subject_chemistry">Chemistry</a></li>
+                        <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="loadSubject('Economics')" data-i18n="subject_economics">Economics</a></li>
+                        <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="loadSubject('Government')" data-i18n="subject_government">Government</a></li>
+                        <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="loadSubject('Agricultural Science')" data-i18n="subject_agric">Agricultural Science</a></li>
+                        <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="loadSubject('Social Studies')" data-i18n="subject_social_studies">Social Studies</a></li>
                     </ul>
                 </div>
 
                 <div class="dropdown">
                     <button class="btn btn-white border shadow-sm rounded-pill px-3" data-bs-toggle="dropdown" id="lang-btn">
-                        <i class="bi bi-translate text-primary me-2"></i> EN
+                        <i class="bi bi-translate text-primary me-2"></i> <span id="current-lang-display">EN</span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-4">
                         <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="changeAssessmentLang('en')">English</a></li>
@@ -312,7 +312,7 @@
             const subject = params.get('subject');
             const lang = localStorage.getItem('ql_lang') || 'en';
             
-            document.getElementById('lang-btn').innerHTML = `<i class="bi bi-translate text-primary me-2"></i> ${lang.toUpperCase()}`;
+            document.getElementById('current-lang-display').textContent = lang.toUpperCase();
             applyLanguage(lang);
 
             const user = JSON.parse(localStorage.getItem('ql_user'));
@@ -331,41 +331,44 @@
             const panel = document.querySelector('.exam-panel');
             panel.innerHTML = `
                 <div class="text-center py-5 animate__animated animate__fadeIn">
-                    <h2 class="fw-bold mb-4 outfit">Select a Subject to Practice</h2>
-                    <p class="text-muted mb-5">Choose a subject below to start answering past questions.</p>
+                    <h2 class="fw-bold mb-4 outfit" data-i18n="select_subject_practice">Select a Subject to Practice</h2>
+                    <p class="text-muted mb-5" data-i18n="choose_subject_below">Choose a subject below to start answering past questions.</p>
                     <div class="d-flex flex-column flex-sm-row flex-wrap justify-content-center gap-3">
                         <button class="btn btn-outline-primary rounded-pill px-4 py-3 fw-bold shadow-sm" onclick="loadSubject('Mathematics')" style="min-width: 200px;">
-                            <i class="bi bi-calculator me-2"></i> Mathematics
+                            <i class="bi bi-calculator me-2"></i> <span data-i18n="subject_mathematics">Mathematics</span>
                         </button>
                         <button class="btn btn-outline-primary rounded-pill px-4 py-3 fw-bold shadow-sm" onclick="loadSubject('English')" style="min-width: 200px;">
-                            <i class="bi bi-book me-2"></i> English Language
+                            <i class="bi bi-book me-2"></i> <span data-i18n="subject_english">English Language</span>
                         </button>
                         <button class="btn btn-outline-primary rounded-pill px-4 py-3 fw-bold shadow-sm" onclick="loadSubject('Biology')" style="min-width: 200px;">
-                            <i class="bi bi-heart-pulse me-2"></i> Biology
+                            <i class="bi bi-heart-pulse me-2"></i> <span data-i18n="subject_biology">Biology</span>
                         </button>
                         <button class="btn btn-outline-primary rounded-pill px-4 py-3 fw-bold shadow-sm" onclick="loadSubject('Physics')" style="min-width: 200px;">
-                            <i class="bi bi-lightning me-2"></i> Physics
+                            <i class="bi bi-lightning me-2"></i> <span data-i18n="subject_physics">Physics</span>
                         </button>
                         <button class="btn btn-outline-primary rounded-pill px-4 py-3 fw-bold shadow-sm" onclick="loadSubject('Chemistry')" style="min-width: 200px;">
-                            <i class="bi bi-flask me-2"></i> Chemistry
+                            <i class="bi bi-flask me-2"></i> <span data-i18n="subject_chemistry">Chemistry</span>
                         </button>
                         <button class="btn btn-outline-primary rounded-pill px-4 py-3 fw-bold shadow-sm" onclick="loadSubject('Economics')" style="min-width: 200px;">
-                            <i class="bi bi-graph-up-arrow me-2"></i> Economics
+                            <i class="bi bi-graph-up-arrow me-2"></i> <span data-i18n="subject_economics">Economics</span>
                         </button>
                         <button class="btn btn-outline-primary rounded-pill px-4 py-3 fw-bold shadow-sm" onclick="loadSubject('Government')" style="min-width: 200px;">
-                            <i class="bi bi-bank me-2"></i> Government
+                            <i class="bi bi-bank me-2"></i> <span data-i18n="subject_government">Government</span>
                         </button>
                         <button class="btn btn-outline-primary rounded-pill px-4 py-3 fw-bold shadow-sm" onclick="loadSubject('Agricultural Science')" style="min-width: 200px;">
-                            <i class="bi bi-leaf me-2"></i> Agric Science
+                            <i class="bi bi-leaf me-2"></i> <span data-i18n="subject_agric">Agric Science</span>
                         </button>
                         <button class="btn btn-outline-primary rounded-pill px-4 py-3 fw-bold shadow-sm" onclick="loadSubject('Social Studies')" style="min-width: 200px;">
-                            <i class="bi bi-people me-2"></i> Social Studies
+                            <i class="bi bi-people me-2"></i> <span data-i18n="subject_social_studies">Social Studies</span>
                         </button>
                     </div>
                 </div>
             `;
-            document.getElementById('subject-btn').innerText = "Select Subject";
-            document.getElementById('current-assessment-info').innerText = "Please select a subject to begin";
+            document.getElementById('subject-btn').setAttribute('data-i18n', 'select_subject_practice');
+            document.getElementById('subject-btn').innerText = translations[getCurrentLang()]['select_subject_practice'];
+            
+            document.getElementById('current-assessment-info').innerHTML = `<span data-i18n="choose_subject_below">Please select a subject to begin</span>`;
+            applyLanguage(getCurrentLang());
         }
 
         async function loadSubject(subject) {
@@ -410,8 +413,8 @@
                     document.querySelector('.exam-panel').innerHTML = `
                         <div class="text-center py-5">
                             <i class="bi bi-info-circle fs-1 text-muted"></i>
-                            <h4 class="mt-3">No ${subject} questions found in ${lang.toUpperCase()}.</h4>
-                            <p class="text-muted">Try switching subjects or languages.</p>
+                            <h4 class="mt-3" data-i18n="no_videos_found">No questions found.</h4>
+                            <p class="text-muted" data-i18n="start_new_subject">Try switching subjects or languages.</p>
                         </div>`;
                 }
             } catch (err) {
@@ -421,10 +424,14 @@
 
         async function changeAssessmentLang(lang) {
             localStorage.setItem('ql_lang', lang);
-            document.getElementById('lang-btn').innerHTML = `<i class="bi bi-translate text-primary me-2"></i> ${lang.toUpperCase()}`;
+            document.getElementById('current-lang-display').textContent = lang.toUpperCase();
             applyLanguage(lang);
             const currentSub = document.getElementById('subject-btn').innerText;
-            loadSubject(currentSub);
+            if (currentSub !== "Select Subject" && currentSub !== translations[lang]['select_subject_practice']) {
+                loadSubject(currentSub);
+            } else {
+                showSubjectSelection();
+            }
         }
 
         function renderQuestion(index) {
@@ -459,15 +466,15 @@
 
                 <div class="d-flex justify-content-between align-items-center pt-4 border-top">
                     <button class="btn btn-light rounded-pill px-4 py-2 fw-semibold" onclick="renderQuestion(${index - 1})" ${index === 0 ? 'disabled' : ''}>
-                        <i class="bi bi-arrow-left me-2"></i> Previous
+                        <i class="bi bi-arrow-left me-2"></i> <span data-i18n="previous">Previous</span>
                     </button>
                     
                     <div class="d-flex gap-2">
-                        <button class="btn btn-primary rounded-pill px-5 py-2 fw-bold" onclick="finalSubmit()" ${Object.keys(answers).length === 0 ? 'disabled' : ''}>Submit Exam</button>
+                        <button class="btn btn-primary rounded-pill px-5 py-2 fw-bold" onclick="finalSubmit()" ${Object.keys(answers).length === 0 ? 'disabled' : ''} data-i18n="submit_exam">Submit Exam</button>
                     </div>
 
                     <button class="btn btn-light rounded-pill px-4 py-2 fw-semibold" onclick="renderQuestion(${index + 1})" ${index === questions.length - 1 ? 'disabled' : ''}>
-                        Next <i class="bi bi-arrow-right ms-2"></i>
+                        <span data-i18n="next">Next</span> <i class="bi bi-arrow-right ms-2"></i>
                     </button>
                 </div>
             `;
@@ -507,8 +514,8 @@
                             </div>
                             <div>
                                 ${answers[q.id] === correctAns 
-                                    ? '<span class="badge bg-success-subtle text-success rounded-pill"><i class="bi bi-check-circle-fill"></i> Correct</span>' 
-                                    : `<span class="badge bg-danger-subtle text-danger rounded-pill"><i class="bi bi-x-circle-fill"></i> Wrong (${correctAns})</span>`}
+                                    ? `<span class="badge bg-success-subtle text-success rounded-pill"><i class="bi bi-check-circle-fill"></i> ${translations[getCurrentLang()]['correct']}</span>` 
+                                    : `<span class="badge bg-danger-subtle text-danger rounded-pill"><i class="bi bi-x-circle-fill"></i> ${translations[getCurrentLang()]['wrong']} (${correctAns})</span>`}
                             </div>
                         </div>
                     `}).join('')}

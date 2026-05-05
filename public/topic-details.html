@@ -162,12 +162,12 @@
             <div>
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="learning.html" class="text-decoration-none">Subjects</a></li>
+                        <li class="breadcrumb-item"><a href="learning.html" class="text-decoration-none" data-i18n="nav_subjects">Subjects</a></li>
                         <li class="breadcrumb-item active" id="breadcrumb-topic">Topic</li>
                     </ol>
                 </nav>
-                <h1 class="fw-bold mb-1 outfit display-5" id="topic-title">Loading Topic...</h1>
-                <p class="text-muted">Master the core concepts of this curriculum unit.</p>
+                <h1 class="fw-bold mb-1 outfit display-5" id="topic-title" data-i18n="loading_subject">Loading Topic...</h1>
+                <p class="text-muted" data-i18n="hero_subtitle">Master the core concepts of this curriculum unit.</p>
             </div>
             <div class="d-flex align-items-center gap-3">
                 <div class="dropdown">
@@ -195,7 +195,7 @@
 
                 <!-- Admin Only Button -->
                 <button class="btn btn-primary d-none align-items-center gap-2 rounded-pill px-4" data-bs-toggle="modal" data-bs-target="#addVideoModal" id="admin-add-video-btn">
-                    <i class="bi bi-plus-lg"></i> Add Video
+                    <i class="bi bi-plus-lg"></i> <span data-i18n="btn_start">Add Video</span>
                 </button>
                 <button class="btn btn-light d-lg-none rounded-circle" onclick="document.querySelector('.sidebar').style.transform = 'translateX(0)'">
                     <i class="bi bi-list"></i>
@@ -209,7 +209,7 @@
 
         <div class="mt-5 pt-4 border-top">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h3 class="fw-bold outfit mb-0">Study Resources</h3>
+                <h3 class="fw-bold outfit mb-0" data-i18n="study_resources">Study Resources</h3>
                 <span class="badge bg-secondary-subtle text-secondary rounded-pill px-3 py-2 fw-bold" id="material-count">0 Documents</span>
             </div>
             <div class="row g-3" id="material-grid">
@@ -217,6 +217,28 @@
             </div>
         </div>
     </main>
+
+    <!-- Video Player Modal -->
+    <div class="modal fade" id="videoPlayerModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content bg-dark border-0 rounded-4 overflow-hidden shadow-lg">
+                <div class="modal-header border-0 p-3 position-absolute top-0 end-0 z-3">
+                    <button type="button" class="btn-close btn-close-white bg-dark rounded-circle p-2" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-0 bg-black">
+                    <div class="ratio ratio-16x9" id="modal-video-container">
+                        <!-- Iframe will be injected here -->
+                    </div>
+                    <div class="p-4 bg-dark text-white d-flex justify-content-between align-items-center">
+                        <h4 class="fw-bold mb-0 outfit" id="modal-video-title">Video Title</h4>
+                        <button class="btn btn-primary rounded-pill px-5 py-2 fw-bold" id="modal-mark-finished-btn">
+                            <i class="bi bi-check-circle me-2"></i> <span data-i18n="mark_finished">Mark Finished</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Add Video Modal -->
     <div class="modal fade" id="addVideoModal" tabindex="-1">
@@ -282,6 +304,7 @@
                     const topic = allTopics.find(t => t.id == topicId);
                     if (topic) {
                         document.getElementById('topic-title').innerText = topic.name;
+                        document.getElementById('topic-title').removeAttribute('data-i18n'); // Avoid overwriting
                         document.getElementById('breadcrumb-topic').innerText = topic.name;
                     }
                 }
@@ -302,7 +325,7 @@
                             col.style.animationDelay = `${index * 0.1}s`;
                             col.innerHTML = `
                                 <div class="video-card h-100 shadow-sm border-0">
-                                    <div class="ratio ratio-16x9 thumbnail-container" id="container-${v.id}" onclick="playVideo('${v.id}', '${v.video_url || v.embed_url}')">
+                                    <div class="ratio ratio-16x9 thumbnail-container" data-bs-toggle="modal" data-bs-target="#videoPlayerModal" onclick="playVideo('${v.id}', '${v.video_url || v.embed_url}', '${v.video_title.replace(/'/g, "\\'")}')">
                                         <img src="${thumbnailUrl}" class="w-100 h-100 object-fit-cover" alt="${v.video_title}" onerror="this.src='https://img.youtube.com/vi/${videoId}/hqdefault.jpg'">
                                         <div class="play-overlay">
                                             <div class="play-btn-glass">
@@ -313,11 +336,11 @@
                                     <div class="video-info">
                                         <div class="d-flex justify-content-between align-items-start mb-3">
                                             <h5 class="fw-bold outfit mb-0 flex-grow-1">${v.video_title}</h5>
-                                            <span class="badge bg-primary-subtle text-primary rounded-pill px-2 ms-2 small">Lesson ${index + 1}</span>
+                                            <span class="badge bg-primary-subtle text-primary rounded-pill px-2 ms-2 small" data-i18n="status_active">Active</span>
                                         </div>
                                         <div class="d-flex justify-content-between align-items-center mt-auto">
                                             <button class="btn btn-finish rounded-pill px-4 py-2 fw-bold small d-flex align-items-center gap-2" onclick="markCompleted('${v.id}')" id="btn-finish-${v.id}">
-                                                <i class="bi bi-check-circle"></i> Mark Finished
+                                                <i class="bi bi-check-circle"></i> <span data-i18n="mark_finished">Mark Finished</span>
                                             </button>
                                             ${JSON.parse(localStorage.getItem('ql_user'))?.role === 'admin' ? `
                                                 <button class="btn btn-link text-danger p-0" onclick="deleteVideo('${v.id}')">
@@ -376,9 +399,15 @@
 
         async function markCompleted(videoId) {
             const btn = document.getElementById(`btn-finish-${videoId}`);
+            const modalBtn = document.getElementById('modal-mark-finished-btn');
+            
             if (btn) {
                 btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> Completed';
                 btn.classList.add('completed');
+            }
+            if (modalBtn) {
+                modalBtn.classList.replace('btn-primary', 'btn-success');
+                modalBtn.innerHTML = '<i class="bi bi-check-circle-fill me-2"></i> Completed';
             }
             
             console.log(">>> MARKING LESSON COMPLETED:", videoId);
@@ -394,13 +423,27 @@
             }
         }
 
-        function playVideo(id, url) {
-            const container = document.getElementById(`container-${id}`);
+        function playVideo(id, url, title) {
+            const container = document.getElementById('modal-video-container');
+            const titleEl = document.getElementById('modal-video-title');
+            const markBtn = document.getElementById('modal-mark-finished-btn');
+            
             const embedUrl = getEmbedUrl(url);
             container.innerHTML = `<iframe src="${embedUrl}&autoplay=1" allow="autoplay" allowfullscreen></iframe>`;
-            container.onclick = null; // Disable clicking again
+            titleEl.innerText = title;
+            
+            // Reset modal button
+            markBtn.onclick = () => markCompleted(id);
+            markBtn.className = 'btn btn-primary rounded-pill px-5 py-2 fw-bold';
+            markBtn.innerHTML = `<i class="bi bi-check-circle me-2"></i> <span>${translations[getCurrentLang()]['mark_finished']}</span>`;
+            
             trackVideoStart(id);
         }
+
+        // Clean up modal video when closed
+        document.getElementById('videoPlayerModal').addEventListener('hidden.bs.modal', () => {
+            document.getElementById('modal-video-container').innerHTML = '';
+        });
 
         async function addNewVideo() {
             const url = document.getElementById('videoUrl').value;
