@@ -455,15 +455,6 @@
                         <div class="ratio ratio-4x3 rounded-4 overflow-hidden border shadow-sm mb-4">
                             <iframe src="https://calendar.google.com/calendar/embed?src=en.ng%23holiday%40group.v.calendar.google.com&ctz=Africa%2FLagos" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
                         </div>
-                        <div class="p-3 bg-light rounded-4 border">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h6 class="fw-bold mb-1 outfit">Current Date</h6>
-                                    <p class="text-muted small mb-0" id="current-date-display">Loading...</p>
-                                </div>
-                                <i class="bi bi-clock text-primary fs-3"></i>
-                            </div>
-                        </div>
                     </div>
 
                     <!-- Top Learners -->
@@ -527,13 +518,6 @@
                 await refreshDashboardStats();
                 applyLanguage(localStorage.getItem('ql_lang') || 'en');
                 document.getElementById('current-lang-display').textContent = (localStorage.getItem('ql_lang') || 'en').toUpperCase();
-                
-                // Update Date Display
-                const dateEl = document.getElementById('current-date-display');
-                if (dateEl) {
-                    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-                    dateEl.textContent = new Date().toLocaleDateString(undefined, options);
-                }
                 
                 // Auto-refresh every 10 seconds for real-time feel
                 setInterval(refreshDashboardStats, 10000);
