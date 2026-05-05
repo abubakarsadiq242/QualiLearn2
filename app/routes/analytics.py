@@ -232,23 +232,39 @@ def get_dashboard_stats():
         comp_exams = CompletedItem.query.filter_by(user_id=user_id, portal_type=portal, item_type='assessment').count()
         comp_games = CompletedItem.query.filter_by(user_id=user_id, portal_type=portal, item_type='game').count()
         
-        # Calculate Category Percentages (avoid division by zero)
-        pct_learning = (comp_learning / total_learning * 100) if total_learning > 0 else 100
-        pct_flashcards = (comp_flashcards / total_flashcards * 100) if total_flashcards > 0 else 100
-        pct_exams = (comp_exams / total_exams * 100) if total_exams > 0 else 100
-        pct_games = (comp_games / total_games * 100) if total_games > 0 else 100
+        # Calculate In-Progress Bonus for Learning (0.5 per item watched > 1 min)
+        in_progress_bonus = 0
+        ip_topics = db.session.query(ActivityLog.topic_id).filter(
+            ActivityLog.user_id == user_id,
+            ActivityLog.portal_type == portal,
+            ActivityLog.module == 'learning'
+        ).distinct().all()
         
-        # Overall Progress = Weighted Average (25% each if applicable)
-        active_categories = []
-        if total_learning > 0: active_categories.append(pct_learning)
-        if total_flashcards > 0: active_categories.append(pct_flashcards)
-        if total_exams > 0: active_categories.append(pct_exams)
-        if total_games > 0: active_categories.append(pct_games)
+        for (tid,) in ip_topics:
+            if tid:
+                is_done = CompletedItem.query.filter_by(user_id=user_id, portal_type=portal, item_id=tid, item_type='material').first()
+                if not is_done:
+                    watch_sec = db.session.query(db.func.sum(ActivityLog.duration)).filter(
+                        ActivityLog.user_id == user_id,
+                        ActivityLog.topic_id == tid
+                    ).scalar() or 0
+                    if watch_sec >= 60:
+                        in_progress_bonus += 0.5
         
-        if active_categories:
-            progress_pct = sum(active_categories) / len(active_categories)
-        else:
-            progress_pct = 0
+        # Final Percentages
+        pct_learning = ((comp_learning + in_progress_bonus) / max(total_learning, 1)) * 100
+        pct_flashcards = (comp_flashcards / max(total_flashcards, 1)) * 100
+        pct_exams = (comp_exams / max(total_exams, 1)) * 100
+        pct_games = (comp_games / max(total_games, 1)) * 100
+        
+        # Weighted Average
+        active_weights = []
+        if total_learning > 0: active_weights.append(min(pct_learning, 100))
+        if total_flashcards > 0: active_weights.append(min(pct_flashcards, 100))
+        if total_exams > 0: active_weights.append(min(pct_exams, 100))
+        if total_games > 0: active_weights.append(min(pct_games, 100))
+        
+        progress_pct = sum(active_weights) / len(active_weights) if active_weights else 0
             
         # Sync with Progress table for persistence
         prog = Progress.query.filter_by(user_id=user_id, portal_type=portal).first()

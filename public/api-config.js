@@ -285,7 +285,7 @@ function getEmbedUrl(url) {
     const videoId = match ? match[1] : null;
     
     if (videoId) {
-        return `https://www.youtube-nocookie.com/embed/${videoId}?rel=0&modestbranding=1&showinfo=0&autoplay=0`;
+        return `https://www.youtube-nocookie.com/embed/${videoId}?rel=0&modestbranding=1&showinfo=0&autoplay=0&enablejsapi=1&origin=${window.location.origin}`;
     }
     
     return url;
@@ -360,7 +360,7 @@ let studyInterval = null;
 let visualInterval = null;
 let currentTopicId = null;
 let lastActivityTime = Date.now();
-const IDLE_THRESHOLD = 2 * 60 * 1000; // 2 minutes
+const IDLE_THRESHOLD = 30 * 60 * 1000; // 30 minutes for long videos
 
 // Track activity for idle detection
 ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart'].forEach(evt => {
