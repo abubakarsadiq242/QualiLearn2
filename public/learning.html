@@ -306,52 +306,47 @@
 
             let html = `
                 <div class="col-md-6 col-lg-4">
-                    <div class="subject-card" onclick="window.location.href='learning.html?subject=Mathematics'">
+                    <div class="subject-card" onclick="loadMaterials('Mathematics')">
                         <div class="subject-banner bg-primary bg-gradient"><i class="bi bi-calculator"></i></div>
                         <div class="p-4">
                             <h4 class="fw-bold mb-2">Mathematics</h4>
-                            <p class="text-muted small mb-4">Algebra, Geometry, and Logic.</p>
-                            <button class="btn btn-primary btn-modern text-white" onclick="event.stopPropagation(); window.location.href='subject-videos.html?subject=Mathematics'">View All</button>
+                            <p class="text-muted small mb-0">Algebra, Geometry, and Logic.</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4">
-                    <div class="subject-card" onclick="window.location.href='learning.html?subject=English'">
+                    <div class="subject-card" onclick="loadMaterials('English')">
                         <div class="subject-banner bg-success bg-gradient"><i class="bi bi-alphabet-uppercase"></i></div>
                         <div class="p-4">
                             <h4 class="fw-bold mb-2">English Language</h4>
-                            <p class="text-muted small mb-4">Grammar and Literature.</p>
-                            <button class="btn btn-success btn-modern text-white" onclick="event.stopPropagation(); window.location.href='subject-videos.html?subject=English'">View All</button>
+                            <p class="text-muted small mb-0">Grammar and Literature.</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4">
-                    <div class="subject-card" onclick="window.location.href='learning.html?subject=Biology'">
+                    <div class="subject-card" onclick="loadMaterials('Biology')">
                         <div class="subject-banner bg-danger bg-gradient"><i class="bi bi-heart-pulse"></i></div>
                         <div class="p-4">
                             <h4 class="fw-bold mb-2">Biology</h4>
-                            <p class="text-muted small mb-4">Life sciences and genetics.</p>
-                            <button class="btn btn-danger btn-modern text-white" onclick="event.stopPropagation(); window.location.href='subject-videos.html?subject=Biology'">View All</button>
+                            <p class="text-muted small mb-0">Life sciences and genetics.</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4">
-                    <div class="subject-card" onclick="window.location.href='learning.html?subject=Physics'">
+                    <div class="subject-card" onclick="loadMaterials('Physics')">
                         <div class="subject-banner bg-info bg-gradient"><i class="bi bi-lightning"></i></div>
                         <div class="p-4">
                             <h4 class="fw-bold mb-2">Physics</h4>
-                            <p class="text-muted small mb-4">Mechanics and energy.</p>
-                            <button class="btn btn-info btn-modern text-white" onclick="event.stopPropagation(); window.location.href='subject-videos.html?subject=Physics'">View All</button>
+                            <p class="text-muted small mb-0">Mechanics and energy.</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4">
-                    <div class="subject-card" onclick="window.location.href='learning.html?subject=Chemistry'">
+                    <div class="subject-card" onclick="loadMaterials('Chemistry')">
                         <div class="subject-banner bg-warning bg-gradient"><i class="bi bi-flask"></i></div>
                         <div class="p-4">
                             <h4 class="fw-bold mb-2">Chemistry</h4>
-                            <p class="text-muted small mb-4">Matter and reactions.</p>
-                            <button class="btn btn-warning btn-modern text-white" onclick="event.stopPropagation(); window.location.href='subject-videos.html?subject=Chemistry'">View All</button>
+                            <p class="text-muted small mb-0">Matter and reactions.</p>
                         </div>
                     </div>
                 </div>
@@ -362,66 +357,82 @@
         async function loadMaterials(subject = '') {
             currentSubject = subject;
             const grid = document.getElementById('subjects-grid');
-            const lang = localStorage.getItem('ql_lang') || 'en';
+            if (!grid) return;
             
+            const header = document.getElementById('study-topics-header');
+            if (!subject) {
+                grid.innerHTML = '';
+                if (header) header.style.display = 'none';
+                return;
+            }
+
             try {
                 grid.innerHTML = '<div class="col-12 text-center py-5"><div class="spinner-border text-primary"></div></div>';
                 
-                // 1. Fetch Topics instead of just flat materials
-                const response = await apiGetTopics();
+                // Fetch materials from API
+                const response = await apiCall('/learning/materials?subject=' + subject);
+                
                 if (response.success) {
-                    const groupedTopics = response.data;
-                    
-                    // IF NO SUBJECT: Hide the topics grid entirely, user must pick a card above
-                    if (!subject) {
-                        grid.innerHTML = '';
-                        document.getElementById('study-topics-header').style.display = 'none';
-                        return;
+                    const materials = response.data;
+                    if (header) {
+                        header.style.display = 'block';
+                        document.getElementById('study-topics-title').innerText = `${subject} Curriculum`;
                     }
-
-                    document.getElementById('study-topics-header').style.display = 'block';
-                    document.getElementById('study-topics-title').innerText = `${subject} Curriculum`;
-                    document.getElementById('study-topics-title').removeAttribute('data-i18n');
                     
-                    const topics = groupedTopics[subject] || [];
-                    
-                    if (topics.length === 0) {
-                        grid.innerHTML = `<div class="col-12 text-center py-5"><h5 class="text-muted">No topics found for ${subject}.</h5></div>`;
+                    if (materials.length === 0) {
+                        grid.innerHTML = `<div class="col-12 text-center py-5"><h5 class="text-muted">No curriculum topics found for ${subject}.</h5></div>`;
                         return;
                     }
 
                     grid.innerHTML = '';
-                    topics.forEach(topic => {
+                    materials.forEach(topic => {
                         const col = document.createElement('div');
                         col.className = 'col-md-6 col-lg-4 animate__animated animate__fadeIn';
+                        
+                        // Check if video exists
+                        const hasVideo = topic.resource_url && topic.resource_url.includes('youtube.com');
+                        
                         col.innerHTML = `
-                            <div class="subject-card h-100" onclick="window.location.href='topic-details.html?id=${topic.id}'">
-                                <div class="subject-banner bg-primary bg-gradient d-flex flex-column align-items-center justify-content-center p-3">
-                                    <i class="bi bi-folder2-open text-white"></i>
-                                    <span class="badge bg-white text-primary mt-2 small rounded-pill">${topic.subject}</span>
-                                </div>
+                            <div class="subject-card h-100">
                                 <div class="p-4">
-                                    <h5 class="fw-bold mb-2 outfit">${topic.name}</h5>
-                                    <p class="text-muted small mb-4">Explore multiple video lessons and materials under this topic.</p>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="text-primary small fw-bold" data-i18n="view_all">View Lessons</span>
-                                        <button class="btn btn-primary btn-sm rounded-pill px-3 fw-bold" data-i18n="resume_topic">Open Topic</button>
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <div class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2">
+                                            <i class="bi bi-book"></i> Curriculum Topic
+                                        </div>
+                                        ${hasVideo ? '<span class="badge bg-danger rounded-pill"><i class="bi bi-play-fill"></i> Video</span>' : ''}
                                     </div>
+                                    <h5 class="fw-bold mb-2">${topic.title}</h5>
+                                    <p class="text-muted small mb-4">${topic.description || 'Core academic topic.'}</p>
+                                    ${hasVideo ? `
+                                        <button class="btn btn-primary btn-sm rounded-pill w-100 fw-bold" onclick="startTopic('${topic.id}')">
+                                            <i class="bi bi-play-circle me-2"></i> Watch Lesson
+                                        </button>
+                                    ` : ''}
                                 </div>
                             </div>
                         `;
                         grid.appendChild(col);
                     });
+                } else {
+                    grid.innerHTML = `<div class="col-12 text-center py-5"><h5 class="text-muted">Error loading curriculum topics.</h5></div>`;
                 }
             } catch (err) {
-                grid.innerHTML = `<div class="col-12 text-center text-danger py-5">Error: ${err.message}</div>`;
+                console.error('Fetch error:', err);
+                grid.innerHTML = `<div class="col-12 text-center text-danger py-5">System Error: ${err.message}</div>`;
             }
         }
 
+        function getEmbedUrl(url) {
+            if (!url) return '';
+            if (url.includes('embed/')) return url;
+            if (url.includes('watch?v=')) return url.replace('watch?v=', 'embed/');
+            if (url.includes('youtu.be/')) return url.replace('youtu.be/', 'youtube.com/embed/');
+            return url;
+        }
 
         async function startTopic(id) {
             try {
-                const res = await apiGetMaterial(id);
+                const res = await apiCall('/learning/material/' + id);
                 if (res.success) {
                     const mat = res.data;
                     vTitle.innerText = mat.title;
@@ -429,9 +440,14 @@
                     vFrame.src = getEmbedUrl(mat.resource_url);
                     vModal.show();
                     
-                    // Start real-time tracking exactly when the action begins
+                    // Start real-time tracking
                     startStudyTimer(id);
-                    await apiTrackProgress(id, 1); 
+                    await apiTrackActivity({
+                        activity_type: 'video_lesson',
+                        module: 'learning',
+                        material_id: id,
+                        completed: false
+                    });
                 }
             } catch (err) { console.error('Start error:', err); }
         }
