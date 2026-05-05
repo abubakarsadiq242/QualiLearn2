@@ -13,17 +13,22 @@ analytics_bp = Blueprint('analytics', __name__)
 def process_track_data(user_id, data):
     portal_type = data.get('portal_type', 'secondary')
     
-    # 1. Force Duration Calculation
-    try:
-        st_str = data.get('start_time')
-        if st_str:
-            st = datetime.fromisoformat(st_str.replace('Z', '+00:00'))
-            en = datetime.fromisoformat(data.get('end_time', datetime.utcnow().isoformat()).replace('Z', '+00:00'))
-            duration = int((en - st).total_seconds())
-        else:
-            duration = int(data.get('duration', 60))
-    except:
-        duration = int(data.get('duration', 60))
+    # 1. Determine Duration
+    duration = data.get('duration')
+    if duration is None:
+        try:
+            st_str = data.get('start_time')
+            if st_str:
+                st = datetime.fromisoformat(st_str.replace('Z', '+00:00'))
+                en_str = data.get('end_time') or datetime.utcnow().isoformat()
+                en = datetime.fromisoformat(en_str.replace('Z', '+00:00'))
+                duration = int((en - st).total_seconds())
+            else:
+                duration = 60 # Default
+        except:
+            duration = 60
+    else:
+        duration = int(duration)
 
     log = ActivityLog(
         user_id=user_id,

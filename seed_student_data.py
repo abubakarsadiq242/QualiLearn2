@@ -21,7 +21,7 @@ with app.app_context():
     
     if not user:
         # Create student if not exists
-        user = User(first_name="Sadiq", last_name="Abubakar", email=student_email, education_level="Secondary")
+        user = User(first_name="Sadiq", last_name="Abubakar", email=student_email, education_level="Academics")
         user.set_password("password")
         db.session.add(user)
         db.session.commit()

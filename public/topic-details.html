@@ -339,8 +339,9 @@
                                             <span class="badge bg-primary-subtle text-primary rounded-pill px-2 ms-2 small" data-i18n="status_active">Active</span>
                                         </div>
                                         <div class="d-flex justify-content-between align-items-center mt-auto">
-                                            <button class="btn btn-finish rounded-pill px-4 py-2 fw-bold small d-flex align-items-center gap-2" onclick="markCompleted('${v.id}')" id="btn-finish-${v.id}">
-                                                <i class="bi bi-check-circle"></i> <span data-i18n="mark_finished">Mark Finished</span>
+                                            <button class="btn btn-finish ${v.completed ? 'completed' : ''} rounded-pill px-4 py-2 fw-bold small d-flex align-items-center gap-2" onclick="markCompleted('${v.id}')" id="btn-finish-${v.id}">
+                                                <i class="bi ${v.completed ? 'bi-check-circle-fill' : 'bi-check-circle'}"></i> 
+                                                <span data-i18n="mark_finished">${v.completed ? 'Completed' : 'Mark Finished'}</span>
                                             </button>
                                             ${JSON.parse(localStorage.getItem('ql_user'))?.role === 'admin' ? `
                                                 <button class="btn btn-link text-danger p-0" onclick="deleteVideo('${v.id}')">
@@ -419,14 +420,29 @@
                 completed: true
             });
             if (res.success) {
-                // Success feedback
+                // Notify other windows/components for real-time dashboard refresh
+                window.dispatchEvent(new CustomEvent('ql-activity-logged'));
             }
         }
 
+        // Tracking Logic
         let heartbeatInterval;
         function trackVideoStart(videoId) {
             if (heartbeatInterval) clearInterval(heartbeatInterval);
             
+            console.log(">>> TRACKING VIDEO LEARN START:", videoId);
+            studyStartTime = new Date().toISOString();
+
+            // Log activity immediately
+            apiTrackActivity({
+                activity_type: 'video_learning',
+                module: 'learning',
+                topic_id: parseInt(topicId),
+                video_id: parseInt(videoId),
+                duration: 5, // Small initial pulse
+                completed: false
+            });
+
             // Heartbeat every 10 seconds for real-time dashboard feel
             heartbeatInterval = setInterval(async () => {
                 console.log(">>> HEARTBEAT: TRACKING 10s STUDY TIME");
@@ -492,21 +508,6 @@
             if (!confirm('Are you sure?')) return;
             const res = await apiAdminDeleteMaterial(id);
             if (res.success) loadVideos();
-        }
-
-        // Tracking Logic
-        function trackVideoStart(videoId) {
-            console.log(">>> TRACKING VIDEO LEARN START:", videoId);
-            studyStartTime = new Date().toISOString();
-            
-            // Log activity immediately
-            apiTrackActivity({
-                activity_type: 'video_learning',
-                module: 'learning', // Use learning to match mod_map
-                topic_id: parseInt(topicId),
-                video_id: parseInt(videoId),
-                completed: false
-            });
         }
         
         // Since iframes don't support onplay easily, we'll track when the page loads or when they click 'Mark Finished'

@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.models.topics import Topic, TopicVideo
+from app.models.analytics import CompletedItem
 from app import db
 from app.utils.auth import admin_required
 
@@ -34,9 +35,8 @@ def get_topics():
         user = db.session.get(User, int(user_id))
         if user and user.education_level:
             u_level = user.education_level.upper()
-            if 'SSS' in u_level: level = 'SSS'
-            elif 'JSS' in u_level: level = 'JSS'
-            elif 'PRIMARY' in u_level: level = 'Primary'
+            if 'VOCATIONAL' in u_level: level = 'Vocational'
+            else: level = 'Academics'
 
     query = Topic.query.filter_by(is_deleted=False)
     if level:
@@ -106,8 +106,20 @@ def add_video(topic_id):
 @topics_bp.route('/<int:topic_id>/videos', methods=['GET'])
 @jwt_required()
 def get_topic_videos(topic_id):
+    user_id = int(get_jwt_identity())
     videos = TopicVideo.query.filter_by(topic_id=topic_id).all()
-    return jsonify({"success": True, "data": [v.to_dict() for v in videos]})
+    
+    # Get completed items for this user and portal
+    portal = request.args.get('portal', 'secondary')
+    completed_ids = [c.item_id for c in CompletedItem.query.filter_by(user_id=user_id, portal_type=portal, item_type='video').all()]
+    
+    video_list = []
+    for v in videos:
+        d = v.to_dict()
+        d['completed'] = v.id in completed_ids
+        video_list.append(d)
+        
+    return jsonify({"success": True, "data": video_list})
 
 @topics_bp.route('/subject-videos', methods=['GET'])
 @jwt_required()

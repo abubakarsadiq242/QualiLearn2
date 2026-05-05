@@ -10,7 +10,7 @@ class User(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
     role = db.Column(db.String(20), default='student')  # student, admin
-    education_level = db.Column(db.String(50))
+    education_level = db.Column(db.String(50), default='Academics')
     language = db.Column(db.String(10), default='en')  # en, ha, yo, ig
     overall_progress = db.Column(db.Float, default=0.0)
     study_time = db.Column(db.Integer, default=0)  # Total minutes

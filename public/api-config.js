@@ -272,7 +272,7 @@ async function apiTrackProgress(topic_id, minutes = 5) {
 function getCurrentPortal() {
     const path = window.location.pathname.toLowerCase();
     if (path.includes('vocational')) return 'vocational';
-    return 'secondary';
+    return 'secondary'; // Internally still 'secondary' for API compatibility
 }
 
 function getEmbedUrl(url) {
@@ -524,10 +524,10 @@ function checkAccessControl() {
         return;
     }
 
-    const secondaryLevels = ['Secondary', 'JSS', 'SSS', 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'];
+    const academicLevels = ['Academics'];
     
-    if (secondaryLevels.includes(user.education_level)) {
-        // SECONDARY USER: Prevent access to vocational pages
+    if (academicLevels.includes(user.education_level)) {
+        // ACADEMIC USER: Prevent access to vocational pages
         if (vocationalPages.includes(currentPage)) {
             window.location.href = 'dashboard.html';
             return;

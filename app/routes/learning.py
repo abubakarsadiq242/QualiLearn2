@@ -62,9 +62,8 @@ def get_materials():
         user = db.session.get(User, int(user_id))
         if user and user.education_level:
             u_level = user.education_level.upper()
-            if 'SSS' in u_level: level = 'SSS'
-            elif 'JSS' in u_level: level = 'JSS'
-            elif 'PRIMARY' in u_level: level = 'Primary'
+            if 'VOCATIONAL' in u_level: level = 'Vocational'
+            else: level = 'Academics'
 
     query = LearningMaterial.query.filter_by(language=lang)
     if subject:

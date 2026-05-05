@@ -33,11 +33,11 @@ def get_dashboard_stats():
         accuracy = (total_c / total_q * 100) if total_q > 0 else 0
         
         # 4. Progress
-        prog = Progress.query.get(user_id)
+        prog = Progress.query.filter_by(user_id=user_id).first()
         progress_pct = (prog.completed_units / (prog.total_units or 100) * 100) if prog else 0
         
         # 5. Streak
-        streak_obj = Streak.query.get(user_id)
+        streak_obj = Streak.query.filter_by(user_id=user_id).first()
         
         # 6. Resume Topic
         resume_topic = None

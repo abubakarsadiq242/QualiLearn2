@@ -12,7 +12,7 @@ class LearningMaterial(db.Model):
     material_type = db.Column(db.String(50))  # note, video_link, pdf_link
     resource_url = db.Column(db.String(500))
     topic_id = db.Column(db.Integer, db.ForeignKey('topics.id'))
-    education_level = db.Column(db.String(20), default='SSS')
+    education_level = db.Column(db.String(20), default='Academics') # Academics or Vocational
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     def to_dict(self):

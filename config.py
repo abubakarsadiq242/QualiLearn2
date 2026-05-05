@@ -19,7 +19,7 @@ class Config:
     db_filename = 'qualilearn_v2.db'
     source_db = os.path.join(instance_path, db_filename)
     
-    # Database selection logic
+    # 1. Determine base path
     if os.environ.get('VERCEL'):
         # On Vercel, we MUST use /tmp for SQLite, but warn that it's ephemeral
         import shutil
@@ -27,16 +27,20 @@ class Config:
         if not os.path.exists(db_path) and os.path.exists(source_db):
             try:
                 shutil.copy2(source_db, db_path)
-                print(f" * Vercel detected: Copied DB to {db_path} (Warning: Data will NOT persist across restarts).")
             except Exception as e:
                 print(f" * Failed to copy DB to /tmp: {e}")
     else:
         # Local or persistent server
         os.makedirs(instance_path, exist_ok=True)
         db_path = source_db
-        print(f" * Using persistent DB at: {db_path}")
     
-    SQLALCHEMY_DATABASE_URI = _db_url or 'sqlite:///' + db_path
+    # 2. Construct URI (Favor DATABASE_URL if it's NOT a relative sqlite path)
+    if _db_url and not _db_url.startswith("sqlite:///qualilearn_v2.db"):
+        SQLALCHEMY_DATABASE_URI = _db_url
+    else:
+        # Standardize on absolute path for local SQLite to avoid root/instance confusion
+        SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.abspath(db_path)
+
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     JWT_SECRET_KEY = SECRET_KEY 
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=24)

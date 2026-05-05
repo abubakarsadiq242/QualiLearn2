@@ -9,8 +9,8 @@ def verify_sync():
     
     # 1. Login
     login_res = requests.post(f"{BASE_URL}/auth/login", json={
-        "email": "test@test.com",
-        "password": "password123"
+        "email": "student@qualilearn.com",
+        "password": "student123"
     })
     token = login_res.json()['data']['token']
     headers = {"Authorization": f"Bearer {token}"}

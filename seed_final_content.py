@@ -166,7 +166,6 @@ def seed_final_content():
                         correct_answer=correct_letter,
                         explanation=f"This is a fundamental concept in {sub}.",
                         language=lang,
-                        education_level=random.choice(['JSS', 'SSS'])
                     )
                     db.session.add(q)
                 

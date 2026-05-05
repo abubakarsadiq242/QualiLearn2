@@ -19,6 +19,10 @@ def create_app(config_name):
     bcrypt.init_app(app)
     jwt.init_app(app)
     CORS(app)  # Allow all origins for development
+    
+    # Ensure tables are created (Safe for SQLite, won't overwrite existing data)
+    with app.app_context():
+        db.create_all()
 
     # Error handling
     @app.errorhandler(404)
