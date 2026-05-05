@@ -226,20 +226,52 @@
             </div>
         </div>
 
-        <!-- Recent Skill Workshop -->
-        <div class="workshop-timer mb-5 animate__animated animate__fadeIn">
-            <div>
-                <h3 class="fw-bold mb-1 outfit" data-i18n="resume_workshop">Resume Workshop</h3>
-                <p class="text-light opacity-75 mb-0" id="recent-skill-name" data-i18n="start_journey">Waiting for action...</p>
-            </div>
-            <div class="text-end">
-                <button class="btn btn-warning rounded-pill px-5 py-3 fw-bold shadow" id="resume-skill-btn" data-i18n="btn_enroll">Continue Training</button>
-            </div>
-        </div>
+        <div class="row g-4">
+            <!-- Main Content -->
+            <div class="col-lg-8">
+                <!-- Recent Skill Workshop -->
+                <div class="workshop-timer mb-5 animate__animated animate__fadeIn">
+                    <div>
+                        <h3 class="fw-bold mb-1 outfit" data-i18n="resume_workshop">Resume Workshop</h3>
+                        <p class="text-light opacity-75 mb-0" id="recent-skill-name" data-i18n="start_journey">Waiting for action...</p>
+                    </div>
+                    <div class="text-end">
+                        <button class="btn btn-warning rounded-pill px-5 py-3 fw-bold shadow" id="resume-skill-btn" data-i18n="btn_enroll">Continue Training</button>
+                    </div>
+                </div>
 
-        <h4 class="fw-bold mb-4 outfit" data-i18n="recommended_track">Recommended for Your Track</h4>
-        <div class="row g-4" id="skill-recommendations">
-            <!-- Dynamic skills -->
+                <h4 class="fw-bold mb-4 outfit" data-i18n="recommended_track">Recommended for Your Track</h4>
+                <div class="row g-4" id="skill-recommendations">
+                    <!-- Dynamic skills -->
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <div class="skill-card bg-white h-100 border-0 p-4 shadow-sm rounded-4">
+                    <h4 class="fw-bold mb-4 outfit" data-i18n="for_you">For You</h4>
+                    
+                    <div class="mb-5">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="fw-bold mb-0 outfit"><i class="bi bi-graph-up-arrow text-primary me-2"></i> Overall Progress</h5>
+                            <span class="badge bg-primary-subtle text-primary rounded-pill fw-bold" id="sidebar-progress-text">0%</span>
+                        </div>
+                        <div class="progress rounded-pill" style="height: 12px; background: #fff7ed;">
+                            <div id="sidebar-progress-bar" class="progress-bar bg-primary progress-bar-striped progress-bar-animated" style="width: 0%;"></div>
+                        </div>
+                        <p class="text-muted small mt-2">Master your professional skills to reach expert level.</p>
+                    </div>
+
+                    <hr class="opacity-10 mb-5">
+
+                    <div class="stat-card bg-white h-100 border-0 p-0">
+                        <h5 class="fw-bold mb-4 outfit"><i class="bi bi-calendar-event text-primary me-2"></i> Trade Calendar</h5>
+                        <div class="rounded-4 overflow-hidden border shadow-sm" style="height: 400px;">
+                            <iframe src="https://calendar.google.com/calendar/embed?src=en.ng%23holiday%40group.v.calendar.google.com&ctz=Africa%2FLagos&showTitle=0&showNav=1&showPrint=0&showTabs=0&showCalendars=0&showTz=0" style="border: 0" width="100%" height="400" frameborder="0" scrolling="no"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </main>
@@ -273,6 +305,12 @@
                     document.getElementById('stat-time').textContent = stats.study_time;
                     document.getElementById('stat-daily').textContent = stats.daily_time || '0m';
                     document.getElementById('stat-streak').textContent = stats.current_streak;
+
+                    // Sidebar Progress
+                    const sidebarText = document.getElementById('sidebar-progress-text');
+                    const sidebarBar = document.getElementById('sidebar-progress-bar');
+                    if (sidebarText) sidebarText.textContent = `${stats.overall_progress}%`;
+                    if (sidebarBar) sidebarBar.style.width = `${stats.overall_progress}%`;
                     
                     // Store in local storage for consistency if needed
                     localStorage.setItem('ql_stats', JSON.stringify(stats));
