@@ -202,8 +202,8 @@
                 </div>
 
                 <div class="dropdown">
-                    <button class="btn btn-white border shadow-sm rounded-pill px-4 d-none d-md-block" data-bs-toggle="dropdown" id="subject-btn" data-i18n="subject_mathematics">
-                        Mathematics
+                    <button class="btn btn-white border shadow-sm rounded-pill px-4 d-none d-md-block fw-bold" data-bs-toggle="dropdown" id="subject-btn">
+                        <i class="bi bi-book-half me-2 text-primary" id="subject-icon"></i> <span id="subject-text" data-i18n="subject_mathematics">Mathematics</span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-4">
                         <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="loadDeck('Mathematics')" data-i18n="subject_mathematics">Mathematics</a></li>
@@ -335,8 +335,24 @@
         }
 
         async function loadDeck(subject) {
-            const btn = document.getElementById('subject-btn');
-            btn.innerText = subject;
+            const btnText = document.getElementById('subject-text');
+            const btnIcon = document.getElementById('subject-icon');
+            
+            btnText.innerText = subject;
+            
+            // Dynamic Icon update
+            const iconMap = {
+                'Mathematics': 'bi-calculator',
+                'English': 'bi-book',
+                'Biology': 'bi-heart-pulse',
+                'Physics': 'bi-lightning',
+                'Chemistry': 'bi-flask'
+            };
+            
+            if (btnIcon && iconMap[subject]) {
+                btnIcon.className = `bi ${iconMap[subject]} me-2 text-primary`;
+            }
+
             const lang = localStorage.getItem('ql_lang') || 'en';
             console.log(`[Flashcard] Loading deck: ${subject} (${lang})`);
             

@@ -216,8 +216,8 @@
                 </div>
                 
                 <div class="dropdown d-none d-md-block">
-                    <button class="btn btn-white border shadow-sm rounded-pill px-4 outfit fw-bold" data-bs-toggle="dropdown" id="subject-btn" data-i18n="subject_mathematics">
-                        Mathematics
+                    <button class="btn btn-white border shadow-sm rounded-pill px-4 outfit fw-bold" data-bs-toggle="dropdown" id="subject-btn">
+                        <i class="bi bi-book-half me-2 text-primary" id="subject-icon"></i> <span id="subject-text" data-i18n="subject_mathematics">Mathematics</span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-4">
                         <li><a class="dropdown-item py-2" href="javascript:void(0)" onclick="loadSubject('Mathematics')" data-i18n="subject_mathematics">Mathematics</a></li>
@@ -356,8 +356,25 @@
         }
 
         async function loadSubject(subject) {
+            const btnText = document.getElementById('subject-text');
+            const btnIcon = document.getElementById('subject-icon');
+            
+            if (btnText) btnText.innerText = subject;
+            
+            // Dynamic Icon update
+            const iconMap = {
+                'Mathematics': 'bi-calculator',
+                'English': 'bi-book',
+                'Biology': 'bi-heart-pulse',
+                'Physics': 'bi-lightning',
+                'Chemistry': 'bi-flask'
+            };
+            
+            if (btnIcon && iconMap[subject]) {
+                btnIcon.className = `bi ${iconMap[subject]} me-2 text-primary`;
+            }
+
             const lang = localStorage.getItem('ql_lang') || 'en';
-            document.getElementById('subject-btn').innerText = subject;
             document.getElementById('current-assessment-info').innerText = `${subject} • All Years • Practice`;
             
             document.querySelector('.exam-panel').innerHTML = `
