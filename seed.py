@@ -74,7 +74,7 @@ def seed_data():
                 ('Comprehension and summary', 'Developing reading skills and concise summarizing.', 'https://www.youtube.com/embed/e4HiKR3wmWo', 'Academics'),
                 ('Essay writing (formal & informal)', 'Mastering different styles of essay composition.', 'https://www.youtube.com/embed/PgwmAUJx248', 'Academics'),
                 ('Parts of speech and grammar rules', 'Essential rules for nouns, verbs, and syntax.', 'https://www.youtube.com/embed/chjmnCSPnbw', 'Academics'),
-                ('Sentence structure and punctuation', 'Crafting clear sentences with correct punctuation.', 'https://www.youtube.com/embed/nyYyiYULkM4', 'Academics'),
+                ('Sentence structure and punctuation', 'Crafting clear sentences with correct punctuation.', 'https://www.youtube.com/embed/jul2urONzOQ', 'Academics'),
                 ('Vocabulary building and word usage', 'Expanding lexicon and understanding context.', 'https://www.youtube.com/embed/CQSUEKNOc6s', 'Academics')
             ]
         }

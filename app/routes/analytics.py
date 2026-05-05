@@ -86,6 +86,11 @@ def process_track_data(user_id, data):
         elif topic_id and data.get('module') == 'assessment':
             item_id = int(topic_id)
             item_type = 'assessment'
+        elif data.get('module') == 'games':
+            # Use hash of module/type for game ID
+            game_map = {'ttt': 1, 'memory': 2, 'math': 3}
+            item_id = game_map.get(data.get('game_type', 'math'), 3)
+            item_type = 'game'
         elif material_id:
             item_id = int(material_id)
             item_type = 'material'
@@ -194,38 +199,61 @@ def get_dashboard_stats():
         else:
             accuracy = 0
         
-        # 4. Progress Logic Filtered by Portal
+        # 4. Refined Progress Logic (Multi-Category Weighted Progress)
         from app.models.learning import LearningMaterial, VocationalContent
         from app.models.flashcard import Flashcard
         from app.models.assessment import AssessmentTemplate
-        from app.models.topics import TopicVideo
         
-        # Total Units varies by portal
+        # Define Category Totals
         if portal == 'vocational':
-            total_mats = VocationalContent.query.count() or 0
-            total_videos = 0 
-            total_exams = 0 
-            total_cards = 0 
+            total_learning = VocationalContent.query.count() or 0
+            total_flashcards = Flashcard.query.filter_by(education_level='Vocational').count() or 0
+            total_exams = 0
+            total_games = 0 # Vocational might not have games yet
         else:
-            total_mats = LearningMaterial.query.count() or 0
-            total_videos = TopicVideo.query.count() or 0
+            total_learning = LearningMaterial.query.count() or 0
+            total_flashcards = Flashcard.query.count() or 0
             total_exams = AssessmentTemplate.query.count() or 0
-            total_cards = Flashcard.query.count() or 0
+            total_games = 3 # Tic-Tac-Toe, Memory Match, Math Challenge
         
-        normalized_cards = max(1, total_cards // 5) 
-        dynamic_total_units = max(1, total_mats + total_videos + total_exams + normalized_cards)
+        # Get Completion Counts per Category
+        comp_learning = CompletedItem.query.filter_by(user_id=user_id, portal_type=portal, item_type='material').count()
+        comp_flashcards = CompletedItem.query.filter_by(user_id=user_id, portal_type=portal, item_type='flashcard').count()
+        comp_exams = CompletedItem.query.filter_by(user_id=user_id, portal_type=portal, item_type='assessment').count()
+        comp_games = CompletedItem.query.filter_by(user_id=user_id, portal_type=portal, item_type='game').count()
         
+        # Calculate Category Percentages (avoid division by zero)
+        pct_learning = (comp_learning / total_learning * 100) if total_learning > 0 else 100
+        pct_flashcards = (comp_flashcards / total_flashcards * 100) if total_flashcards > 0 else 100
+        pct_exams = (comp_exams / total_exams * 100) if total_exams > 0 else 100
+        pct_games = (comp_games / total_games * 100) if total_games > 0 else 100
+        
+        # Overall Progress = Weighted Average (25% each if applicable)
+        active_categories = []
+        if total_learning > 0: active_categories.append(pct_learning)
+        if total_flashcards > 0: active_categories.append(pct_flashcards)
+        if total_exams > 0: active_categories.append(pct_exams)
+        if total_games > 0: active_categories.append(pct_games)
+        
+        if active_categories:
+            progress_pct = sum(active_categories) / len(active_categories)
+        else:
+            progress_pct = 0
+            
+        # Sync with Progress table for persistence
         prog = Progress.query.filter_by(user_id=user_id, portal_type=portal).first()
         if not prog:
-            prog = Progress(user_id=user_id, portal_type=portal, completed_units=0, total_units=dynamic_total_units)
+            prog = Progress(user_id=user_id, portal_type=portal, completed_units=int(progress_pct), total_units=100)
             db.session.add(prog)
-            progress_pct = 0
         else:
-            # Sync completion count
-            actual_comp = CompletedItem.query.filter_by(user_id=user_id, portal_type=portal).count()
-            prog.completed_units = actual_comp
-            prog.total_units = dynamic_total_units
-            progress_pct = (prog.completed_units / dynamic_total_units) * 100
+            prog.completed_units = int(progress_pct)
+            prog.total_units = 100
+            prog.last_updated = datetime.utcnow()
+        
+        # Update User Model for global reference
+        user = db.session.get(User, user_id)
+        if user and portal == 'secondary':
+            user.overall_progress = progress_pct
         
         db.session.commit()
         
@@ -258,7 +286,9 @@ def get_dashboard_stats():
         def format_time(seconds):
             h = int(seconds // 3600)
             m = int((seconds % 3600) // 60)
-            return f"{h}h {m}m"
+            if h > 0:
+                return f"{h}h {m}m"
+            return f"{m}m"
 
         stats = {
             "overall_progress": round(min(progress_pct, 100.0), 1),
@@ -404,10 +434,11 @@ def get_leaderboard():
                     'name': f"{user.first_name} {user.last_name}",
                     'initial': user.first_name[0] if user.first_name else 'U',
                     'points': int(stats['points']),
-                    'duration': stats['duration']
+                    'duration': stats['duration'],
+                    'progress': round(user.overall_progress or 0, 1)
                 })
                 
-        leaderboard.sort(key=lambda x: x['points'], reverse=True)
+        leaderboard.sort(key=lambda x: x['progress'], reverse=True)
         
         return jsonify({
             "success": True,

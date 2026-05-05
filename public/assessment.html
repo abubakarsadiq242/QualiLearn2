@@ -205,10 +205,6 @@
             </div>
             
             <div class="d-flex align-items-center gap-3">
-                <div class="exam-timer shadow-sm me-3 d-none d-md-flex bg-primary-subtle text-primary border-primary">
-                    <i class="bi bi-stopwatch-fill"></i>
-                    <span id="studyTimerDisplay">00:00</span>
-                </div>
                 
                 <div class="exam-timer shadow-sm d-none d-md-flex">
                     <i class="bi bi-alarm-fill animate__animated animate__pulse animate__infinite"></i>
@@ -395,7 +391,8 @@
             applyLanguage(localStorage.getItem('ql_lang') || 'en');
 
             const lang = localStorage.getItem('ql_lang') || 'en';
-            document.getElementById('current-assessment-info').innerText = `${subject} • All Years • Practice`;
+            const infoEl = document.getElementById('current-assessment-info');
+            infoEl.innerText = `${subject} • All Years • Practice`;
             
             document.querySelector('.exam-panel').innerHTML = `
                 <div class="text-center py-5">
@@ -410,6 +407,7 @@
                     questions = response.data;
                     answers = {};
                     renderQuestion(0);
+                    infoEl.innerText = `${subject} • All Years • ${questions.length} Questions`;
                     
                     // Simple 60-minute countdown timer (resets on page load)
                     let timeLeft = 60 * 60;
@@ -468,7 +466,7 @@
             panel.innerHTML = `
                 <div class="mb-5 animate__animated animate__fadeIn">
                     <div class="d-flex align-items-center mb-4">
-                        <span class="question-number">${index + 1}</span>
+                        <span class="question-number">${index + 1} / ${questions.length}</span>
                         <h5 class="fw-bold mb-0 outfit" style="line-height: 1.4;">${qText}</h5>
                     </div>
                 </div>

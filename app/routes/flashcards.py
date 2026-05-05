@@ -80,11 +80,16 @@ def review_flashcard(card_id):
         flashcard.difficulty_score += 1
 
     from app.models.user import User
+    from app.models.analytics import CompletedItem
     user_id = int(get_jwt_identity())
     user = db.session.get(User, user_id)
     if user:
         user.study_time = (user.study_time or 0) + 2 # Add 2 minutes per review session
-        user.overall_progress = min(100, (user.overall_progress or 0) + 0.05) # Reduced from 0.5 to 0.05
+        if is_correct:
+            # Mark as completed if it hasn't been already
+            exists = CompletedItem.query.filter_by(user_id=user_id, portal_type='secondary', item_id=card_id, item_type='flashcard').first()
+            if not exists:
+                db.session.add(CompletedItem(user_id=user_id, portal_type='secondary', item_id=card_id, item_type='flashcard'))
         
     db.session.commit()
     

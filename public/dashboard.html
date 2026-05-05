@@ -405,8 +405,16 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="dashboard-science-portal" class="col-12 p-0 m-0 row g-4">
-                             <!-- Dynamic Science Cards -->
+                        <div class="col-md-4">
+                            <div class="subject-card p-4 border rounded-4 h-100" onclick="window.location.href='learning.html?subject=Physics'">
+                                <div class="badge bg-danger-subtle text-danger mb-3">Science</div>
+                                <h5 class="fw-bold mb-2">Physics</h5>
+                                <p class="text-muted small mb-4">Forces, Motion and Energy.</p>
+                                <div class="d-grid gap-2">
+                                    <a href="learning.html?subject=Physics" class="btn btn-danger btn-sm rounded-pill fw-bold text-white">Learn</a>
+                                    <a href="assessment.html?subject=Physics" class="btn btn-outline-danger btn-sm rounded-pill fw-bold">Test</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -442,19 +450,20 @@
                     
                     <hr>
                     
-                    <div class="alert alert-primary border-0 rounded-4 p-4 mt-4 shadow-sm animate__animated animate__pulse animate__infinite animate__slow">
-                        <div class="d-flex align-items-center gap-3 mb-3">
-                            <div class="bg-primary text-white rounded-circle p-2 px-3">
-                                <i class="bi bi-megaphone-fill"></i>
-                            </div>
-                            <h5 class="fw-bold mb-0" data-i18n="waec_update_title">WAEC 2026 Update</h5>
+                    <div class="stat-card bg-white h-100 border-0 p-0">
+                        <h5 class="fw-bold mb-4 outfit"><i class="bi bi-calendar3 text-primary me-2"></i> Academic Calendar</h5>
+                        <div class="ratio ratio-4x3 rounded-4 overflow-hidden border shadow-sm mb-4">
+                            <iframe src="https://calendar.google.com/calendar/embed?src=en.ng%23holiday%40group.v.calendar.google.com&ctz=Africa%2FLagos" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
                         </div>
-                        <p class="small text-muted mb-3" data-i18n="waec_update_desc">The official examination timetable for the 2026 May/June WASSCE has been released. Science practicals begin on May 4th.</p>
-                        <ul class="list-unstyled small mb-3">
-                            <li><i class="bi bi-check2-circle text-success me-2"></i> <span data-i18n="timetable_confirmed">Timetable confirmed</span></li>
-                            <li><i class="bi bi-check2-circle text-success me-2"></i> <span data-i18n="registration_extended">Registration deadline extended</span></li>
-                        </ul>
-                        <button class="btn btn-primary btn-sm w-100 rounded-pill fw-bold" onclick="showToast('Downloading Timetable...')" data-i18n="download_timetable">Download Timetable</button>
+                        <div class="p-3 bg-light rounded-4 border">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="fw-bold mb-1 outfit">Current Date</h6>
+                                    <p class="text-muted small mb-0" id="current-date-display">Loading...</p>
+                                </div>
+                                <i class="bi bi-clock text-primary fs-3"></i>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Top Learners -->
@@ -519,6 +528,13 @@
                 applyLanguage(localStorage.getItem('ql_lang') || 'en');
                 document.getElementById('current-lang-display').textContent = (localStorage.getItem('ql_lang') || 'en').toUpperCase();
                 
+                // Update Date Display
+                const dateEl = document.getElementById('current-date-display');
+                if (dateEl) {
+                    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                    dateEl.textContent = new Date().toLocaleDateString(undefined, options);
+                }
+                
                 // Auto-refresh every 10 seconds for real-time feel
                 setInterval(refreshDashboardStats, 10000);
 
@@ -544,8 +560,14 @@
                     <div class="rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center fw-bold" style="width:35px; height:35px;">${user.initial}</div>
                     <div class="flex-grow-1">
                         <div class="fw-bold small text-truncate" style="max-width: 120px;">${user.name}</div>
+                        <div class="progress mt-1" style="height: 4px;">
+                            <div class="progress-bar bg-success" style="width: ${user.progress || 0}%"></div>
+                        </div>
                     </div>
-                    <div class="badge bg-success-subtle text-success rounded-pill">${user.points.toLocaleString()} pts</div>
+                    <div class="text-end">
+                        <div class="badge bg-success-subtle text-success rounded-pill">${user.points.toLocaleString()} pts</div>
+                        <div class="small text-muted" style="font-size: 0.7rem;">${user.progress || 0}% Done</div>
+                    </div>
                 </div>
             `).join('');
         }

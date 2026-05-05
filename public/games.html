@@ -672,6 +672,7 @@
             await apiTrackActivity({
                 activity_type: 'game_play',
                 module: 'games',
+                game_type: currentGameType,
                 score: pts,
                 duration: 120, // Assume 2 mins per session
                 completed: true
