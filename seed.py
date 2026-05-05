@@ -177,24 +177,54 @@ def seed_data():
             ]
         }
 
-        # Seed all learning materials
+        from app.models.topics import Topic, TopicVideo
+
+        # Seed all learning materials and topics
         for lang in languages:
             # Seed Math
             for title, content, url, level in math_topics.get(lang, math_topics['en']):
                 db.session.add(LearningMaterial(title=title, content=content, resource_url=url, subject='Mathematics', language=lang, material_type='video_link', education_level=level))
+                
+                # Also create a Topic for this material so it shows up in the grid
+                topic = Topic(name=title, subject='Mathematics', education_level=level)
+                db.session.add(topic)
+                db.session.flush()
+                db.session.add(TopicVideo(topic_id=topic.id, video_url=url, video_title=title))
+
             # Seed English
             for title, content, url, level in english_topics.get(lang, english_topics['en']):
                 db.session.add(LearningMaterial(title=title, content=content, resource_url=url, subject='English', language=lang, material_type='video_link', education_level=level))
+                
+                topic = Topic(name=title, subject='English', education_level=level)
+                db.session.add(topic)
+                db.session.flush()
+                db.session.add(TopicVideo(topic_id=topic.id, video_url=url, video_title=title))
+
             # Seed Biology
             for title, content, url, level in biology_topics.get(lang, biology_topics['en']):
                 db.session.add(LearningMaterial(title=title, content=content, resource_url=url, subject='Science', language=lang, material_type='video_link', education_level=level))
+                
+                topic = Topic(name=title, subject='Science', education_level=level)
+                db.session.add(topic)
+                db.session.flush()
+                db.session.add(TopicVideo(topic_id=topic.id, video_url=url, video_title=title))
             
-            # Also add Physics and Chemistry topics to Science (General Science)
+            # Also add Physics and Chemistry topics to Science
             for title, content, url, level in physics_topics.get(lang, physics_topics['en']):
                 db.session.add(LearningMaterial(title=title, content=content, resource_url=url, subject='Science', language=lang, material_type='video_link', education_level=level))
+                
+                topic = Topic(name=title, subject='Science', education_level=level)
+                db.session.add(topic)
+                db.session.flush()
+                db.session.add(TopicVideo(topic_id=topic.id, video_url=url, video_title=title))
             
             for title, content, url, level in chemistry_topics.get(lang, chemistry_topics['en']):
                 db.session.add(LearningMaterial(title=title, content=content, resource_url=url, subject='Science', language=lang, material_type='video_link', education_level=level))
+                
+                topic = Topic(name=title, subject='Science', education_level=level)
+                db.session.add(topic)
+                db.session.flush()
+                db.session.add(TopicVideo(topic_id=topic.id, video_url=url, video_title=title))
 
             # Seed Physics (as standalone)
             for title, content, url, level in physics_topics.get(lang, physics_topics['en']):
