@@ -12,32 +12,48 @@ chat_bp = Blueprint('chat', __name__)
 
 def call_gemini_api(prompt):
     api_key = os.getenv("GEMINI_API_KEY")
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key={api_key}"
+    if not api_key:
+        return "I'm sorry, but my AI core is currently offline (API Key Missing). Please contact the administrator."
+
+    # Using the stable 1.5 flash model
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={api_key}"
     
     payload = {
         "contents": [{
             "parts": [{
                 "text": prompt
             }]
-        }]
+        }],
+        "generationConfig": {
+            "temperature": 0.7,
+            "topP": 0.8,
+            "topK": 40,
+            "maxOutputTokens": 2048,
+        }
     }
     
     headers = {'Content-Type': 'application/json'}
     
     try:
-        response = requests.post(url, json=payload, headers=headers)
+        response = requests.post(url, json=payload, headers=headers, timeout=10)
         response.raise_for_status()
         result = response.json()
         
-        # Extract response text
         if 'candidates' in result and len(result['candidates']) > 0:
-            return result['candidates'][0]['content']['parts'][0]['text']
-        return "I'm here to help! Could you please rephrase your request?"
+            part = result['candidates'][0]['content']['parts'][0]
+            if 'text' in part:
+                return part['text']
+        
+        return "I understood your question, but I'm having trouble generating a response. Could you try asking in a different way?"
+    except requests.exceptions.RequestException as e:
+        print(f"Gemini API Request Error: {e}")
+        if response.status_code == 429:
+            return "I'm receiving too many questions at once! Please wait about 10 seconds and try again — I'll be ready."
+        if response.status_code >= 500:
+            return "Google's AI service is currently taking a short break (500 Error). Please try again in a few moments."
+        return "I'm having a brief technical moment connecting to my brain. Please try again in a few seconds!"
     except Exception as e:
-        error_msg = str(e)
-        if "503" in error_msg or "429" in error_msg:
-            return "Google's AI servers are currently experiencing very high demand. Please wait a few seconds and try sending your question again — I'll be ready when you are!"
-        print(f"Gemini API Error: {error_msg}")
+        print(f"Gemini Unexpected Error: {e}")
         return "I'm having a brief technical moment. Please try again in a few seconds!"
 
 @chat_bp.route('/send', methods=['POST'])

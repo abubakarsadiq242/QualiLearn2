@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.models.topics import Topic, TopicVideo
 from app import db
 from app.utils.auth import admin_required
@@ -22,10 +22,27 @@ def create_topic():
     
     return jsonify({"success": True, "message": "Topic created", "data": topic.to_dict()}), 201
 
+from app.models.user import User
+
 @topics_bp.route('/', methods=['GET'])
 @jwt_required()
 def get_topics():
-    topics = Topic.query.filter_by(is_deleted=False).all()
+    user_id = get_jwt_identity()
+    level = request.args.get('level')
+    
+    if not level and user_id:
+        user = db.session.get(User, int(user_id))
+        if user and user.education_level:
+            u_level = user.education_level.upper()
+            if 'SSS' in u_level: level = 'SSS'
+            elif 'JSS' in u_level: level = 'JSS'
+            elif 'PRIMARY' in u_level: level = 'Primary'
+
+    query = Topic.query.filter_by(is_deleted=False)
+    if level:
+        query = query.filter_by(education_level=level)
+        
+    topics = query.all()
     grouped = {}
     for t in topics:
         if t.subject not in grouped:

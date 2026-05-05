@@ -10,6 +10,7 @@ class Flashcard(db.Model):
     back = db.Column(db.Text, nullable=False)
     subject = db.Column(db.String(100))
     language = db.Column(db.String(10), default='en')
+    education_level = db.Column(db.String(50), default='SSS') # JSS, SSS, Primary
     next_review_date = db.Column(db.DateTime, default=datetime.utcnow)
     difficulty_score = db.Column(db.Integer, default=0) # Simple rating
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
@@ -20,6 +21,7 @@ class Flashcard(db.Model):
             'front': self.front,
             'back': self.back,
             'subject': self.subject,
+            'education_level': self.education_level,
             'language': self.language,
             'next_review_date': self.next_review_date.isoformat() if self.next_review_date else None,
             'difficulty_score': self.difficulty_score,

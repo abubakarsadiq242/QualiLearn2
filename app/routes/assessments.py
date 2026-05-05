@@ -7,12 +7,23 @@ from app.utils.auth import admin_required
 assessments_bp = Blueprint('assessments', __name__)
 
 @assessments_bp.route('/questions', methods=['GET'])
+@jwt_required(optional=True)
 def get_questions():
     subject = request.args.get('subject')
     year = request.args.get('year')
     topic = request.args.get('topic')
     lang = request.args.get('lang', 'en')
+    level = request.args.get('level')
     
+    from app.models.user import User
+    user_id = get_jwt_identity()
+    if not level and user_id:
+        user = db.session.get(User, int(user_id))
+        if user and user.education_level:
+            u_level = user.education_level.upper()
+            if 'SSS' in u_level: level = 'SSS'
+            elif 'JSS' in u_level: level = 'JSS'
+
     query = PastQuestion.query.filter_by(language=lang)
     if subject:
         query = query.filter_by(subject=subject)
@@ -20,6 +31,8 @@ def get_questions():
         query = query.filter_by(year=year)
     if topic:
         query = query.filter_by(topic=topic)
+    if level:
+        query = query.filter_by(education_level=level)
         
     questions = query.all()
     

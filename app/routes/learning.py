@@ -49,14 +49,29 @@ def upload_file():
     return jsonify({"success": False, "message": "File type not allowed"}), 400
 
 @learning_bp.route('/materials', methods=['GET'])
+@jwt_required(optional=True)
 def get_materials():
     subject = request.args.get('subject')
     lang = request.args.get('lang', 'en')
     search = request.args.get('search')
+    level = request.args.get('level')
     
+    # Auto-infer level from user profile if not provided
+    user_id = get_jwt_identity()
+    if not level and user_id:
+        user = db.session.get(User, int(user_id))
+        if user and user.education_level:
+            u_level = user.education_level.upper()
+            if 'SSS' in u_level: level = 'SSS'
+            elif 'JSS' in u_level: level = 'JSS'
+            elif 'PRIMARY' in u_level: level = 'Primary'
+
     query = LearningMaterial.query.filter_by(language=lang)
     if subject:
         query = query.filter_by(subject=subject)
+    if level:
+        query = query.filter_by(education_level=level)
+        
     if search:
         query = query.filter(
             (LearningMaterial.title.ilike(f'%{search}%')) | 
@@ -94,20 +109,6 @@ def get_vocational():
         "data": [c.to_dict() for c in content]
     }), 200
 
-@learning_bp.route('/flashcards', methods=['GET'])
-def get_flashcards():
-    subject = request.args.get('subject')
-    lang = request.args.get('lang', 'en')
-    
-    query = Flashcard.query.filter_by(language=lang)
-    if subject:
-        query = query.filter_by(subject=subject)
-        
-    cards = query.all()
-    return jsonify({
-        "success": True,
-        "data": [c.to_dict() for c in cards]
-    }), 200
 
 @learning_bp.route('/material/<int:material_id>', methods=['GET'])
 def get_material(material_id):

@@ -60,149 +60,149 @@ def seed_data():
         # --- Mathematics Topics ---
         math_topics = {
             'en': [
-                ('Algebraic Expressions', 'Learn to simplify complex algebraic expressions with practical examples.', 'https://www.youtube.com/embed/vDqOoI-4Z6M'),
-                ('Quadratic Equations', 'Master the quadratic formula and solving for x step by step.', 'https://www.youtube.com/embed/i7idZShXly8'),
-                ('Trigonometry Basics', 'Understanding Sine, Cosine, and Tangent in right-angled triangles.', 'https://www.youtube.com/embed/PUB0TaZ7bhA'),
-                ('Circle Geometry', 'Theorems involving chords, tangents and angles in a circle.', 'https://www.youtube.com/embed/74RcUjxErCg'),
-                ('Calculus: Differentiation', 'Introduction to derivatives and fundamental rules of differentiation.', 'https://www.youtube.com/embed/9vKqVkMQHKk'),
-                ('Calculus: Integration', 'Mastering the anti-derivative and basic integration techniques.', 'https://www.youtube.com/embed/6WUjbJEeJwM'),
-                ('Statistics: Data Handling', 'Learn about Mean, Median, Mode and Frequency tables.', 'https://www.youtube.com/embed/kn83BA7cRNM'),
-                ('Probability Theory', 'Introductory concepts to calculating the likelihood of events.', 'https://www.youtube.com/embed/KzfWUEJjG18')
+                ('Algebraic Expressions', 'Learn to simplify complex algebraic expressions with practical examples.', 'https://www.youtube.com/embed/vDqOoI-4Z6M', 'JSS'),
+                ('Quadratic Equations', 'Master the quadratic formula and solving for x step by step.', 'https://www.youtube.com/embed/i7idZShXly8', 'SSS'),
+                ('Trigonometry Basics', 'Understanding Sine, Cosine, and Tangent in right-angled triangles.', 'https://www.youtube.com/embed/PUB0TaZ7bhA', 'SSS'),
+                ('Circle Geometry', 'Theorems involving chords, tangents and angles in a circle.', 'https://www.youtube.com/embed/74RcUjxErCg', 'SSS'),
+                ('Calculus: Differentiation', 'Introduction to derivatives and fundamental rules of differentiation.', 'https://www.youtube.com/embed/9vKqVkMQHKk', 'SSS'),
+                ('Calculus: Integration', 'Mastering the anti-derivative and basic integration techniques.', 'https://www.youtube.com/embed/6WUjbJEeJwM', 'SSS'),
+                ('Statistics: Data Handling', 'Learn about Mean, Median, Mode and Frequency tables.', 'https://www.youtube.com/embed/kn83BA7cRNM', 'JSS'),
+                ('Probability Theory', 'Introductory concepts to calculating the likelihood of events.', 'https://www.youtube.com/embed/KzfWUEJjG18', 'JSS')
             ],
             'ha': [
-                ('Lissafin Algebra', 'Koyi yadda ake sauƙaƙa lissafin algebra.', 'https://www.youtube.com/embed/vDqOoI-4Z6M'),
-                ('Lissafin Quadratic', 'Kwarewa wajen amfani da dabarun quadratic.', 'https://www.youtube.com/embed/i7idZShXly8'),
-                ('Trigonometry na Farko', 'Fahimtar zane-zanen sine da cosine.', 'https://www.youtube.com/embed/PUB0TaZ7bhA'),
-                ('Kiɗiddiga (Statistics)', 'Ma\'aunin kididdiga don rukunin bayanai.', 'https://www.youtube.com/embed/kn83BA7cRNM'),
-                ('Calculus na Diferensheshin', 'Gabatarwa ga derivative da dokokin differentiation.', 'https://www.youtube.com/embed/9vKqVkMQHKk'),
-                                ('Siffofin Da\'ira (Circle Geometry)', 'Koyi game da chords, tangents, da angles a cikin da\'ira.', 'https://www.youtube.com/embed/74RcUjxErCg'),
-                ('Lissafin Probability', 'Koyi yadda ake lissafin yiwuwar abubuwa su faru.', 'https://www.youtube.com/embed/KzfWUEJjG18'),
-                ('Calculus na Integration', 'Kwarewa wajen yin amfani da dabarun integration.', 'https://www.youtube.com/embed/6WUjbJEeJwM')
+                ('Lissafin Algebra', 'Koyi yadda ake sauƙaƙa lissafin algebra.', 'https://www.youtube.com/embed/vDqOoI-4Z6M', 'JSS'),
+                ('Lissafin Quadratic', 'Kwarewa wajen amfani da dabarun quadratic.', 'https://www.youtube.com/embed/i7idZShXly8', 'SSS'),
+                ('Trigonometry na Farko', 'Fahimtar zane-zanen sine da cosine.', 'https://www.youtube.com/embed/PUB0TaZ7bhA', 'SSS'),
+                ('Kiɗiddiga (Statistics)', 'Ma\'aunin kididdiga don rukunin bayanai.', 'https://www.youtube.com/embed/kn83BA7cRNM', 'JSS'),
+                ('Calculus na Diferensheshin', 'Gabatarwa ga derivative da dokokin differentiation.', 'https://www.youtube.com/embed/9vKqVkMQHKk', 'SSS'),
+                ('Siffofin Da\'ira (Circle Geometry)', 'Koyi game da chords, tangents, da angles a cikin da\'ira.', 'https://www.youtube.com/embed/74RcUjxErCg', 'SSS'),
+                ('Lissafin Probability', 'Koyi yadda ake lissafin yiwuwar abubuwa su faru.', 'https://www.youtube.com/embed/KzfWUEJjG18', 'JSS'),
+                ('Calculus na Integration', 'Kwarewa wajen yin amfani da dabarun integration.', 'https://www.youtube.com/embed/6WUjbJEeJwM', 'SSS')
             ],
             'yo': [
-                ('Àlàyé Algebra', 'Kọ́ bí a ṣe n dín àwọn algebra expressions kù.', 'https://www.youtube.com/embed/vDqOoI-4Z6M'),
-                ('Àlàyé Quadratic', 'Mọ̀ nípa quadratic formula x = [-b ± √(b² - 4ac)] / 2a.', 'https://www.youtube.com/embed/i7idZShXly8'),
-                ('Ìmọ̀ Trigonometry', 'Mọ̀ nípa Sine, Cosine, àti Tangent rules.', 'https://www.youtube.com/embed/PUB0TaZ7bhA'),
-                ('Mọ̀ nípa Statistics', 'Kọ́ nípa Mean, Median, àti Mode fun data sets.', 'https://www.youtube.com/embed/kn83BA7cRNM'),
-                                ('Ìmọ̀ Circle Geometry', 'Kọ́ nípa chords, tangents àti angles nínú circle.', 'https://www.youtube.com/embed/74RcUjxErCg'),
-                ('Ìmọ̀ Integration', 'Kọ́ nípa integration àti anti-derivatives.', 'https://www.youtube.com/embed/6WUjbJEeJwM')
+                ('Àlàyé Algebra', 'Kọ́ bí a ṣe n dín àwọn algebra expressions kù.', 'https://www.youtube.com/embed/vDqOoI-4Z6M', 'JSS'),
+                ('Àlàyé Quadratic', 'Mọ̀ nípa quadratic formula x = [-b ± √(b² - 4ac)] / 2a.', 'https://www.youtube.com/embed/i7idZShXly8', 'SSS'),
+                ('Ìmọ̀ Trigonometry', 'Mọ̀ nípa Sine, Cosine, àti Tangent rules.', 'https://www.youtube.com/embed/PUB0TaZ7bhA', 'SSS'),
+                ('Mọ̀ nípa Statistics', 'Kọ́ nípa Mean, Median, àti Mode fun data sets.', 'https://www.youtube.com/embed/kn83BA7cRNM', 'JSS'),
+                ('Ìmọ̀ Circle Geometry', 'Kọ́ nípa chords, tangents àti angles nínú circle.', 'https://www.youtube.com/embed/74RcUjxErCg', 'SSS'),
+                ('Ìmọ̀ Integration', 'Kọ́ nípa integration àti anti-derivatives.', 'https://www.youtube.com/embed/6WUjbJEeJwM', 'SSS')
             ],
             'ig': [
-                ('Nkọwa Algebra', 'Mụta otú e si eme ka algebra expression dị mfe.', 'https://www.youtube.com/embed/vDqOoI-4Z6M'),
-                ('Equation Quadratic', 'Mụta otú e si eji quadratic formula eme ihe.', 'https://www.youtube.com/embed/i7idZShXly8'),
-                ('Ihe Ndị Dị n’ime Trigonometry', 'Mụta maka Sine, Cosine, na Tangent rules.', 'https://www.youtube.com/embed/PUB0TaZ7bhA'),
-                ('Statistics na Data', 'Mụta maka Mean, Median, na Mode maka data sets.', 'https://www.youtube.com/embed/kn83BA7cRNM'),
-                                ('Mmụta Circle Geometry', 'Mụta maka chords, tangents na angles n’ime circle.', 'https://www.youtube.com/embed/74RcUjxErCg'),
-                ('Mmụta Integration', 'Mụta maka integration na anti-derivatives.', 'https://www.youtube.com/embed/6WUjbJEeJwM')
+                ('Nkọwa Algebra', 'Mụta otú e si eme ka algebra expression dị mfe.', 'https://www.youtube.com/embed/vDqOoI-4Z6M', 'JSS'),
+                ('Equation Quadratic', 'Mụta otú e si eji quadratic formula eme ihe.', 'https://www.youtube.com/embed/i7idZShXly8', 'SSS'),
+                ('Ihe Ndị Dị n’ime Trigonometry', 'Mụta maka Sine, Cosine, na Tangent rules.', 'https://www.youtube.com/embed/PUB0TaZ7bhA', 'SSS'),
+                ('Statistics na Data', 'Mụta maka Mean, Median, na Mode maka data sets.', 'https://www.youtube.com/embed/kn83BA7cRNM', 'JSS'),
+                ('Mmụta Circle Geometry', 'Mụta maka chords, tangents na angles n’ime circle.', 'https://www.youtube.com/embed/74RcUjxErCg', 'SSS'),
+                ('Mmụta Integration', 'Mụta maka integration na anti-derivatives.', 'https://www.youtube.com/embed/6WUjbJEeJwM', 'SSS')
             ],
             'pi': [
-                ('Algebra Grammar', 'Learn how to cut algebra expressions down to size.', 'https://www.youtube.com/embed/vDqOoI-4Z6M'),
-                ('Quadratic Equation', 'Master that x = [-b ± √(b² - 4ac)] / 2a formula.', 'https://www.youtube.com/embed/i7idZShXly8'),
-                ('Trigonometry Flow', 'Understand Sine, Cosine, and Tangent rules sharp-sharp.', 'https://www.youtube.com/embed/PUB0TaZ7bhA'),
-                ('Statistics: Data Level', 'Learn Mean, Median, and Mode for set patterns.', 'https://www.youtube.com/embed/kn83BA7cRNM'),
-                                ('Circle Geometry Level', 'Master chords, tangents, and angles inside circle.', 'https://www.youtube.com/embed/74RcUjxErCg'),
-                ('Calculus: Integration Level', 'Master integration and anti-derivatives.', 'https://www.youtube.com/embed/6WUjbJEeJwM')
+                ('Algebra Grammar', 'Learn how to cut algebra expressions down to size.', 'https://www.youtube.com/embed/vDqOoI-4Z6M', 'JSS'),
+                ('Quadratic Equation', 'Master that x = [-b ± √(b² - 4ac)] / 2a formula.', 'https://www.youtube.com/embed/i7idZShXly8', 'SSS'),
+                ('Trigonometry Flow', 'Understand Sine, Cosine, and Tangent rules sharp-sharp.', 'https://www.youtube.com/embed/PUB0TaZ7bhA', 'SSS'),
+                ('Statistics: Data Level', 'Learn Mean, Median, and Mode for set patterns.', 'https://www.youtube.com/embed/kn83BA7cRNM', 'JSS'),
+                ('Circle Geometry Level', 'Master chords, tangents, and angles inside circle.', 'https://www.youtube.com/embed/74RcUjxErCg', 'SSS'),
+                ('Calculus: Integration Level', 'Master integration and anti-derivatives.', 'https://www.youtube.com/embed/6WUjbJEeJwM', 'SSS')
             ]
         }
 
         # --- English Topics ---
         english_topics = {
             'en': [
-                ('English Grammar: Tenses', 'Mastering Past, Present, and Future tenses for perfect communication.', 'https://www.youtube.com/embed/sCiG6rlk2Bc'),
-                ('Composition Writing', 'Learn the secrets to writing high-scoring narrative and descriptive essays.', 'https://www.youtube.com/embed/RFwui6V32nc'),
-                ('Elements of Literature', 'Exploring Plot, Theme, and Characterization in African Literature.', 'https://www.youtube.com/embed/Pxao6AG88Lw'),
-                ('Summary Writing Skills', 'How to extract main points and write concise summaries.', 'https://www.youtube.com/embed/bhtz7RSaKlc'),
-                ('Oral English: Vowels', 'Perfecting pronunciation of English vowel sounds.', 'https://www.youtube.com/embed/uW0Qd86_XfM'),
-                ('Concord and Agreement', 'Rules governing the relationship between subjects and verbs.', 'https://www.youtube.com/embed/7_mZInLh-64')
+                ('English Grammar: Tenses', 'Mastering Past, Present, and Future tenses for perfect communication.', 'https://www.youtube.com/embed/sCiG6rlk2Bc', 'JSS'),
+                ('Composition Writing', 'Learn the secrets to writing high-scoring narrative and descriptive essays.', 'https://www.youtube.com/embed/RFwui6V32nc', 'JSS'),
+                ('Elements of Literature', 'Exploring Plot, Theme, and Characterization in African Literature.', 'https://www.youtube.com/embed/Pxao6AG88Lw', 'SSS'),
+                ('Summary Writing Skills', 'How to extract main points and write concise summaries.', 'https://www.youtube.com/embed/bhtz7RSaKlc', 'SSS'),
+                ('Oral English: Vowels', 'Perfecting pronunciation of English vowel sounds.', 'https://www.youtube.com/embed/uW0Qd86_XfM', 'JSS'),
+                ('Concord and Agreement', 'Rules governing the relationship between subjects and verbs.', 'https://www.youtube.com/embed/7_mZInLh-64', 'SSS')
             ],
             'ha': [
-                ('Dokokin Turanci: Tenses', 'Kwarewa wajen amfani da Past, Present, da Future tenses.', 'https://www.youtube.com/embed/sCiG6rlk2Bc'),
-                ('Dabarun Rubutu', 'Koyi yadda ake rubuta shararren labari da rubutun bayani.', 'https://www.youtube.com/embed/RFwui6V32nc'),
-                ('Adabin Turanci', 'Gano Makasudin Labari, Jigo, da Halayen mutane a adabin Afirka.', 'https://www.youtube.com/embed/Pxao6AG88Lw')
+                ('Dokokin Turanci: Tenses', 'Kwarewa wajen amfani da Past, Present, da Future tenses.', 'https://www.youtube.com/embed/sCiG6rlk2Bc', 'JSS'),
+                ('Dabarun Rubutu', 'Koyi yadda ake rubuta shararren labari da rubutun bayani.', 'https://www.youtube.com/embed/RFwui6V32nc', 'JSS'),
+                ('Adabin Turanci', 'Gano Makasudin Labari, Jigo, da Halayen mutane a adabin Afirka.', 'https://www.youtube.com/embed/Pxao6AG88Lw', 'SSS')
             ],
             'yo': [
-                ('Èdè Gẹ̀ẹ́sì: Tenses', 'Mọ̀ nípa Past, Present, àti Future tenses.', 'https://www.youtube.com/embed/sCiG6rlk2Bc'),
-                ('Ìlànà Ìkọ̀wé', 'Kọ́ bí a ṣe n kọ narrative àti descriptive essays.', 'https://www.youtube.com/embed/RFwui6V32nc')
+                ('Èdè Gẹ̀ẹ́sì: Tenses', 'Mọ̀ nípa Past, Present, àti Future tenses.', 'https://www.youtube.com/embed/sCiG6rlk2Bc', 'JSS'),
+                ('Ìlànà Ìkọ̀wé', 'Kọ́ bí a ṣe n kọ narrative àti descriptive essays.', 'https://www.youtube.com/embed/RFwui6V32nc', 'JSS')
             ],
             'ig': [
-                ('Asụsụ Bekee: Tenses', 'Mụta maka Past, Present, na Future tenses.', 'https://www.youtube.com/embed/sCiG6rlk2Bc'),
-                ('Nkà n’Ide Ihe', 'Mụta otú e si ede narrative na descriptive essays.', 'https://www.youtube.com/embed/RFwui6V32nc')
+                ('Asụsụ Bekee: Tenses', 'Mụta maka Past, Present, na Future tenses.', 'https://www.youtube.com/embed/sCiG6rlk2Bc', 'JSS'),
+                ('Nkà n’Ide Ihe', 'Mụta otú e si ede narrative na descriptive essays.', 'https://www.youtube.com/embed/RFwui6V32nc', 'JSS')
             ],
             'pi': [
-                ('English Grammar: Tenses', 'Master how to use Past, Present, and Future tenses.', 'https://www.youtube.com/embed/sCiG6rlk2Bc'),
-                ('Composition Writing', 'Learn the code to write correct narrative and descriptive essays.', 'https://www.youtube.com/embed/RFwui6V32nc')
+                ('English Grammar: Tenses', 'Master how to use Past, Present, and Future tenses.', 'https://www.youtube.com/embed/sCiG6rlk2Bc', 'JSS'),
+                ('Composition Writing', 'Learn the code to write correct narrative and descriptive essays.', 'https://www.youtube.com/embed/RFwui6V32nc', 'JSS')
             ]
         }
 
         # --- Science (Biology) Topics ---
         biology_topics = {
             'en': [
-                ('Cell Structure & Function', 'Detailed look at organelles and the building blocks of life.', 'https://www.youtube.com/embed/URUJD5NEXC8'),
-                ('Photosynthesis', 'The chemical process of light conversion in green plants.', 'https://www.youtube.com/embed/SXP6u7m6YFk'),
-                ('Genetics & Heredity', 'How DNA and RNA control inheritance across generations.', 'https://www.youtube.com/embed/2reevjoVn6c'),
-                ('Respiratory System', 'Understanding how oxygen and carbon dioxide exchange in humans.', 'https://www.youtube.com/embed/f9ONXd_-anM')
+                ('Cell Structure & Function', 'Detailed look at organelles and the building blocks of life.', 'https://www.youtube.com/embed/URUJD5NEXC8', 'JSS'),
+                ('Photosynthesis', 'The chemical process of light conversion in green plants.', 'https://www.youtube.com/embed/SXP6u7m6YFk', 'JSS'),
+                ('Genetics & Heredity', 'How DNA and RNA control inheritance across generations.', 'https://www.youtube.com/embed/2reevjoVn6c', 'SSS'),
+                ('Respiratory System', 'Understanding how oxygen and carbon dioxide exchange in humans.', 'https://www.youtube.com/embed/f9ONXd_-anM', 'JSS')
             ],
             'ha': [
-                ('Biology: Cell Structure', 'Koyi game da sassan tantanin halitta da ayyukansu.', 'https://www.youtube.com/embed/URUJD5NEXC8'),
-                ('Photosynthesis Process', 'Yadda tsire-tsire ke amfani da haske don samar da abinci.', 'https://www.youtube.com/embed/SXP6u7m6YFk')
+                ('Biology: Cell Structure', 'Koyi game da sassan tantanin halitta da ayyukansu.', 'https://www.youtube.com/embed/URUJD5NEXC8', 'JSS'),
+                ('Photosynthesis Process', 'Yadda tsire-tsire ke amfani da haske don samar da abinci.', 'https://www.youtube.com/embed/SXP6u7m6YFk', 'JSS')
             ],
             'yo': [
-                ('Ẹ̀kọ́ Biology: Cell', 'Mọ̀ nípa cell structure àti iṣẹ́ rẹ̀.', 'https://www.youtube.com/embed/URUJD5NEXC8')
+                ('Ẹ̀kọ́ Biology: Cell', 'Mọ̀ nípa cell structure àti iṣẹ́ rẹ̀.', 'https://www.youtube.com/embed/URUJD5NEXC8', 'JSS')
             ],
             'ig': [
-                ('Mmụta Biology: Cell', 'Mụta maka cell structure na ọrụ ya.', 'https://www.youtube.com/embed/URUJD5NEXC8')
+                ('Mmụta Biology: Cell', 'Mụta maka cell structure na ọrụ ya.', 'https://www.youtube.com/embed/URUJD5NEXC8', 'JSS')
             ],
             'pi': [
-                ('Cell Structure & Level', 'Better look at how your cells dey work properly.', 'https://www.youtube.com/embed/URUJD5NEXC8')
+                ('Cell Structure & Level', 'Better look at how your cells dey work properly.', 'https://www.youtube.com/embed/URUJD5NEXC8', 'JSS')
             ]
         }
 
         # --- Physics Topics ---
         physics_topics = {
             'en': [
-                ('Newton\'s Laws of Motion', 'Understanding how forces affect objects in motion.', 'https://www.youtube.com/embed/g550H4e5FCY'),
-                ('Work, Energy & Power', 'Master the fundamental concepts of physical energy.', 'https://www.youtube.com/embed/2WS1sG9fhOk'),
-                ('Pressure in Liquids', 'Hydraulics and pressure distribution in fluids.', 'https://www.youtube.com/embed/0B0Xv2fS9_U'),
-                ('Electricity Basics', 'Introduction to circuits, voltage, and current.', 'https://www.youtube.com/embed/mc979OhitAg')
+                ('Newton\'s Laws of Motion', 'Understanding how forces affect objects in motion.', 'https://www.youtube.com/embed/g550H4e5FCY', 'SSS'),
+                ('Work, Energy & Power', 'Master the fundamental concepts of physical energy.', 'https://www.youtube.com/embed/2WS1sG9fhOk', 'SSS'),
+                ('Pressure in Liquids', 'Hydraulics and pressure distribution in fluids.', 'https://www.youtube.com/embed/0B0Xv2fS9_U', 'JSS'),
+                ('Electricity Basics', 'Introduction to circuits, voltage, and current.', 'https://www.youtube.com/embed/mc979OhitAg', 'JSS')
             ]
         }
 
         # --- Chemistry Topics ---
         chemistry_topics = {
             'en': [
-                ('Atomic Structure', 'Detailed study of protons, neutrons, and electrons.', 'https://www.youtube.com/embed/OH-aSu-rWgk'),
-                ('Chemical Bonding', 'How atoms join together to form molecules.', 'https://www.youtube.com/embed/QXT4OVM4vXI'),
-                ('Acids, Bases and Salts', 'Understanding chemical properties of substances.', 'https://www.youtube.com/embed/ANi709MYnWg'),
-                ('The Periodic Table', 'Organisation of elements and their properties.', 'https://www.youtube.com/embed/0RRVV4Diomg')
+                ('Atomic Structure', 'Detailed study of protons, neutrons, and electrons.', 'https://www.youtube.com/embed/OH-aSu-rWgk', 'JSS'),
+                ('Chemical Bonding', 'How atoms join together to form molecules.', 'https://www.youtube.com/embed/QXT4OVM4vXI', 'SSS'),
+                ('Acids, Bases and Salts', 'Understanding chemical properties of substances.', 'https://www.youtube.com/embed/ANi709MYnWg', 'JSS'),
+                ('The Periodic Table', 'Organisation of elements and their properties.', 'https://www.youtube.com/embed/0RRVV4Diomg', 'SSS')
             ]
         }
 
         # Seed all learning materials
         for lang in languages:
             # Seed Math
-            for title, content, url in math_topics.get(lang, math_topics['en']):
-                db.session.add(LearningMaterial(title=title, content=content, resource_url=url, subject='Mathematics', language=lang, material_type='video_link'))
+            for title, content, url, level in math_topics.get(lang, math_topics['en']):
+                db.session.add(LearningMaterial(title=title, content=content, resource_url=url, subject='Mathematics', language=lang, material_type='video_link', education_level=level))
             # Seed English
-            for title, content, url in english_topics.get(lang, english_topics['en']):
-                db.session.add(LearningMaterial(title=title, content=content, resource_url=url, subject='English', language=lang, material_type='video_link'))
+            for title, content, url, level in english_topics.get(lang, english_topics['en']):
+                db.session.add(LearningMaterial(title=title, content=content, resource_url=url, subject='English', language=lang, material_type='video_link', education_level=level))
             # Seed Biology
-            for title, content, url in biology_topics.get(lang, biology_topics['en']):
-                db.session.add(LearningMaterial(title=title, content=content, resource_url=url, subject='Science', language=lang, material_type='video_link'))
+            for title, content, url, level in biology_topics.get(lang, biology_topics['en']):
+                db.session.add(LearningMaterial(title=title, content=content, resource_url=url, subject='Science', language=lang, material_type='video_link', education_level=level))
             
             # Also add Physics and Chemistry topics to Science (General Science)
-            for title, content, url in physics_topics.get(lang, physics_topics['en']):
-                db.session.add(LearningMaterial(title=title, content=content, resource_url=url, subject='Science', language=lang, material_type='video_link'))
+            for title, content, url, level in physics_topics.get(lang, physics_topics['en']):
+                db.session.add(LearningMaterial(title=title, content=content, resource_url=url, subject='Science', language=lang, material_type='video_link', education_level=level))
             
-            for title, content, url in chemistry_topics.get(lang, chemistry_topics['en']):
-                db.session.add(LearningMaterial(title=title, content=content, resource_url=url, subject='Science', language=lang, material_type='video_link'))
+            for title, content, url, level in chemistry_topics.get(lang, chemistry_topics['en']):
+                db.session.add(LearningMaterial(title=title, content=content, resource_url=url, subject='Science', language=lang, material_type='video_link', education_level=level))
 
             # Seed Physics (as standalone)
-            for title, content, url in physics_topics.get(lang, physics_topics['en']):
-                db.session.add(LearningMaterial(title=title, content=content, resource_url=url, subject='Physics', language=lang, material_type='video_link'))
+            for title, content, url, level in physics_topics.get(lang, physics_topics['en']):
+                db.session.add(LearningMaterial(title=title, content=content, resource_url=url, subject='Physics', language=lang, material_type='video_link', education_level=level))
             
             # Seed Chemistry (as standalone)
-            for title, content, url in chemistry_topics.get(lang, chemistry_topics['en']):
-                db.session.add(LearningMaterial(title=title, content=content, resource_url=url, subject='Chemistry', language=lang, material_type='video_link'))
+            for title, content, url, level in chemistry_topics.get(lang, chemistry_topics['en']):
+                db.session.add(LearningMaterial(title=title, content=content, resource_url=url, subject='Chemistry', language=lang, material_type='video_link', education_level=level))
 
         # --- Expanded Flashcards (50 per subject) ---
         flashcards_data = [
@@ -369,7 +369,11 @@ def seed_data():
                 ('Professional Tailoring', 'Complete guide to measurements, cutting, and stitching for beginners.', 'Fashion', 'https://www.youtube.com/embed/p9JdC_w0MvY'),
                 ('Smartphone Hardware Repair', 'Essential tips for screen replacement and fixing internal components.', 'Technology', 'https://www.youtube.com/embed/8kAsX_gXhR0'),
                 ('Web Design for Beginners', 'Learn HTML, CSS, and Responsive Design to build professional websites.', 'Technology', 'https://www.youtube.com/embed/mU6anWqZJcc'),
-                ('Professional Catering', 'Master the art of professional baking and Nigerian catering basics.', 'Culinary', 'https://www.youtube.com/embed/kYv9y_t9R14')
+                ('Professional Catering', 'Master the art of professional baking and Nigerian catering basics.', 'Culinary', 'https://www.youtube.com/embed/kYv9y_t9R14'),
+                ('Modern Plumbing Basics', 'Introductory guide to household plumbing, pipe fittings, and repairs.', 'Plumbing', 'https://www.youtube.com/embed/Xp4S1GvP2Qk'),
+                ('Basic Home Wiring', 'Learn how to safely handle electrical installations and home wiring.', 'Electrical', 'https://www.youtube.com/embed/fA_I2j-hF8A'),
+                ('Furniture Crafting', 'Step-by-step guide to building simple household furniture with wood.', 'Carpentry', 'https://www.youtube.com/embed/U3l08mP69Xw'),
+                ('Fashion Illustration', 'Master the art of sketching and designing your own fashion collections.', 'Fashion', 'https://www.youtube.com/embed/Pj1C9vI7Xg0')
             ],
             'ha': [
                 ('Ɗinkin Kaya na Zamani', 'Cikakken jagora kan aunawa, yanka, da dinkin kaya ga sabon koyo.', 'Fashion', 'https://www.youtube.com/embed/p9JdC_w0MvY'),
@@ -398,10 +402,12 @@ def seed_data():
             
             # Seed Flashcards
             for front, back, subject in flashcards_data:
-                db.session.add(Flashcard(front=front, back=back, subject=subject, language=lang))
+                # Default academic cards to SS level for now, can be mixed
+                level = 'SSS' if subject in ['Physics', 'Chemistry', 'Calculus'] else 'JSS'
+                db.session.add(Flashcard(front=front, back=back, subject=subject, language=lang, education_level=level))
 
         # Assessments
-        for title, sub in [('Mathematics Mastery', 'Mathematics'), ('English Proficiency', 'English'), ('General Science Review', 'Science')]:
+        for title, sub, lvl in [('Mathematics Mastery', 'Mathematics', 'SSS'), ('English Proficiency', 'English', 'JSS'), ('General Science Review', 'Science', 'JSS')]:
             asm = AssessmentTemplate(title=title, subject=sub, time_limit=15)
             db.session.add(asm)
             db.session.flush()
@@ -410,6 +416,22 @@ def seed_data():
                     Question(assessment_id=asm.id, text='Solve for x: 2x + 5 = 15', option_a='2', option_b='5', option_c='10', option_d='7', correct_option='B'),
                     Question(assessment_id=asm.id, text='What is the square root of 144?', option_a='12', option_b='14', option_c='10', option_d='16', correct_option='A')
                 ])
+
+        # Past Questions Seeding
+        pq_data = [
+            ('Mathematics', 2023, 'Algebra', 'Solve for y: 3y - 9 = 0', '1', '3', '9', '0', 'B', '3y = 9 => y = 3', 'SSS'),
+            ('Mathematics', 2022, 'Arithmetic', 'What is 15% of 200?', '20', '30', '40', '15', 'B', '0.15 * 200 = 30', 'JSS'),
+            ('English', 2023, 'Grammar', 'Identify the verb: "The cat runs fast."', 'The', 'cat', 'runs', 'fast', 'C', 'Action word is runs', 'JSS'),
+            ('Science', 2023, 'Biology', 'Which organ pumps blood?', 'Lungs', 'Heart', 'Liver', 'Brain', 'B', 'The heart is the primary pump.', 'SSS')
+        ]
+        
+        for sub, yr, top, txt, oa, ob, oc, od, ans, exp, lvl in pq_data:
+            for lang in languages:
+                db.session.add(PastQuestion(
+                    subject=sub, year=yr, topic=top, question_text=txt,
+                    option_a=oa, option_b=ob, option_c=oc, option_d=od,
+                    correct_answer=ans, explanation=exp, language=lang, education_level=lvl
+                ))
 
         db.session.commit()
         print("Database seeded with multilingual support successfully!")

@@ -213,7 +213,7 @@
                     <div class="p-4">
                         <h4 class="fw-bold mb-2 outfit" data-i18n="game_tic_tac_toe">Tic-Tac-Toe</h4>
                         <p class="text-muted small mb-4" data-i18n="game_tic_tac_toe_desc">Strategic thinking and planning challenge.</p>
-                        <button class="btn btn-play" onclick="startTicTacToe()" data-i18n="btn_play">Play Now</button>
+                        <button class="btn btn-play" onclick="showLevelSelection('ttt')" data-i18n="btn_play">Play Now</button>
                     </div>
                 </div>
             </div>
@@ -226,7 +226,7 @@
                     <div class="p-4">
                         <h4 class="fw-bold mb-2 outfit" data-i18n="game_memory">Memory Match</h4>
                         <p class="text-muted small mb-4" data-i18n="game_memory_desc">Improve short-term memory and focus.</p>
-                        <button class="btn btn-play" onclick="startMemory()" style="background:#0ea5e9;" data-i18n="btn_play">Play Now</button>
+                        <button class="btn btn-play" onclick="showLevelSelection('memory')" style="background:#0ea5e9;" data-i18n="btn_play">Play Now</button>
                     </div>
                 </div>
             </div>
@@ -239,7 +239,7 @@
                     <div class="p-4">
                         <h4 class="fw-bold mb-2 outfit" data-i18n="game_math">Math Challenge</h4>
                         <p class="text-muted small mb-4" data-i18n="game_math_desc">Speed arithmetic and logical solving.</p>
-                        <button class="btn btn-play" onclick="startMath()" style="background:#f43f5e;" data-i18n="btn_play">Play Now</button>
+                        <button class="btn btn-play" onclick="showLevelSelection('math')" style="background:#f43f5e;" data-i18n="btn_play">Play Now</button>
                     </div>
                 </div>
             </div>
@@ -320,7 +320,33 @@
 
         function stopGame() {
             canvas.innerHTML = '';
+            if (mathTimerInterval) clearInterval(mathTimerInterval);
             stopStudyTimer();
+        }
+
+        let currentGameType = '';
+        let currentDifficulty = 'easy';
+
+        function showLevelSelection(type) {
+            currentGameType = type;
+            const names = { ttt: 'Tic-Tac-Toe', memory: 'Memory Match', math: 'Math Challenge' };
+            title.innerText = `Select Level - ${names[type]}`;
+            canvas.innerHTML = `
+                <div class="d-flex flex-column gap-3 w-75 mx-auto py-4">
+                    <button class="btn btn-outline-primary btn-lg rounded-4 py-3 fw-bold" onclick="launchGame('easy')">🌟 Easy</button>
+                    <button class="btn btn-outline-primary btn-lg rounded-4 py-3 fw-bold" onclick="launchGame('medium')">⚡ Medium</button>
+                    <button class="btn btn-outline-primary btn-lg rounded-4 py-3 fw-bold" onclick="launchGame('hard')">🏆 Hard</button>
+                    <button class="btn btn-dark btn-lg rounded-4 py-3 fw-bold" onclick="launchGame('pro')">🔥 Pro Mode</button>
+                </div>
+            `;
+            gameModal.show();
+        }
+
+        function launchGame(level) {
+            currentDifficulty = level;
+            if (currentGameType === 'ttt') startTicTacToe();
+            else if (currentGameType === 'memory') startMemory();
+            else if (currentGameType === 'math') startMath();
         }
 
         // --- Tic Tac Toe ---
@@ -370,8 +396,20 @@
 
         function aiMove() {
             if (!gameActive) return;
-            let empty = gameState.map((v, i) => v === null ? i : null).filter(v => v !== null);
-            let move = empty[Math.floor(Math.random() * empty.length)];
+            
+            let move;
+            const empty = gameState.map((v, i) => v === null ? i : null).filter(v => v !== null);
+
+            if (currentDifficulty === 'easy') {
+                move = empty[Math.floor(Math.random() * empty.length)];
+            } else if (currentDifficulty === 'medium') {
+                move = findWinningMove('O') || findWinningMove('X') || empty[Math.floor(Math.random() * empty.length)];
+            } else if (currentDifficulty === 'hard') {
+                move = findWinningMove('O') || findWinningMove('X') || (gameState[4] === null ? 4 : null) || empty[Math.floor(Math.random() * empty.length)];
+            } else {
+                // Pro: Minimax
+                move = getBestMove();
+            }
             
             gameState[move] = 'O';
             const cells = document.querySelectorAll('.ttt-cell');
@@ -391,6 +429,69 @@
             document.getElementById('gameStatus').innerText = "Your turn (X)";
         }
 
+        function findWinningMove(player) {
+            const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+            for (let w of wins) {
+                const vals = [gameState[w[0]], gameState[w[1]], gameState[w[2]]];
+                if (vals.filter(v => v === player).length === 2 && vals.filter(v => v === null).length === 1) {
+                    return w[vals.indexOf(null)];
+                }
+            }
+            return null;
+        }
+
+        function getBestMove() {
+            let bestScore = -Infinity;
+            let move;
+            for (let i = 0; i < 9; i++) {
+                if (gameState[i] === null) {
+                    gameState[i] = 'O';
+                    let score = minimax(gameState, 0, false);
+                    gameState[i] = null;
+                    if (score > bestScore) {
+                        bestScore = score;
+                        move = i;
+                    }
+                }
+            }
+            return move;
+        }
+
+        function minimax(board, depth, isMaximizing) {
+            if (checkWinFor('O')) return 10 - depth;
+            if (checkWinFor('X')) return depth - 10;
+            if (!board.includes(null)) return 0;
+
+            if (isMaximizing) {
+                let bestScore = -Infinity;
+                for (let i = 0; i < 9; i++) {
+                    if (board[i] === null) {
+                        board[i] = 'O';
+                        let score = minimax(board, depth + 1, false);
+                        board[i] = null;
+                        bestScore = Math.max(score, bestScore);
+                    }
+                }
+                return bestScore;
+            } else {
+                let bestScore = Infinity;
+                for (let i = 0; i < 9; i++) {
+                    if (board[i] === null) {
+                        board[i] = 'X';
+                        let score = minimax(board, depth + 1, true);
+                        board[i] = null;
+                        bestScore = Math.min(score, bestScore);
+                    }
+                }
+                return bestScore;
+            }
+        }
+
+        function checkWinFor(player) {
+            const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+            return wins.some(w => gameState[w[0]] === player && gameState[w[1]] === player && gameState[w[2]] === player);
+        }
+
         function checkWin() {
             const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
             return wins.some(w => gameState[w[0]] && gameState[w[0]] === gameState[w[1]] && gameState[w[0]] === gameState[w[2]]);
@@ -404,31 +505,51 @@
 
         // --- Memory Match ---
         function startMemory() {
-            title.innerText = "Memory Match";
-            const icons = ['bi-heart', 'bi-star', 'bi-moon', 'bi-brightness-high', 'bi-cloud', 'bi-lightning'];
-            const deck = [...icons, ...icons].sort(() => Math.random() - 0.5);
+            title.innerText = `Memory Match - ${currentDifficulty.toUpperCase()}`;
+            const icons = ['bi-heart', 'bi-star', 'bi-moon', 'bi-brightness-high', 'bi-cloud', 'bi-lightning', 'bi-gem', 'bi-palette', 'bi-cup-hot', 'bi-camera', 'bi-bicycle', 'bi-airplane'];
             
+            const pairsMap = { easy: 4, medium: 6, hard: 8, pro: 12 };
+            const pairs = pairsMap[currentDifficulty];
+            const activeIcons = icons.slice(0, pairs);
+            const deck = [...activeIcons, ...activeIcons].sort(() => Math.random() - 0.5);
+            
+            const cols = currentDifficulty === 'pro' ? 6 : 4;
+
             canvas.innerHTML = `
-                <div class="memory-grid">
+                <div class="memory-grid" style="grid-template-columns: repeat(${cols}, 80px);">
                     ${deck.map((icon, i) => `
-                        <div class="memory-card" data-icon="${icon}" onclick="flipCard(this)">
+                        <div class="memory-card" data-icon="${icon}">
                             <div class="front"><i class="bi bi-question fs-2"></i></div>
                             <div class="back"><i class="bi ${icon} fs-2"></i></div>
                         </div>
                     `).join('')}
                 </div>
-                <div id="memoryStatus" class="mt-4 fw-bold fs-5">Find the pairs!</div>
+                <div id="memoryStatus" class="mt-4 fw-bold fs-5 text-primary">Memorize the cards!</div>
             `;
             gameModal.show();
+            
             flippedCards = [];
             matchedPairs = 0;
+            totalPairs = pairs;
             
-            // Start real-time tracking
+            // Initial Reveal for 3 seconds
+            const cards = document.querySelectorAll('.memory-card');
+            cards.forEach(c => c.classList.add('flipped'));
+            
+            setTimeout(() => {
+                cards.forEach(c => {
+                    c.classList.remove('flipped');
+                    c.onclick = () => flipCard(c);
+                });
+                document.getElementById('memoryStatus').innerText = "Go! Find the pairs!";
+            }, 3000);
+            
             startStudyTimer(null);
         }
 
         let flippedCards = [];
         let matchedPairs = 0;
+        let totalPairs = 0;
 
         function flipCard(card) {
             if (flippedCards.length === 2 || card.classList.contains('flipped') || card.classList.contains('matched')) return;
@@ -441,58 +562,108 @@
                     flippedCards.forEach(c => c.classList.add('matched'));
                     flippedCards = [];
                     matchedPairs++;
-                    if (matchedPairs === 6) {
-                        document.getElementById('memoryStatus').innerText = "Amazing! You matched them all!";
-                        trackGameProgress(30);
+                    if (matchedPairs === totalPairs) {
+                        document.getElementById('memoryStatus').innerText = "Amazing! Level Cleared!";
+                        trackGameProgress(totalPairs * 5);
                     }
                 } else {
                     setTimeout(() => {
                         flippedCards.forEach(c => c.classList.remove('flipped'));
                         flippedCards = [];
-                    }, 1000);
+                    }, 800);
                 }
             }
         }
 
         // --- Math Challenge ---
+        let mathTimerInterval;
+        let timeLeft = 0;
+
         function startMath() {
-            title.innerText = "Math Challenge";
+            title.innerText = `Math Challenge - ${currentDifficulty.toUpperCase()}`;
             gameModal.show();
             nextMathTask();
-            
-            // Start real-time tracking
             startStudyTimer(null);
         }
 
         let currentResult;
         function nextMathTask() {
-            const a = Math.floor(Math.random() * 20) + 1;
-            const b = Math.floor(Math.random() * 20) + 1;
-            const ops = ['+', '-'];
-            const op = ops[Math.floor(Math.random() * 2)];
-            currentResult = op === '+' ? a + b : a - b;
+            if (mathTimerInterval) clearInterval(mathTimerInterval);
             
+            let a, b, op, ops;
+            const timerMap = { easy: 15, medium: 10, hard: 7, pro: 5 };
+            timeLeft = timerMap[currentDifficulty];
+
+            if (currentDifficulty === 'easy') {
+                a = Math.floor(Math.random() * 10) + 1;
+                b = Math.floor(Math.random() * 10) + 1;
+                op = '+';
+                currentResult = a + b;
+            } else if (currentDifficulty === 'medium') {
+                a = Math.floor(Math.random() * 50) + 10;
+                b = Math.floor(Math.random() * 50) + 10;
+                op = Math.random() > 0.5 ? '+' : '-';
+                currentResult = op === '+' ? a + b : a - b;
+            } else if (currentDifficulty === 'hard') {
+                ops = ['+', '-', '*'];
+                op = ops[Math.floor(Math.random() * 3)];
+                a = Math.floor(Math.random() * 100) + 10;
+                b = op === '*' ? Math.floor(Math.random() * 12) + 2 : Math.floor(Math.random() * 100) + 10;
+                currentResult = op === '+' ? a + b : (op === '-' ? a - b : a * b);
+            } else {
+                // Pro: More complex
+                a = Math.floor(Math.random() * 20) + 2;
+                b = Math.floor(Math.random() * 20) + 2;
+                let c = Math.floor(Math.random() * 10) + 2;
+                op = `(${a} + ${b}) × ${c}`;
+                currentResult = (a + b) * c;
+            }
+            
+            const displayOp = op.includes('(') ? op : `${a} ${op === '*' ? '×' : op} ${b}`;
+
             canvas.innerHTML = `
-                <div class="card p-5 border-0 bg-primary bg-opacity-10 rounded-4">
-                    <h1 class="display-1 fw-bold outfit mb-4">${a} ${op} ${b} = ?</h1>
-                    <div class="d-flex gap-3 justify-content-center">
-                        <input type="number" id="mathAns" class="form-control form-control-lg w-50 text-center" autofocus>
-                        <button class="btn btn-primary btn-lg" onclick="checkMath()">Submit</button>
+                <div class="card p-5 border-0 bg-primary bg-opacity-10 rounded-4 w-100">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <span class="badge bg-danger rounded-pill px-3 py-2 fs-6">Time: <span id="mathTimer">${timeLeft}</span>s</span>
+                        <span class="badge bg-primary rounded-pill px-3 py-2 fs-6">${currentDifficulty.toUpperCase()}</span>
                     </div>
-                    <div id="mathStatus" class="mt-3 fw-bold"></div>
+                    <h1 class="display-3 fw-bold outfit mb-4">${displayOp}</h1>
+                    <div class="d-flex gap-3 justify-content-center">
+                        <input type="number" id="mathAns" class="form-control form-control-lg w-50 text-center fs-2 fw-bold" autofocus>
+                        <button class="btn btn-primary btn-lg px-4" onclick="checkMath()">Submit</button>
+                    </div>
+                    <div id="mathStatus" class="mt-4 fw-bold fs-5"></div>
                 </div>
             `;
+            document.getElementById('mathAns').focus();
             document.getElementById('mathAns').addEventListener('keypress', e => { if (e.key === 'Enter') checkMath(); });
+
+            mathTimerInterval = setInterval(() => {
+                timeLeft--;
+                const timerEl = document.getElementById('mathTimer');
+                if (timerEl) timerEl.innerText = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(mathTimerInterval);
+                    document.getElementById('mathStatus').innerHTML = "<span class='text-danger'>Time's Up! Correct was " + currentResult + "</span>";
+                    setTimeout(nextMathTask, 2000);
+                }
+            }, 1000);
         }
 
         function checkMath() {
-            const ans = parseInt(document.getElementById('mathAns').value);
+            const ansInput = document.getElementById('mathAns');
+            if (!ansInput) return;
+            const ans = parseInt(ansInput.value);
+            if (isNaN(ans)) return;
+
+            clearInterval(mathTimerInterval);
             if (ans === currentResult) {
-                document.getElementById('mathStatus').innerHTML = "<span class='text-success'>Correct! +10 pts</span>";
-                trackGameProgress(10);
-                setTimeout(nextMathTask, 1000);
+                document.getElementById('mathStatus').innerHTML = "<span class='text-success'>Correct! Keep going!</span>";
+                trackGameProgress(currentDifficulty === 'pro' ? 20 : (currentDifficulty === 'hard' ? 15 : 10));
+                setTimeout(nextMathTask, 800);
             } else {
-                document.getElementById('mathStatus').innerHTML = "<span class='text-danger'>Try again!</span>";
+                document.getElementById('mathStatus').innerHTML = "<span class='text-danger'>Wrong! Correct was " + currentResult + "</span>";
+                setTimeout(nextMathTask, 2000);
             }
         }
 

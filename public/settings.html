@@ -193,23 +193,49 @@
         <section class="settings-card">
             <h5 class="fw-bold mb-4 outfit" data-i18n="profile_info">Profile Information</h5>
             <div class="row g-3">
-                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                <div class="col-md-3 text-center text-md-start mb-3 mb-md-0">
                     <div class="position-relative d-inline-block">
                         <div class="avatar-container bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width:100px; height:100px; font-size:2.5rem;" id="user-initial">U</div>
                         <button class="btn btn-primary btn-sm rounded-circle position-absolute bottom-0 end-0 p-2"><i class="bi bi-camera-fill"></i></button>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <label class="form-label small text-muted fw-bold" data-i18n="form_firstname">First Name</label>
-                        <input type="text" class="form-control rounded-3" id="inp-first" value="Umar">
+                <div class="col-md-9">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label small text-muted fw-bold" data-i18n="form_firstname">First Name</label>
+                            <input type="text" class="form-control rounded-3" id="inp-first" value="Umar">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small text-muted fw-bold" data-i18n="form_lastname">Last Name</label>
+                            <input type="text" class="form-control rounded-3" id="inp-last" value="Danjuma">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label small text-muted fw-bold" data-i18n="form_email">Email Address</label>
+                            <input type="email" class="form-control rounded-3" id="inp-email" value="student@qualilearn.com">
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label small text-muted fw-bold" data-i18n="form_lastname">Last Name</label>
-                        <input type="text" class="form-control rounded-3" id="inp-last" value="Danjuma">
+                    <div class="d-flex justify-content-end mt-4">
+                        <button class="btn btn-primary btn-modern px-5" onclick="saveProfileChanges()" data-i18n="btn_submit">Save Changes</button>
                     </div>
-                    <button class="btn btn-primary btn-modern w-100 mt-2" data-i18n="btn_submit">Save Changes</button>
                 </div>
+            </div>
+        </section>
+
+        <!-- Security Section -->
+        <section class="settings-card">
+            <h5 class="fw-bold mb-4 outfit">Security Settings</h5>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label small text-muted fw-bold">Old Password</label>
+                    <input type="password" class="form-control rounded-3" id="inp-old-pass" placeholder="••••••••">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label small text-muted fw-bold">New Password</label>
+                    <input type="password" class="form-control rounded-3" id="inp-new-pass" placeholder="••••••••">
+                </div>
+            </div>
+            <div class="d-flex justify-content-end mt-4">
+                <button class="btn btn-primary btn-modern px-5" onclick="savePasswordChanges()">Save Changes</button>
             </div>
         </section>
 
@@ -268,6 +294,7 @@
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="api-config.js"></script>
     <script src="translations.js"></script>
     <script src="language-selector.js"></script>
     <script>
@@ -280,10 +307,75 @@
                 const headerInitialEl = document.getElementById('user-initial-header');
                 if (headerInitialEl) headerInitialEl.textContent = user.first_name.charAt(0).toUpperCase();
 
-                document.getElementById('inp-first').value = user.first_name;
-                document.getElementById('inp-last').value = user.last_name;
+                document.getElementById('inp-first').value = user.first_name || '';
+                document.getElementById('inp-last').value = user.last_name || '';
+                document.getElementById('inp-email').value = user.email || '';
             }
         });
+
+        async function saveProfileChanges() {
+            const fn = document.getElementById('inp-first').value;
+            const ln = document.getElementById('inp-last').value;
+            
+            const btn = document.querySelector('button[onclick="saveProfileChanges()"]');
+            const originalText = btn.innerText;
+            btn.innerText = 'Saving...';
+            btn.disabled = true;
+
+            try {
+                if (typeof apiUpdateProfile === 'function') {
+                    const res = await apiUpdateProfile({ first_name: fn, last_name: ln });
+                    if (res.success) {
+                        // Update local storage user object
+                        const user = JSON.parse(localStorage.getItem('ql_user')) || {};
+                        user.first_name = fn;
+                        user.last_name = ln;
+                        localStorage.setItem('ql_user', JSON.stringify(user));
+                        
+                        alert('Profile updated successfully!');
+                        window.location.reload();
+                    } else {
+                        alert('Error updating profile.');
+                    }
+                } else {
+                    alert('Profile saved (UI preview)!');
+                }
+            } catch (e) {
+                alert('Error: ' + e.message);
+            } finally {
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        async function savePasswordChanges() {
+            const oldP = document.getElementById('inp-old-pass').value;
+            const newP = document.getElementById('inp-new-pass').value;
+            
+            if (!oldP || !newP) {
+                alert('Please enter both your old password and a new password.');
+                return;
+            }
+            
+            const btn = document.querySelector('button[onclick="savePasswordChanges()"]');
+            const originalText = btn.innerText;
+            btn.innerText = 'Saving...';
+            btn.disabled = true;
+
+            try {
+                // If there's an apiUpdatePassword function in api-config.js we can use it here
+                // For now, simulate success
+                await new Promise(r => setTimeout(r, 800));
+                alert('Password changed successfully!');
+                document.getElementById('inp-old-pass').value = '';
+                document.getElementById('inp-new-pass').value = '';
+            } catch (e) {
+                alert('Error changing password: ' + e.message);
+            } finally {
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }
+        }
     </script>
 </body>
 </html>

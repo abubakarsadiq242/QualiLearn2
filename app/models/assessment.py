@@ -16,6 +16,7 @@ class PastQuestion(db.Model):
     correct_answer = db.Column(db.String(1), nullable=False)  # A, B, C, D
     explanation = db.Column(db.Text)
     language = db.Column(db.String(10), default='en')
+    education_level = db.Column(db.String(50), default='SSS') # JSS, SSS, Primary
 
     def to_dict(self):
         return {
@@ -23,6 +24,7 @@ class PastQuestion(db.Model):
             'subject': self.subject,
             'year': self.year,
             'topic': self.topic,
+            'education_level': self.education_level,
             'question_text': self.question_text,
             'options': {
                 'A': self.option_a,

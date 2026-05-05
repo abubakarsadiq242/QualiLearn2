@@ -18,26 +18,22 @@ class Config:
     db_filename = 'qualilearn_v2.db'
     source_db = os.path.join(instance_path, db_filename)
     
-    # Check if we are in a read-only environment (like Vercel)
-    # Vercel typically uses /var/task as the root
-    if os.environ.get('VERCEL') or not os.access(basedir, os.W_OK):
+    # Database selection logic
+    if os.environ.get('VERCEL'):
+        # On Vercel, we MUST use /tmp for SQLite, but warn that it's ephemeral
         import shutil
         db_path = f'/tmp/{db_filename}'
-        # Copy the pre-filled database to the writable /tmp folder if it exists in the codebase
-        # but don't overwrite if it's already there (to persist across hot-reloads in the same container)
         if not os.path.exists(db_path) and os.path.exists(source_db):
             try:
                 shutil.copy2(source_db, db_path)
-                print(f" * Copied DB to {db_path} for writable access.")
+                print(f" * Vercel detected: Copied DB to {db_path} (Warning: Data will NOT persist across restarts).")
             except Exception as e:
-                print(f" * Failed to copy DB: {e}")
-        elif not os.path.exists(db_path):
-            # If source doesn't exist, we'll let SQLAlchemy create it empty in /tmp
-            pass
+                print(f" * Failed to copy DB to /tmp: {e}")
     else:
-        # Local development environment
+        # Local or persistent server
         os.makedirs(instance_path, exist_ok=True)
         db_path = source_db
+        print(f" * Using persistent DB at: {db_path}")
     
     SQLALCHEMY_DATABASE_URI = _db_url or 'sqlite:///' + db_path
     SQLALCHEMY_TRACK_MODIFICATIONS = False

@@ -285,15 +285,46 @@
         let currentIndex = 0;
 
         document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const subject = params.get('subject');
             applyLanguage(localStorage.getItem('ql_lang') || 'en');
-            // Try to load last selected or default
-            loadDeck('Mathematics');
 
             const user = JSON.parse(localStorage.getItem('ql_user'));
             if (user) {
                 document.getElementById('user-initial').textContent = user.first_name.charAt(0).toUpperCase();
             }
+
+            if (subject) {
+                loadDeck(subject);
+            } else {
+                showDeckSelection();
+            }
         });
+
+        function showDeckSelection() {
+            document.getElementById('flashcard-deck-container').style.display = 'none';
+            const placeholder = document.getElementById('no-deck-placeholder');
+            placeholder.style.display = 'block';
+            placeholder.innerHTML = `
+                <div class="animate__animated animate__fadeIn">
+                    <h2 class="fw-bold outfit mb-4 text-dark">Select a Subject to Study</h2>
+                    <p class="text-muted mb-5">Choose a flashcard deck below to begin your interactive study session.</p>
+                    <div class="d-flex flex-column flex-sm-row flex-wrap justify-content-center gap-3">
+                        <button class="btn btn-outline-warning rounded-pill px-4 py-3 fw-bold shadow-sm" onclick="loadDeck('Mathematics')" style="min-width: 220px; color: var(--dark); border-color: var(--primary);">
+                            <i class="bi bi-calculator me-2 text-warning"></i> Mathematics
+                        </button>
+                        <button class="btn btn-outline-warning rounded-pill px-4 py-3 fw-bold shadow-sm" onclick="loadDeck('English')" style="min-width: 220px; color: var(--dark); border-color: var(--primary);">
+                            <i class="bi bi-book me-2 text-warning"></i> English Language
+                        </button>
+                        <button class="btn btn-outline-warning rounded-pill px-4 py-3 fw-bold shadow-sm" onclick="loadDeck('Science')" style="min-width: 220px; color: var(--dark); border-color: var(--primary);">
+                            <i class="bi bi-flask me-2 text-warning"></i> General Science
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('subject-btn').innerText = "Select Subject";
+            document.getElementById('current-deck-info').innerText = "Choose a subject to start studying";
+        }
 
         async function loadDeck(subject) {
             const btn = document.getElementById('subject-btn');
@@ -319,11 +350,13 @@
                 } else {
                     console.warn(`[Flashcard] No cards found for subject: ${subject}, lang: ${lang}`);
                     document.getElementById('flashcard-deck-container').style.display = 'none';
-                    document.getElementById('no-deck-placeholder').style.display = 'block';
-                    
-                    // Specific message for no cards
-                    const placeholderTitle = document.querySelector('#no-deck-placeholder h4');
-                    placeholderTitle.innerText = `No ${subject} Cards Yet`;
+                    const placeholder = document.getElementById('no-deck-placeholder');
+                    placeholder.style.display = 'block';
+                    placeholder.innerHTML = `
+                        <i class="bi bi-layers text-muted opacity-25" style="font-size: 5rem;"></i>
+                        <h4 class="fw-bold outfit mt-3">No ${subject} Cards Yet</h4>
+                        <p class="text-muted">Pick a different deck to begin your interactive study session.</p>
+                    `;
                 }
             } catch (err) {
                 console.error('[Flashcard] Deck load error:', err);

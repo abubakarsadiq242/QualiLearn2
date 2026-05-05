@@ -7,13 +7,26 @@ from app.utils.auth import admin_required
 flashcards_bp = Blueprint('flashcards', __name__)
 
 @flashcards_bp.route('/', methods=['GET'])
+@jwt_required(optional=True)
 def get_flashcards():
     subject = request.args.get('subject')
     lang = request.args.get('lang', 'en')
+    level = request.args.get('level')
     
+    from app.models.user import User
+    user_id = get_jwt_identity()
+    if not level and user_id:
+        user = db.session.get(User, int(user_id))
+        if user and user.education_level:
+            u_level = user.education_level.upper()
+            if 'SSS' in u_level: level = 'SSS'
+            elif 'JSS' in u_level: level = 'JSS'
+
     query = Flashcard.query.filter_by(language=lang)
     if subject:
         query = query.filter_by(subject=subject)
+    if level:
+        query = query.filter_by(education_level=level)
         
     flashcards = query.all()
     

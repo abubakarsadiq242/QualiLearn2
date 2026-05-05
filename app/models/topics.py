@@ -7,6 +7,7 @@ class Topic(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200), nullable=False)
     subject = db.Column(db.String(100), nullable=False)
+    education_level = db.Column(db.String(20), default='SSS') # JSS or SSS
     is_deleted = db.Column(db.Boolean, default=False, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     
@@ -17,6 +18,7 @@ class Topic(db.Model):
             "id": self.id,
             "name": self.name,
             "subject": self.subject,
+            "education_level": self.education_level,
             "created_at": self.created_at.isoformat()
         }
 
