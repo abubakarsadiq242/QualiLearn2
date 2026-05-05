@@ -548,9 +548,15 @@
                     activity_type: 'assessment_completion',
                     module: 'assessment',
                     score: percentage,
-                    topic_id: questions[0]?.topic_id || null,
+                    total_questions: questions.length,
+                    correct_answers: score,
                     completed: true
                 });
+
+                // Refresh dashboard if available
+                if (typeof refreshDashboardStats === 'function') {
+                    refreshDashboardStats();
+                }
 
                 // Save to backend: send the currentAssessmentId and the answers object
                 // If it's a Past Questions pool study, we still want it to count

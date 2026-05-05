@@ -112,6 +112,21 @@ def process_track_data(user_id, data):
             item_id = int(topic_id)
             item_type = 'topic'
             
+        # Record Assessment History for Stats (Accuracy/Passed count)
+        if data.get('module') == 'assessment':
+            score = data.get('score', 0)
+            tq = data.get('total_questions', 10)
+            ca = data.get('correct_answers', int(score * tq / 100))
+            
+            hist = Assessment(
+                user_id=user_id,
+                portal_type=portal_type,
+                total_questions=tq,
+                correct_answers=ca,
+                passed=(score >= 50)
+            )
+            db.session.add(hist)
+
         exists = CompletedItem.query.filter_by(user_id=user_id, portal_type=portal_type, item_id=item_id, item_type=item_type).first()
         if not exists:
             db.session.add(CompletedItem(user_id=user_id, portal_type=portal_type, item_id=item_id, item_type=item_type))
