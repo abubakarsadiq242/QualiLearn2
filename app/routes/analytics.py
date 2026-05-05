@@ -32,7 +32,12 @@ def process_track_data(user_id, data):
 
     t_id = data.get('topic_id') or data.get('id')
     try:
-        t_id = int(t_id) if t_id else None
+        # Robust ID handling: if not an int, hash it to a stable integer
+        if t_id and not str(t_id).isdigit():
+            import hashlib
+            t_id = int(hashlib.md5(str(t_id).encode()).hexdigest(), 16) % (10**8)
+        else:
+            t_id = int(t_id) if t_id else None
     except:
         t_id = None
         
@@ -257,6 +262,10 @@ def get_dashboard_stats():
         pct_exams = (comp_exams / max(total_exams, 1)) * 100
         pct_games = (comp_games / max(total_games, 1)) * 100
         
+        # Study Time Progress (Target: 10 Hours of active learning = 100% time mastery)
+        target_sec = 10 * 3600
+        pct_time = (total_sec / target_sec) * 100
+
         # Weighted Average
         active_weights = []
         if total_learning > 0: active_weights.append(min(pct_learning, 100))
@@ -264,7 +273,14 @@ def get_dashboard_stats():
         if total_exams > 0: active_weights.append(min(pct_exams, 100))
         if total_games > 0: active_weights.append(min(pct_games, 100))
         
+        # Always include study time as a progress factor (20% weight of total potential)
+        active_weights.append(min(pct_time, 100))
+        
         progress_pct = sum(active_weights) / len(active_weights) if active_weights else 0
+        
+        # Immediate feedback: If they have any activity, show at least 0.1%
+        if progress_pct == 0 and total_sec > 0:
+            progress_pct = 0.1
             
         # Sync with Progress table for persistence
         prog = Progress.query.filter_by(user_id=user_id, portal_type=portal).first()
