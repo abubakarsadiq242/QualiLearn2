@@ -433,14 +433,14 @@ def seed_data():
         # Vocational Content Translations
         voc_data = {
             'en': [
-                ('Professional Tailoring', 'Complete guide to measurements, cutting, and stitching for beginners.', 'Fashion', 'https://www.youtube.com/embed/p9JdC_w0MvY'),
-                ('Smartphone Hardware Repair', 'Essential tips for screen replacement and fixing internal components.', 'Technology', 'https://www.youtube.com/embed/8kAsX_gXhR0'),
+                ('Smartphone Hardware Repair', 'Essential tips for screen replacement and fixing internal components.', 'Technology', 'https://www.youtube.com/embed/p9hA59nn7uQ'),
                 ('Web Design for Beginners', 'Learn HTML, CSS, and Responsive Design to build professional websites.', 'Technology', 'https://www.youtube.com/embed/mU6anWqZJcc'),
-                ('Professional Catering', 'Master the art of professional baking and Nigerian catering basics.', 'Culinary', 'https://www.youtube.com/embed/kYv9y_t9R14'),
-                ('Modern Plumbing Basics', 'Introductory guide to household plumbing, pipe fittings, and repairs.', 'Plumbing', 'https://www.youtube.com/embed/Xp4S1GvP2Qk'),
-                ('Basic Home Wiring', 'Learn how to safely handle electrical installations and home wiring.', 'Electrical', 'https://www.youtube.com/embed/fA_I2j-hF8A'),
-                ('Furniture Crafting', 'Step-by-step guide to building simple household furniture with wood.', 'Carpentry', 'https://www.youtube.com/embed/U3l08mP69Xw'),
-                ('Fashion Illustration', 'Master the art of sketching and designing your own fashion collections.', 'Fashion', 'https://www.youtube.com/embed/Pj1C9vI7Xg0')
+                ('Professional Catering', 'Master the art of professional baking and Nigerian catering basics.', 'Culinary', 'https://www.youtube.com/embed/YrHpeEwk_-U'),
+                ('Modern Plumbing Basics', 'Introductory guide to household plumbing, pipe fittings, and repairs.', 'Plumbing', 'https://www.youtube.com/embed/8jxRn-T_LCs'),
+                ('Basic Home Wiring', 'Learn how to safely handle electrical installations and home wiring.', 'Electrical', 'https://www.youtube.com/embed/cX4s-bxn4fs'),
+                ('Furniture Crafting', 'Step-by-step guide to building simple household furniture with wood.', 'Carpentry', 'https://www.youtube.com/embed/QNgJjm0JX7Y'),
+                ('Fashion Illustration', 'Master the art of sketching and designing your own fashion collections.', 'Fashion', 'https://www.youtube.com/embed/iQpWM6lvhJs'),
+                ('Professional Tailoring', 'Advanced garment construction and precision tailoring for experts.', 'Fashion', 'https://www.youtube.com/embed/qXbWq1_gWNg')
             ],
             'ha': [
                 ('Ɗinkin Kaya na Zamani', 'Cikakken jagora kan aunawa, yanka, da dinkin kaya ga sabon koyo.', 'Fashion', 'https://www.youtube.com/embed/p9JdC_w0MvY'),
@@ -455,6 +455,7 @@ def seed_data():
             ],
             'ig': [
                 ('Ịkwa ákwà', 'Otú e si atụle na ịkwa ákwà maka ndị ọhụrụ.', 'Fashion', 'https://www.youtube.com/embed/p9JdC_w0MvY'),
+                ('Professional Tailoring', 'Complete guide to professional tailoring techniques.', 'Fashion', 'https://www.youtube.com/embed/p9JdC_w0MvY'),
                 ('Nzi nhazi Fóònù', 'Otú e si arụzi fóònù ndị mebiri emebi.', 'Technology', 'https://www.youtube.com/embed/8kAsX_gXhR0')
             ],
             'pi': [
