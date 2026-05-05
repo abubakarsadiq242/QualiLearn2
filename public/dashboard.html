@@ -519,12 +519,14 @@
                 applyLanguage(localStorage.getItem('ql_lang') || 'en');
                 document.getElementById('current-lang-display').textContent = (localStorage.getItem('ql_lang') || 'en').toUpperCase();
                 
-                // Auto-refresh every 30 seconds for higher precision
-                setInterval(refreshDashboardStats, 30000);
+                // Auto-refresh every 10 seconds for real-time feel
+                setInterval(refreshDashboardStats, 10000);
 
-            } catch (err) { 
-                console.error('Dashboard Error:', err);
-            }
+                // Listen for activity logged event from same/other components
+                window.addEventListener('ql-activity-logged', () => {
+                    console.log(">>> DASHBOARD: ACTIVITY DETECTED, REFRESHING STATS");
+                    refreshDashboardStats();
+                });
         })
 
         function renderLeaderboard(data, containerId) {

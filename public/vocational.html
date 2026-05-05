@@ -278,6 +278,7 @@
             });
         });
 
+        let heartbeatInterval;
         async function openVideo(url, title, skillId) {
             document.getElementById('modalTitle').innerText = title;
             document.getElementById('videoFrame').src = getEmbedUrl(url);
@@ -289,17 +290,34 @@
             
             if (typeof startStudyTimer === 'function') startStudyTimer(skillId); 
             
+            // Initial track
             await apiTrackActivity({
                 activity_type: 'skill_learning',
                 module: 'vocational',
                 id: parseInt(skillId),
-                duration: 30
+                duration: 5
             });
+
+            if (heartbeatInterval) clearInterval(heartbeatInterval);
+            heartbeatInterval = setInterval(async () => {
+                console.log(">>> VOCATIONAL HEARTBEAT: 10s");
+                await apiTrackActivity({
+                    activity_type: 'skill_learning',
+                    module: 'vocational',
+                    id: parseInt(skillId),
+                    duration: 10
+                });
+                window.dispatchEvent(new CustomEvent('ql-activity-logged'));
+            }, 10000);
         }
 
         function stopVideo() {
             document.getElementById('videoFrame').src = '';
             if (typeof stopStudyTimer === 'function') stopStudyTimer();
+            if (heartbeatInterval) {
+                clearInterval(heartbeatInterval);
+                heartbeatInterval = null;
+            }
         }
 
         function filterVocational(btn, category) {

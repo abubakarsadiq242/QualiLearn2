@@ -377,6 +377,25 @@
             renderVideos(filtered);
         }
 
+        let heartbeatInterval;
+        function trackVideoStart(videoId, topicId) {
+            if (heartbeatInterval) clearInterval(heartbeatInterval);
+            
+            // Heartbeat every 10 seconds for real-time dashboard feel
+            heartbeatInterval = setInterval(async () => {
+                console.log(">>> HEARTBEAT: TRACKING 10s STUDY TIME");
+                await apiTrackActivity({
+                    activity_type: 'video_learning',
+                    module: 'learning',
+                    video_id: parseInt(videoId),
+                    topic_id: parseInt(topicId),
+                    duration: 10
+                });
+                // Notify other windows/components
+                window.dispatchEvent(new CustomEvent('ql-activity-logged'));
+            }, 10000);
+        }
+
         function playVideo(id, url, title, topicId) {
             const container = document.getElementById('modal-video-container');
             const titleEl = document.getElementById('modal-video-title');
@@ -390,11 +409,17 @@
             markBtn.onclick = () => markCompleted(id, topicId);
             markBtn.className = 'btn btn-primary rounded-pill px-5 py-2 fw-bold';
             markBtn.innerHTML = `<i class="bi bi-check-circle me-2"></i> <span>${translations[getCurrentLang()]['mark_finished']}</span>`;
+            
+            trackVideoStart(id, topicId);
         }
 
         // Clean up modal video when closed
         document.getElementById('videoPlayerModal').addEventListener('hidden.bs.modal', () => {
             document.getElementById('modal-video-container').innerHTML = '';
+            if (heartbeatInterval) {
+                clearInterval(heartbeatInterval);
+                heartbeatInterval = null;
+            }
         });
 
         async function markCompleted(videoId, topicId) {

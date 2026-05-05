@@ -423,6 +423,25 @@
             }
         }
 
+        let heartbeatInterval;
+        function trackVideoStart(videoId) {
+            if (heartbeatInterval) clearInterval(heartbeatInterval);
+            
+            // Heartbeat every 10 seconds for real-time dashboard feel
+            heartbeatInterval = setInterval(async () => {
+                console.log(">>> HEARTBEAT: TRACKING 10s STUDY TIME");
+                await apiTrackActivity({
+                    activity_type: 'video_learning',
+                    module: 'learning',
+                    video_id: parseInt(videoId),
+                    topic_id: parseInt(topicId),
+                    duration: 10
+                });
+                // Notify other windows/components
+                window.dispatchEvent(new CustomEvent('ql-activity-logged'));
+            }, 10000);
+        }
+
         function playVideo(id, url, title) {
             const container = document.getElementById('modal-video-container');
             const titleEl = document.getElementById('modal-video-title');
@@ -443,6 +462,10 @@
         // Clean up modal video when closed
         document.getElementById('videoPlayerModal').addEventListener('hidden.bs.modal', () => {
             document.getElementById('modal-video-container').innerHTML = '';
+            if (heartbeatInterval) {
+                clearInterval(heartbeatInterval);
+                heartbeatInterval = null;
+            }
         });
 
         async function addNewVideo() {
