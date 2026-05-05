@@ -15,58 +15,61 @@ from datetime import datetime
 
 chat_bp = Blueprint('chat', __name__)
 
-def call_gemini_api(prompt):
+def call_groq_api(prompt):
     # Try app config first, then env vars
-    api_key = current_app.config.get("GEMINI_API_KEY") or current_app.config.get("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
+    api_key = current_app.config.get("GROQ_API_KEY") or os.getenv("GROQ_API_KEY")
     
     if not api_key:
         return "I'm sorry, but my AI core is currently offline (API Key Missing). Please contact the administrator."
 
-    # Using the latest 2.5 flash model available in 2026
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key}"
+    url = "https://api.groq.com/openai/v1/chat/completions"
     
     payload = {
-        "contents": [{
-            "parts": [{
-                "text": prompt
-            }]
-        }],
-        "generationConfig": {
-            "temperature": 0.7,
-            "topP": 0.8,
-            "topK": 40,
-            "maxOutputTokens": 2048,
-        }
+        "model": "llama-3.3-70b-versatile",
+        "messages": [
+            {
+                "role": "system",
+                "content": "You are a professional educational tutor. Provide clear, accurate, and concise academic support."
+            },
+            {
+                "role": "user",
+                "content": prompt
+            }
+        ],
+        "temperature": 0.7,
+        "max_completion_tokens": 1024,
+        "top_p": 1,
+        "stream": False
     }
     
-    headers = {'Content-Type': 'application/json'}
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': f'Bearer {api_key}'
+    }
     
     try:
-        response = requests.post(url, json=payload, headers=headers, timeout=10)
+        response = requests.post(url, json=payload, headers=headers, timeout=15)
         response.raise_for_status()
         result = response.json()
         
-        if 'candidates' in result and len(result['candidates']) > 0:
-            part = result['candidates'][0]['content']['parts'][0]
-            if 'text' in part:
-                return part['text']
+        if 'choices' in result and len(result['choices']) > 0:
+            content = result['choices'][0]['message']['content']
+            return content
         
         return "I understood your question, but I'm having trouble generating a response. Could you try asking in a different way?"
     except requests.exceptions.RequestException as e:
-        print(f"Gemini API Request Error: {e}")
+        print(f"Groq API Request Error: {e}")
         if response.status_code == 429:
-            return "I'm receiving too many questions at once! Please wait about 10 seconds and try again — I'll be ready."
-        if response.status_code >= 500:
-            return "Google's AI service is currently taking a short break (500 Error). Please try again in a few moments."
+            return "I'm receiving too many questions at once! Please wait a moment and try again."
         return "I'm having a brief technical moment connecting to my brain. Please try again in a few seconds!"
     except Exception as e:
-        print(f"Gemini Unexpected Error: {e}")
+        print(f"Groq Unexpected Error: {e}")
         return "I'm having a brief technical moment. Please try again in a few seconds!"
 
 @chat_bp.route('/send', methods=['POST'])
 @jwt_required()
 def send_message():
-    print(f" * Chat request received. Key present: {'Yes' if os.getenv('GEMINI_API_KEY') or os.getenv('GOOGLE_API_KEY') else 'No'}")
+    print(f" * Chat request received. Key present: {'Yes' if os.getenv('GROQ_API_KEY') else 'No'}")
     user_id = int(get_jwt_identity())
     data = request.get_json()
     
@@ -132,7 +135,7 @@ def send_message():
                              .replace("{message}", data.get('message', '')) \
                              .replace("{lang_name}", lang_name)
     
-    bot_response = call_gemini_api(prompt)
+    bot_response = call_groq_api(prompt)
     
     bot_msg = ChatMessage(user_id=user_id, message=bot_response, is_bot=True)
     db.session.add(bot_msg)
