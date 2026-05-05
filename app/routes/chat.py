@@ -2,8 +2,9 @@ import requests
 import os
 from dotenv import load_dotenv
 
-# Ensure environment variables are loaded in this process
-load_dotenv()
+# Ensure environment variables are loaded from root .env
+basedir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../'))
+load_dotenv(os.path.join(basedir, '.env'), override=True)
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.models.chat import ChatMessage
@@ -15,7 +16,9 @@ from datetime import datetime
 chat_bp = Blueprint('chat', __name__)
 
 def call_gemini_api(prompt):
-    api_key = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
+    # Try app config first, then env vars
+    api_key = current_app.config.get("GEMINI_API_KEY") or current_app.config.get("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
+    
     if not api_key:
         return "I'm sorry, but my AI core is currently offline (API Key Missing). Please contact the administrator."
 
@@ -63,6 +66,7 @@ def call_gemini_api(prompt):
 @chat_bp.route('/send', methods=['POST'])
 @jwt_required()
 def send_message():
+    print(f" * Chat request received. Key present: {'Yes' if os.getenv('GEMINI_API_KEY') or os.getenv('GOOGLE_API_KEY') else 'No'}")
     user_id = int(get_jwt_identity())
     data = request.get_json()
     

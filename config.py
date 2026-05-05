@@ -41,6 +41,8 @@ class Config:
     JWT_SECRET_KEY = SECRET_KEY 
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=24)
     CORS_HEADERS = 'Content-Type'
+    GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY')
+    GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
 
 class DevelopmentConfig(Config):
     DEBUG = True
