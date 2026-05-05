@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 basedir = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(basedir, '.env'), override=True)
 print(f" * JWT_SECRET_KEY loaded: {'Yes' if os.environ.get('JWT_SECRET_KEY') else 'No'}")
+print(f" * GEMINI_API_KEY loaded: {'Yes' if os.environ.get('GEMINI_API_KEY') or os.environ.get('GOOGLE_API_KEY') else 'No'}")
 
 class Config:
     # Force both to be identical to ensure signature consistency across all routes

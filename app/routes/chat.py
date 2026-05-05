@@ -11,7 +11,7 @@ from datetime import datetime
 chat_bp = Blueprint('chat', __name__)
 
 def call_gemini_api(prompt):
-    api_key = os.getenv("GEMINI_API_KEY")
+    api_key = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
     if not api_key:
         return "I'm sorry, but my AI core is currently offline (API Key Missing). Please contact the administrator."
 
