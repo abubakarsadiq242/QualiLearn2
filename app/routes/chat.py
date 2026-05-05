@@ -36,7 +36,7 @@ def call_groq_api(prompt):
     url = "https://api.groq.com/openai/v1/chat/completions"
     
     payload = {
-        "model": "llama-3.1-8b-instant",
+        "model": "groq/compound-mini",
         "messages": [
             {
                 "role": "system",
@@ -96,10 +96,10 @@ def send_message():
         user_lang = user.language if user else 'en'
         user_lvl = user.education_level if user else 'Secondary'
         
-        # Fetch some context from learning materials
-        materials = LearningMaterial.query.filter_by(language=user_lang).limit(3).all()
+        # Fetch some context from learning materials relevant to user level
+        materials = LearningMaterial.query.filter_by(language=user_lang, education_level=user_lvl).limit(5).all()
         if not materials:
-            materials = LearningMaterial.query.filter_by(language='en').limit(3).all()
+            materials = LearningMaterial.query.filter_by(language='en', education_level=user_lvl).limit(5).all()
             
         context = "\n".join([f"{m.subject}: {m.content[:300]}" for m in materials])
         
@@ -117,9 +117,9 @@ def send_message():
             persona_context = "Your focus is purely on practical skills, industrial standards, and hands-on craftsmanship."
         else:
             persona_name = "QualiLearn AI"
-            persona_role = "a professional academic mentor for Nigerian students"
-            persona_goal = f"provide clear, expert-level, and supportive guidance for a {user_lvl} student"
-            persona_context = "Your focus is on academic excellence, curriculum mastery, and exam preparation."
+            persona_role = "a professional academic mentor and expert tutor in Mathematics, English, Science, Economics, and Government"
+            persona_goal = f"provide expert-level, accurate, and curriculum-aligned academic guidance for a {user_lvl} student"
+            persona_context = "Your focus is on academic excellence, deep subject mastery, and precise exam preparation. You must provide the most accurate and up-to-date information available."
 
         # Build prompt safely
         prompt_template = f"""
@@ -131,10 +131,10 @@ def send_message():
         STRICT GUIDELINES:
         - DIRECT ANSWER ONLY: Do NOT include greetings, introductions, or any conversational filler. Start the very first sentence with the answer.
         - NO META-COMMENTARY: Do NOT say "Sure, here is the answer" or "I can help with that".
-        - Tone: Highly direct, professional, and concise.
+        - Tone: Highly direct, professional, and authoritative.
         - {{persona_feature}}
         - CLEAN TEXT: Use ONLY plain text and LaTeX math. ABSOLUTELY NO markdown stars (*), bold markers (**), or headers (#).
-        - Accuracy: Provide the exact, correct answer the user is looking for.
+        - MAXIMUM ACCURACY: Double-check all facts, dates, and formulas. Provide the definitive correct answer.
         - {{persona_context}}
 
         Context:

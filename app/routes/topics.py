@@ -109,6 +109,22 @@ def get_topic_videos(topic_id):
     videos = TopicVideo.query.filter_by(topic_id=topic_id).all()
     return jsonify({"success": True, "data": [v.to_dict() for v in videos]})
 
+@topics_bp.route('/subject-videos', methods=['GET'])
+@jwt_required()
+def get_subject_videos():
+    subject = request.args.get('subject')
+    level = request.args.get('level')
+    
+    if not subject:
+        return jsonify({"success": False, "message": "Subject is required"}), 400
+        
+    query = db.session.query(TopicVideo).join(Topic).filter(Topic.subject == subject, Topic.is_deleted == False)
+    if level:
+        query = query.filter(Topic.education_level == level)
+        
+    videos = query.all()
+    return jsonify({"success": True, "data": [v.to_dict() for v in videos]})
+
 @topics_bp.route('/videos/delete/<int:video_id>', methods=['POST'])
 @admin_required()
 def delete_video(video_id):

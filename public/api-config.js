@@ -173,6 +173,10 @@ async function apiGetTopicVideos(topicId) {
     return await apiCall(`/topics/${topicId}/videos`);
 }
 
+async function apiGetSubjectVideos(subject, level = '') {
+    return await apiCall(`/topics/subject-videos?subject=${encodeURIComponent(subject)}&level=${level}`);
+}
+
 async function apiDeleteTopicVideo(videoId) {
     return await apiCall(`/videos/delete/${videoId}`, 'POST');
 }
