@@ -25,7 +25,7 @@ def call_groq_api(prompt):
     url = "https://api.groq.com/openai/v1/chat/completions"
     
     payload = {
-        "model": "llama-3.3-70b-versatile",
+        "model": "llama-3.1-8b-instant",
         "messages": [
             {
                 "role": "system",
@@ -48,7 +48,8 @@ def call_groq_api(prompt):
     }
     
     try:
-        response = requests.post(url, json=payload, headers=headers, timeout=15)
+        response = requests.post(url, json=payload, headers=headers, timeout=20)
+        print(f" * Groq Response Status: {response.status_code}")
         response.raise_for_status()
         result = response.json()
         
