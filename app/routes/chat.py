@@ -17,9 +17,14 @@ chat_bp = Blueprint('chat', __name__)
 
 def call_groq_api(prompt):
     # Try app config first, then env vars
+    print(f"DEBUG: GROQ_API_KEY in config: {'Yes' if current_app.config.get('GROQ_API_KEY') else 'No'}")
+    print(f"DEBUG: GROQ_API_KEY in getenv: {'Yes' if os.getenv('GROQ_API_KEY') else 'No'}")
+    print(f"DEBUG: GROQ_API_KEY in environ: {'Yes' if 'GROQ_API_KEY' in os.environ else 'No'}")
+    
     api_key = current_app.config.get("GROQ_API_KEY") or os.getenv("GROQ_API_KEY") or os.getenv("GOOGLE_API_KEY")
     
     if not api_key:
+        print("!!! ERROR: No API Key found in ANY source.")
         is_vercel = os.environ.get('VERCEL') == '1'
         msg = "I'm sorry, but my AI core is currently offline (API Key Missing)."
         if is_vercel:
