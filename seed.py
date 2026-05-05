@@ -60,14 +60,14 @@ def seed_data():
         # --- Mathematics Topics ---
         math_topics = {
             'en': [
-                ('Algebraic Expressions', 'Learn to simplify complex algebraic expressions with practical examples.', 'https://www.youtube.com/embed/vDqOoI-4Z6M', 'JSS'),
-                ('Quadratic Equations', 'Master the quadratic formula and solving for x step by step.', 'https://www.youtube.com/embed/i7idZShXly8', 'SSS'),
-                ('Trigonometry Basics', 'Understanding Sine, Cosine, and Tangent in right-angled triangles.', 'https://www.youtube.com/embed/PUB0TaZ7bhA', 'SSS'),
-                ('Circle Geometry', 'Theorems involving chords, tangents and angles in a circle.', 'https://www.youtube.com/embed/74RcUjxErCg', 'SSS'),
-                ('Calculus: Differentiation', 'Introduction to derivatives and fundamental rules of differentiation.', 'https://www.youtube.com/embed/9vKqVkMQHKk', 'SSS'),
-                ('Calculus: Integration', 'Mastering the anti-derivative and basic integration techniques.', 'https://www.youtube.com/embed/6WUjbJEeJwM', 'SSS'),
-                ('Statistics: Data Handling', 'Learn about Mean, Median, Mode and Frequency tables.', 'https://www.youtube.com/embed/kn83BA7cRNM', 'JSS'),
-                ('Probability Theory', 'Introductory concepts to calculating the likelihood of events.', 'https://www.youtube.com/embed/KzfWUEJjG18', 'JSS')
+                ('Number Bases', 'Master binary, octal, and hexadecimal conversion.', 'https://www.youtube.com/embed/vDqOoI-4Z6M', 'JSS'),
+                ('Sets & Venn Diagrams', 'Understanding sets, subsets, and visualising with Venn diagrams.', 'https://www.youtube.com/embed/kn83BA7cRNM', 'SSS'),
+                ('Quadratic Equations', 'Solving second-degree equations using factoring and formulas.', 'https://www.youtube.com/embed/i7idZShXly8', 'SSS'),
+                ('Matrices & Determinants', 'Operations on matrices and finding determinants.', 'https://www.youtube.com/embed/gJgZkH7D-G4', 'SSS'),
+                ('Logarithms', 'Laws of logarithms and solving logarithmic equations.', 'https://www.youtube.com/embed/zT1c-1t9wR8', 'SSS'),
+                ('Trigonometry Basics', 'Sine, Cosine, and Tangent relationships in triangles.', 'https://www.youtube.com/embed/PUB0TaZ7bhA', 'SSS'),
+                ('Circle Geometry', 'Theorems relating to circles, chords, and tangents.', 'https://www.youtube.com/embed/74RcUjxErCg', 'SSS'),
+                ('Calculus: Integration', 'Master integration and anti-derivatives.', 'https://www.youtube.com/embed/6WUjbJEeJwM', 'SSS')
             ],
             'ha': [
                 ('Lissafin Algebra', 'Koyi yadda ake sauƙaƙa lissafin algebra.', 'https://www.youtube.com/embed/vDqOoI-4Z6M', 'JSS'),
@@ -108,12 +108,12 @@ def seed_data():
         # --- English Topics ---
         english_topics = {
             'en': [
-                ('English Grammar: Tenses', 'Mastering Past, Present, and Future tenses for perfect communication.', 'https://www.youtube.com/embed/sCiG6rlk2Bc', 'JSS'),
+                ('Parts of Speech', 'Introduction to Nouns, Verbs, Adjectives, and more.', 'https://www.youtube.com/embed/R9I1JEC6g38', 'JSS'),
+                ('English Grammar: Tenses', 'Mastering the 12 English tenses and sentence structure.', 'https://www.youtube.com/embed/kYJv8Z16o3k', 'SSS'),
                 ('Composition Writing', 'Learn the secrets to writing high-scoring narrative and descriptive essays.', 'https://www.youtube.com/embed/RFwui6V32nc', 'JSS'),
                 ('Elements of Literature', 'Exploring Plot, Theme, and Characterization in African Literature.', 'https://www.youtube.com/embed/Pxao6AG88Lw', 'SSS'),
                 ('Summary Writing Skills', 'How to extract main points and write concise summaries.', 'https://www.youtube.com/embed/bhtz7RSaKlc', 'SSS'),
-                ('Oral English: Vowels', 'Perfecting pronunciation of English vowel sounds.', 'https://www.youtube.com/embed/uW0Qd86_XfM', 'JSS'),
-                ('Concord and Agreement', 'Rules governing the relationship between subjects and verbs.', 'https://www.youtube.com/embed/7_mZInLh-64', 'SSS')
+                ('Oral English: Vowels', 'Perfecting pronunciation of English vowel sounds.', 'https://www.youtube.com/embed/uW0Qd86_XfM', 'JSS')
             ],
             'ha': [
                 ('Dokokin Turanci: Tenses', 'Kwarewa wajen amfani da Past, Present, da Future tenses.', 'https://www.youtube.com/embed/sCiG6rlk2Bc', 'JSS'),
@@ -134,13 +134,13 @@ def seed_data():
             ]
         }
 
-        # --- Science (Biology) Topics ---
+        # --- Biology Topics ---
         biology_topics = {
             'en': [
-                ('Cell Structure & Function', 'Detailed look at organelles and the building blocks of life.', 'https://www.youtube.com/embed/URUJD5NEXC8', 'JSS'),
-                ('Photosynthesis', 'The chemical process of light conversion in green plants.', 'https://www.youtube.com/embed/SXP6u7m6YFk', 'JSS'),
+                ('Cell Structure & Function', 'Detailed look at organelles and the building blocks of life.', 'https://www.youtube.com/embed/URUJD5NEXC8', 'SSS'),
+                ('Photosynthesis', 'The chemical process of light conversion in green plants.', 'https://www.youtube.com/embed/SXP6u7m6YFk', 'SSS'),
                 ('Genetics & Heredity', 'How DNA and RNA control inheritance across generations.', 'https://www.youtube.com/embed/2reevjoVn6c', 'SSS'),
-                ('Respiratory System', 'Understanding how oxygen and carbon dioxide exchange in humans.', 'https://www.youtube.com/embed/f9ONXd_-anM', 'JSS')
+                ('Respiratory System', 'Understanding how oxygen and carbon dioxide exchange in humans.', 'https://www.youtube.com/embed/f9ONXd_-anM', 'SSS')
             ],
             'ha': [
                 ('Biology: Cell Structure', 'Koyi game da sassan tantanin halitta da ayyukansu.', 'https://www.youtube.com/embed/URUJD5NEXC8', 'JSS'),
@@ -162,18 +162,38 @@ def seed_data():
             'en': [
                 ('Newton\'s Laws of Motion', 'Understanding how forces affect objects in motion.', 'https://www.youtube.com/embed/g550H4e5FCY', 'SSS'),
                 ('Work, Energy & Power', 'Master the fundamental concepts of physical energy.', 'https://www.youtube.com/embed/2WS1sG9fhOk', 'SSS'),
-                ('Pressure in Liquids', 'Hydraulics and pressure distribution in fluids.', 'https://www.youtube.com/embed/0B0Xv2fS9_U', 'JSS'),
-                ('Electricity Basics', 'Introduction to circuits, voltage, and current.', 'https://www.youtube.com/embed/mc979OhitAg', 'JSS')
+                ('Pressure in Liquids', 'Hydraulics and pressure distribution in fluids.', 'https://www.youtube.com/embed/0B0Xv2fS9_U', 'SSS'),
+                ('Electricity Basics', 'Introduction to circuits, voltage, and current.', 'https://www.youtube.com/embed/mc979OhitAg', 'SSS')
             ]
         }
 
         # --- Chemistry Topics ---
         chemistry_topics = {
             'en': [
-                ('Atomic Structure', 'Detailed study of protons, neutrons, and electrons.', 'https://www.youtube.com/embed/OH-aSu-rWgk', 'JSS'),
+                ('Atomic Structure', 'Detailed study of protons, neutrons, and electrons.', 'https://www.youtube.com/embed/OH-aSu-rWgk', 'SSS'),
                 ('Chemical Bonding', 'How atoms join together to form molecules.', 'https://www.youtube.com/embed/QXT4OVM4vXI', 'SSS'),
-                ('Acids, Bases and Salts', 'Understanding chemical properties of substances.', 'https://www.youtube.com/embed/ANi709MYnWg', 'JSS'),
+                ('Acids, Bases and Salts', 'Understanding chemical properties of substances.', 'https://www.youtube.com/embed/ANi709MYnWg', 'SSS'),
                 ('The Periodic Table', 'Organisation of elements and their properties.', 'https://www.youtube.com/embed/0RRVV4Diomg', 'SSS')
+            ]
+        }
+
+        # --- Basic Science (JSS) ---
+        basic_science_topics = {
+            'en': [
+                ('Living & Non-Living Things', 'Characteristics of living organisms vs non-living matter.', 'https://www.youtube.com/embed/sO3Fqr46u_A', 'JSS'),
+                ('Human Body Systems', 'Overview of the skeletal, digestive, and nervous systems.', 'https://www.youtube.com/embed/huzs3Q4-CGc', 'JSS'),
+                ('Forces & Energy', 'Types of forces and forms of energy in our environment.', 'https://www.youtube.com/embed/2WS1sG9fhOk', 'JSS'),
+                ('Environmental Pollution', 'Understanding air, water, and land pollution.', 'https://www.youtube.com/embed/ANi709MYnWg', 'JSS')
+            ]
+        }
+
+        # --- Basic Science (JSS) ---
+        basic_science_topics = {
+            'en': [
+                ('Living & Non-Living Things', 'Characteristics of living organisms vs non-living matter.', 'https://www.youtube.com/embed/sO3Fqr46u_A', 'JSS'),
+                ('Human Body Systems', 'Overview of the skeletal, digestive, and nervous systems.', 'https://www.youtube.com/embed/huzs3Q4-CGc', 'JSS'),
+                ('Forces & Energy', 'Types of forces and forms of energy in our environment.', 'https://www.youtube.com/embed/2WS1sG9fhOk', 'JSS'),
+                ('Environmental Pollution', 'Understanding air, water, and land pollution.', 'https://www.youtube.com/embed/ANi709MYnWg', 'JSS')
             ]
         }
 
@@ -248,27 +268,29 @@ def seed_data():
 
             # Seed Biology
             for title, content, url, level in biology_topics.get(lang, biology_topics['en']):
-                subj = 'Biology' if level == 'SSS' else 'Science'
-                db.session.add(LearningMaterial(title=title, content=content, resource_url=url, subject=subj, language=lang, material_type='video_link', education_level=level))
-                
-                topic = Topic(name=title, subject=subj, education_level=level)
-                db.session.add(topic)
-                db.session.flush()
+                db.session.add(LearningMaterial(title=title, content=content, resource_url=url, subject='Biology', language=lang, material_type='video_link', education_level='SSS'))
+                topic = Topic(name=title, subject='Biology', education_level='SSS')
+                db.session.add(topic); db.session.flush()
                 db.session.add(TopicVideo(topic_id=topic.id, video_url=url, video_title=title))
             
             # Seed Physics
             for title, content, url, level in physics_topics.get(lang, physics_topics['en']):
-                subj = 'Physics' if level == 'SSS' else 'Science'
-                db.session.add(LearningMaterial(title=title, content=content, resource_url=url, subject=subj, language=lang, material_type='video_link', education_level=level))
-                topic = Topic(name=title, subject=subj, education_level=level)
+                db.session.add(LearningMaterial(title=title, content=content, resource_url=url, subject='Physics', language=lang, material_type='video_link', education_level='SSS'))
+                topic = Topic(name=title, subject='Physics', education_level='SSS')
                 db.session.add(topic); db.session.flush()
                 db.session.add(TopicVideo(topic_id=topic.id, video_url=url, video_title=title))
             
             # Seed Chemistry
             for title, content, url, level in chemistry_topics.get(lang, chemistry_topics['en']):
-                subj = 'Chemistry' if level == 'SSS' else 'Science'
-                db.session.add(LearningMaterial(title=title, content=content, resource_url=url, subject=subj, language=lang, material_type='video_link', education_level=level))
-                topic = Topic(name=title, subject=subj, education_level=level)
+                db.session.add(LearningMaterial(title=title, content=content, resource_url=url, subject='Chemistry', language=lang, material_type='video_link', education_level='SSS'))
+                topic = Topic(name=title, subject='Chemistry', education_level='SSS')
+                db.session.add(topic); db.session.flush()
+                db.session.add(TopicVideo(topic_id=topic.id, video_url=url, video_title=title))
+
+            # Seed Basic Science (JSS)
+            for title, content, url, level in basic_science_topics.get(lang, basic_science_topics['en']):
+                db.session.add(LearningMaterial(title=title, content=content, resource_url=url, subject='Science', language=lang, material_type='video_link', education_level=level))
+                topic = Topic(name=title, subject='Science', education_level=level)
                 db.session.add(topic); db.session.flush()
                 db.session.add(TopicVideo(topic_id=topic.id, video_url=url, video_title=title))
 
