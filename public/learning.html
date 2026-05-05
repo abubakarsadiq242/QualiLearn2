@@ -213,7 +213,7 @@
         <div class="row g-4" id="subjects-grid-selector">
             <!-- Math -->
             <div class="col-md-6 col-lg-4">
-                <div class="subject-card" onclick="window.location.href='mathematics.html'">
+                <div class="subject-card" onclick="window.location.href='learning.html?subject=Mathematics'">
                     <div class="subject-banner bg-primary bg-gradient">
                         <i class="bi bi-calculator"></i>
                     </div>
@@ -229,7 +229,7 @@
             </div>
             <!-- English -->
             <div class="col-md-6 col-lg-4">
-                <div class="subject-card" onclick="window.location.href='english.html'">
+                <div class="subject-card" onclick="window.location.href='learning.html?subject=English'">
                     <div class="subject-banner bg-success bg-gradient">
                         <i class="bi bi-translate"></i>
                     </div>
@@ -243,25 +243,16 @@
                     </div>
                 </div>
             </div>
-            <!-- Science (Includes Physics & Chemistry) -->
-            <div class="col-md-6 col-lg-4">
-                <div class="subject-card" onclick="window.location.href='science.html'">
-                    <div class="subject-banner bg-warning bg-gradient">
-                        <i class="bi bi-beaker"></i>
-                    </div>
-                    <div class="p-4">
-                        <h4 class="fw-bold mb-2" data-i18n="subject_science">Sciences</h4>
-                        <p class="text-muted small mb-4">Master Biology, Physics, and Chemistry in one hub.</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="badge bg-warning-subtle text-warning rounded-pill px-3 py-2" data-i18n="status_active">Active</span>
-                            <button class="btn btn-warning btn-modern text-white" data-i18n="view_all">View Curriculum</button>
-                        </div>
-                    </div>
-                </div>
+            
+            <!-- Science Sections (Level Dependent) -->
+            <div id="science-portal-dynamic" class="col-12 p-0 m-0 row g-4">
+                <!-- Injected via JS -->
             </div>
         </div>
 
-        <h3 class="fw-bold mt-5 mb-4 outfit" data-i18n="learning_materials_title">Study Topics</h3>
+        <div id="study-topics-header">
+            <h3 class="fw-bold mt-5 mb-4 outfit" id="study-topics-title" data-i18n="learning_materials_title">Study Topics</h3>
+        </div>
         <div class="row g-4" id="subjects-grid">
             <!-- Dynamic Content Load Here -->
         </div>
@@ -328,6 +319,7 @@
             const user = JSON.parse(localStorage.getItem('ql_user'));
             if (user) {
                 document.getElementById('user-initial').textContent = user.first_name.charAt(0).toUpperCase();
+                renderSciencePortal(user.education_level);
             }
             
             // Stop timer/video when modal closed
@@ -336,6 +328,61 @@
                 stopStudyTimer();
             });
         });
+
+        function renderSciencePortal(level = 'SSS') {
+            const portal = document.getElementById('science-portal-dynamic');
+            if (!portal) return;
+
+            const isSSS = level && level.toUpperCase().includes('SSS');
+            
+            if (isSSS) {
+                portal.innerHTML = `
+                    <div class="col-md-6 col-lg-4">
+                        <div class="subject-card" onclick="window.location.href='learning.html?subject=Biology'">
+                            <div class="subject-banner bg-danger bg-gradient"><i class="bi bi-heart-pulse"></i></div>
+                            <div class="p-4">
+                                <h4 class="fw-bold mb-2">Biology</h4>
+                                <p class="text-muted small mb-4">Life sciences, genetics, and anatomy.</p>
+                                <button class="btn btn-danger btn-modern text-white">View Curriculum</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="subject-card" onclick="window.location.href='learning.html?subject=Physics'">
+                            <div class="subject-banner bg-info bg-gradient"><i class="bi bi-lightning"></i></div>
+                            <div class="p-4">
+                                <h4 class="fw-bold mb-2">Physics</h4>
+                                <p class="text-muted small mb-4">Mechanics, energy, and physical laws.</p>
+                                <button class="btn btn-info btn-modern text-white">View Curriculum</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="subject-card" onclick="window.location.href='learning.html?subject=Chemistry'">
+                            <div class="subject-banner bg-warning bg-gradient"><i class="bi bi-flask"></i></div>
+                            <div class="p-4">
+                                <h4 class="fw-bold mb-2">Chemistry</h4>
+                                <p class="text-muted small mb-4">Elements, reactions, and matter.</p>
+                                <button class="btn btn-warning btn-modern text-white">View Curriculum</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                portal.innerHTML = `
+                    <div class="col-md-6 col-lg-4">
+                        <div class="subject-card" onclick="window.location.href='learning.html?subject=Science'">
+                            <div class="subject-banner bg-warning bg-gradient"><i class="bi bi-beaker"></i></div>
+                            <div class="p-4">
+                                <h4 class="fw-bold mb-2">Basic Science</h4>
+                                <p class="text-muted small mb-4">Introduction to life and physical sciences.</p>
+                                <button class="btn btn-warning btn-modern text-white">View Curriculum</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
 
         async function loadMaterials(subject = '') {
             currentSubject = subject;
@@ -349,10 +396,21 @@
                 const response = await apiGetTopics();
                 if (response.success) {
                     const groupedTopics = response.data;
-                    const topics = subject ? (groupedTopics[subject] || []) : Object.values(groupedTopics).flat();
+                    
+                    // IF NO SUBJECT: Hide the topics grid entirely, user must pick a card above
+                    if (!subject) {
+                        grid.innerHTML = '';
+                        document.getElementById('study-topics-header').style.display = 'none';
+                        return;
+                    }
+
+                    document.getElementById('study-topics-header').style.display = 'block';
+                    document.getElementById('study-topics-title').innerText = `${subject} Curriculum`;
+                    
+                    const topics = groupedTopics[subject] || [];
                     
                     if (topics.length === 0) {
-                        grid.innerHTML = `<div class="col-12 text-center py-5"><h5 class="text-muted">No topics found for ${subject || 'all subjects'}.</h5></div>`;
+                        grid.innerHTML = `<div class="col-12 text-center py-5"><h5 class="text-muted">No topics found for ${subject}.</h5></div>`;
                         return;
                     }
 

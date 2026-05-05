@@ -202,37 +202,34 @@ def seed_data():
 
             # Seed Biology
             for title, content, url, level in biology_topics.get(lang, biology_topics['en']):
-                db.session.add(LearningMaterial(title=title, content=content, resource_url=url, subject='Science', language=lang, material_type='video_link', education_level=level))
+                subj = 'Biology' if level == 'SSS' else 'Science'
+                db.session.add(LearningMaterial(title=title, content=content, resource_url=url, subject=subj, language=lang, material_type='video_link', education_level=level))
                 
-                topic = Topic(name=title, subject='Science', education_level=level)
+                topic = Topic(name=title, subject=subj, education_level=level)
                 db.session.add(topic)
                 db.session.flush()
                 db.session.add(TopicVideo(topic_id=topic.id, video_url=url, video_title=title))
             
-            # Also add Physics and Chemistry topics to Science
+            # Also add Physics and Chemistry topics
             for title, content, url, level in physics_topics.get(lang, physics_topics['en']):
-                db.session.add(LearningMaterial(title=title, content=content, resource_url=url, subject='Science', language=lang, material_type='video_link', education_level=level))
+                subj = 'Physics' if level == 'SSS' else 'Science'
+                db.session.add(LearningMaterial(title=title, content=content, resource_url=url, subject=subj, language=lang, material_type='video_link', education_level=level))
                 
-                topic = Topic(name=title, subject='Science', education_level=level)
+                topic = Topic(name=title, subject=subj, education_level=level)
                 db.session.add(topic)
                 db.session.flush()
                 db.session.add(TopicVideo(topic_id=topic.id, video_url=url, video_title=title))
             
             for title, content, url, level in chemistry_topics.get(lang, chemistry_topics['en']):
-                db.session.add(LearningMaterial(title=title, content=content, resource_url=url, subject='Science', language=lang, material_type='video_link', education_level=level))
+                subj = 'Chemistry' if level == 'SSS' else 'Science'
+                db.session.add(LearningMaterial(title=title, content=content, resource_url=url, subject=subj, language=lang, material_type='video_link', education_level=level))
                 
-                topic = Topic(name=title, subject='Science', education_level=level)
+                topic = Topic(name=title, subject=subj, education_level=level)
                 db.session.add(topic)
                 db.session.flush()
                 db.session.add(TopicVideo(topic_id=topic.id, video_url=url, video_title=title))
 
-            # Seed Physics (as standalone)
-            for title, content, url, level in physics_topics.get(lang, physics_topics['en']):
-                db.session.add(LearningMaterial(title=title, content=content, resource_url=url, subject='Physics', language=lang, material_type='video_link', education_level=level))
-            
-            # Seed Chemistry (as standalone)
-            for title, content, url, level in chemistry_topics.get(lang, chemistry_topics['en']):
-                db.session.add(LearningMaterial(title=title, content=content, resource_url=url, subject='Chemistry', language=lang, material_type='video_link', education_level=level))
+            # Redundant sections removed
 
         # --- Expanded Flashcards (50 per subject) ---
         flashcards_data = [

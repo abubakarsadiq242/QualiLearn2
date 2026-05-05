@@ -1,5 +1,9 @@
 import requests
 import os
+from dotenv import load_dotenv
+
+# Ensure environment variables are loaded in this process
+load_dotenv()
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.models.chat import ChatMessage
@@ -15,8 +19,8 @@ def call_gemini_api(prompt):
     if not api_key:
         return "I'm sorry, but my AI core is currently offline (API Key Missing). Please contact the administrator."
 
-    # Using the stable 1.5 flash model
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={api_key}"
+    # Using the latest 2.5 flash model available in 2026
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key}"
     
     payload = {
         "contents": [{
