@@ -348,8 +348,11 @@
                     </div>
                 </div>
             `;
-            document.getElementById('subject-btn').setAttribute('data-i18n', 'select_subject_practice');
-            document.getElementById('subject-btn').innerText = translations[getCurrentLang()]['select_subject_practice'];
+            const btnText = document.getElementById('subject-text');
+            if (btnText) {
+                btnText.setAttribute('data-i18n', 'select_subject_practice');
+                btnText.innerText = translations[getCurrentLang()]['select_subject_practice'];
+            }
             
             document.getElementById('current-assessment-info').innerHTML = `<span data-i18n="choose_subject_below">Please select a subject to begin</span>`;
             applyLanguage(getCurrentLang());
@@ -427,7 +430,8 @@
             localStorage.setItem('ql_lang', lang);
             document.getElementById('current-lang-display').textContent = lang.toUpperCase();
             applyLanguage(lang);
-            const currentSub = document.getElementById('subject-btn').innerText;
+            const subEl = document.getElementById('subject-text');
+            const currentSub = subEl ? subEl.innerText : '';
             if (currentSub !== "Select Subject" && currentSub !== translations[lang]['select_subject_practice']) {
                 loadSubject(currentSub);
             } else {

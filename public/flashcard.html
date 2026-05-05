@@ -330,7 +330,8 @@
                     </div>
                 </div>
             `;
-            document.getElementById('subject-btn').innerText = "Select Subject";
+            const btnText = document.getElementById('subject-text');
+            if (btnText) btnText.innerText = "Select Subject";
             document.getElementById('current-deck-info').innerText = "Choose a subject to start studying";
         }
 
@@ -338,7 +339,7 @@
             const btnText = document.getElementById('subject-text');
             const btnIcon = document.getElementById('subject-icon');
             
-            btnText.innerText = subject;
+            if (btnText) btnText.innerText = subject;
             
             // Dynamic Icon update
             const iconMap = {
