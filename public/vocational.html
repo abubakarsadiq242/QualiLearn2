@@ -231,7 +231,7 @@
                     <div class="ratio ratio-16x9 rounded-4 overflow-hidden mb-3 shadow-sm bg-dark">
                         <iframe id="videoFrame" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                     </div>
-                    <div class="d-flex justify-content-between align-items-center bg-light p-3 rounded-4 mt-3">
+                    <div class="d-flex justify-content-between align-items-center bg-light p-3 rounded-4 mt-3 mb-3">
                         <div class="d-flex align-items-center gap-2">
                              <i class="bi bi-clock-history text-primary"></i>
                              <span class="small fw-bold">Study Time: <span id="studyTimerDisplay">00:00</span></span>
@@ -241,6 +241,9 @@
                              <span class="small fw-bold text-success" data-i18n="active_progress">Progress Tracked</span>
                         </div>
                     </div>
+                    <button id="completeBtn" class="btn btn-success w-100 rounded-pill fw-bold py-2" onclick="finishSkill()">
+                        <i class="bi bi-check-circle-fill me-2"></i> Mark Workshop as Finished
+                    </button>
                 </div>
             </div>
         </div>
@@ -280,6 +283,14 @@
 
         let heartbeatInterval;
         async function openVideo(url, title, skillId) {
+            window.currentSkillId = skillId;
+            const btn = document.getElementById('completeBtn');
+            if (btn) {
+                btn.innerHTML = '<i class="bi bi-check-circle-fill me-2"></i> Mark Workshop as Finished';
+                btn.className = "btn btn-success w-100 rounded-pill fw-bold py-2";
+                btn.disabled = false;
+            }
+
             document.getElementById('modalTitle').innerText = title;
             document.getElementById('videoFrame').src = getEmbedUrl(url);
             videoModal.show();
@@ -295,7 +306,8 @@
                 activity_type: 'skill_learning',
                 module: 'vocational',
                 id: parseInt(skillId),
-                duration: 5
+                duration: 5,
+                completed: false
             });
 
             if (heartbeatInterval) clearInterval(heartbeatInterval);
@@ -305,10 +317,40 @@
                     activity_type: 'skill_learning',
                     module: 'vocational',
                     id: parseInt(skillId),
-                    duration: 10
+                    duration: 10,
+                    completed: false
                 });
                 window.dispatchEvent(new CustomEvent('ql-activity-logged'));
             }, 10000);
+        }
+
+        async function finishSkill() {
+            const btn = document.getElementById('completeBtn');
+            const skillId = window.currentSkillId;
+            if (!skillId) return;
+
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Updating...';
+            btn.disabled = true;
+
+            try {
+                await apiTrackActivity({
+                    activity_type: 'skill_learning',
+                    module: 'vocational',
+                    id: parseInt(skillId),
+                    completed: true
+                });
+                
+                btn.innerHTML = '<i class="bi bi-check-all me-2"></i> Workshop Finished & Progress Saved';
+                btn.className = "btn btn-outline-success w-100 rounded-pill fw-bold py-2";
+                
+                setTimeout(() => {
+                    videoModal.hide();
+                }, 1000);
+            } catch (err) {
+                console.error(err);
+                btn.innerHTML = '<i class="bi bi-exclamation-triangle me-2"></i> Error Saving';
+                btn.disabled = false;
+            }
         }
 
         function stopVideo() {

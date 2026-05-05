@@ -91,6 +91,9 @@ def process_track_data(user_id, data):
             game_map = {'ttt': 1, 'memory': 2, 'math': 3}
             item_id = game_map.get(data.get('game_type', 'math'), 3)
             item_type = 'game'
+        elif data.get('module') == 'vocational':
+            item_id = int(material_id) if material_id else 0
+            item_type = 'material' # Count as learning material for progress calculation
         elif material_id:
             item_id = int(material_id)
             item_type = 'material'
@@ -258,27 +261,22 @@ def get_dashboard_stats():
         db.session.commit()
         
         # 5. Resume Topic (Portal-Aware resolution)
+        last_act = ActivityLog.query.filter(
+            ActivityLog.user_id == user_id,
+            ActivityLog.portal_type == portal,
+            ActivityLog.topic_id != None
+        ).order_by(ActivityLog.created_at.desc()).first()
+        
         resume_topic = None
-        user = db.session.get(User, user_id)
-        if user and user.resume_topic_id:
+        if last_act:
             if portal == 'vocational':
-                voc = db.session.get(VocationalContent, user.resume_topic_id)
-                if voc:
-                    resume_topic = voc.to_dict()
-                    resume_topic['type'] = 'vocational'
-                    resume_topic['subject'] = voc.category
+                mat = db.session.get(VocationalContent, last_act.topic_id)
             else:
-                from app.models.topics import Topic
-                top = db.session.get(Topic, user.resume_topic_id)
-                if top:
-                    resume_topic = top.to_dict()
-                    resume_topic['type'] = 'topic'
-                    resume_topic['title'] = top.name
-                else:
-                    mat = db.session.get(LearningMaterial, user.resume_topic_id)
-                    if mat:
-                        resume_topic = mat.to_dict()
-                        resume_topic['type'] = 'material'
+                mat = db.session.get(LearningMaterial, last_act.topic_id)
+                
+            if mat:
+                resume_topic = mat.to_dict()
+                resume_topic['type'] = 'vocational' if portal == 'vocational' else 'material'
 
         streak_obj = Streak.query.filter_by(user_id=user_id, portal_type=portal).first()
         
@@ -429,13 +427,22 @@ def get_leaderboard():
         for u_id, stats in user_stats.items():
             user = db.session.get(User, u_id)
             if user and user.role != 'admin':
+                # Get portal-specific progress
+                prog_obj = Progress.query.filter_by(user_id=u_id, portal_type=portal).first()
+                display_progress = 0
+                if prog_obj:
+                    display_progress = (prog_obj.completed_units / max(prog_obj.total_units, 1)) * 100
+                else:
+                    # Fallback to model field for secondary if no specific row exists
+                    display_progress = user.overall_progress if portal == 'secondary' else 0
+
                 leaderboard.append({
                     'id': u_id,
                     'name': f"{user.first_name} {user.last_name}",
                     'initial': user.first_name[0] if user.first_name else 'U',
                     'points': int(stats['points']),
                     'duration': stats['duration'],
-                    'progress': round(user.overall_progress or 0, 1)
+                    'progress': round(display_progress, 1)
                 })
                 
         leaderboard.sort(key=lambda x: x['progress'], reverse=True)

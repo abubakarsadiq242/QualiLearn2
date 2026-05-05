@@ -156,33 +156,24 @@ def track_learning_progress():
     if topic_id:
         exists = CompletedItem.query.filter_by(user_id=user_id, portal_type=portal_type, item_id=topic_id, item_type='material').first()
         if not exists:
-            new_comp = CompletedItem(user_id=user_id, portal_type=portal_type, item_id=topic_id, item_type='material')
-            db.session.add(new_comp)
+            db.session.add(CompletedItem(user_id=user_id, portal_type=portal_type, item_id=topic_id, item_type='material'))
             
-            # Update Progress row for this portal
-            prog = Progress.query.filter_by(user_id=user_id, portal_type=portal_type).first()
-            if not prog:
-                prog = Progress(user_id=user_id, portal_type=portal_type, completed_units=1, total_units=100)
-                db.session.add(prog)
-            else:
-                prog.completed_units = CompletedItem.query.filter_by(user_id=user_id, portal_type=portal_type).count()
-
     # 3. Update Streak per Portal
-    today = date.today()
-    today_str = today.isoformat()
-    yesterday_str = (today - timedelta(days=1)).isoformat()
+    today = date.today().isoformat()
+    yesterday = (date.today() - timedelta(days=1)).isoformat()
     
     streak_obj = Streak.query.filter_by(user_id=user_id, portal_type=portal_type).first()
     if not streak_obj:
-        streak_obj = Streak(user_id=user_id, portal_type=portal_type, current_streak=1, last_active_date=today_str)
-        db.session.add(streak_obj)
+        db.session.add(Streak(user_id=user_id, portal_type=portal_type, current_streak=1, last_active_date=today))
     else:
-        if streak_obj.last_active_date == yesterday_str:
+        if streak_obj.last_active_date == yesterday:
             streak_obj.current_streak += 1
             streak_obj.longest_streak = max(streak_obj.longest_streak, streak_obj.current_streak)
-        elif streak_obj.last_active_date != today_str:
+        elif streak_obj.last_active_date != today:
             streak_obj.current_streak = 1
-        streak_obj.last_active_date = today_str
+        streak_obj.last_active_date = today
+
+    db.session.commit()
 
     db.session.commit()
     
