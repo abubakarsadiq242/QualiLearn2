@@ -172,23 +172,24 @@ def get_dashboard_stats():
         
         from datetime import date, datetime
         now = datetime.utcnow()
-        # Ensure UTC format consistency (using 'Z' to match frontend)
-        month_start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0).isoformat() + "Z"
-        today_start = now.replace(hour=0, minute=0, second=0, microsecond=0).isoformat() + "Z"
-        
         # 1. Study Time This Month Filtered by Portal
-        # Use a more robust LIKE filter if needed, but >= works for ISO strings
+        from sqlalchemy import and_
+        
+        # Use datetime objects for robust filtering
+        month_dt = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+        today_dt = now.replace(hour=0, minute=0, second=0, microsecond=0)
+
         total_sec = db.session.query(db.func.sum(ActivityLog.duration)).filter(
             ActivityLog.user_id == user_id,
             ActivityLog.portal_type == portal,
-            db.func.coalesce(ActivityLog.start_time, ActivityLog.created_at) >= month_start.replace('Z', '')
+            db.func.coalesce(ActivityLog.start_time, ActivityLog.created_at) >= month_dt
         ).scalar() or 0
         
         # 2. Today Study Time Filtered by Portal
         today_sec = db.session.query(db.func.sum(ActivityLog.duration)).filter(
             ActivityLog.user_id == user_id,
             ActivityLog.portal_type == portal,
-            db.func.coalesce(ActivityLog.start_time, ActivityLog.created_at) >= today_start.replace('Z', '')
+            db.func.coalesce(ActivityLog.start_time, ActivityLog.created_at) >= today_dt
         ).scalar() or 0
         
         # 3. Accuracy Calculation (SQL Aggregation for scalability)

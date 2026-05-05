@@ -448,7 +448,18 @@
                     <h4 class="fw-bold mb-4 outfit" data-i18n="for_you">For You</h4>
                     
                     
-                    <hr>
+                    <div class="mb-5">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="fw-bold mb-0 outfit"><i class="bi bi-bar-chart-fill text-primary me-2"></i> My Progress</h5>
+                            <span class="badge bg-primary-subtle text-primary rounded-pill fw-bold" id="sidebar-progress-text">0%</span>
+                        </div>
+                        <div class="progress rounded-pill shadow-sm" style="height: 12px; background: #eef2ff;">
+                            <div id="sidebar-progress-bar" class="progress-bar bg-primary progress-bar-striped progress-bar-animated" style="width: 0%;"></div>
+                        </div>
+                        <p class="text-muted small mt-2 mb-0">Track your journey to academic excellence.</p>
+                    </div>
+
+                    <hr class="opacity-10 mb-5">
                     
                     <div class="stat-card bg-white h-100 border-0 p-0">
                         <h5 class="fw-bold mb-4 outfit"><i class="bi bi-calendar3 text-primary me-2"></i> Academic Calendar</h5>
@@ -522,12 +533,10 @@
                 // Auto-refresh every 10 seconds for real-time feel
                 setInterval(refreshDashboardStats, 10000);
 
-                // Listen for activity logged event from same/other components
-                window.addEventListener('ql-activity-logged', () => {
-                    console.log(">>> DASHBOARD: ACTIVITY DETECTED, REFRESHING STATS");
-                    refreshDashboardStats();
-                });
-        })
+                } catch (e) {
+                    console.error('Dashboard initialization failed:', e);
+                }
+            });
 
         function renderLeaderboard(data, containerId) {
             const container = document.getElementById(containerId);
@@ -575,6 +584,13 @@
                 }
 
                 document.getElementById('stat-progress').textContent = `${stats.overall_progress}%`;
+                
+                // Sidebar Progress
+                const sidebarProgText = document.getElementById('sidebar-progress-text');
+                const sidebarProgBar = document.getElementById('sidebar-progress-bar');
+                if (sidebarProgText) sidebarProgText.textContent = `${stats.overall_progress}%`;
+                if (sidebarProgBar) sidebarProgBar.style.width = `${stats.overall_progress}%`;
+
                 document.getElementById('stat-time').textContent = stats.study_time;
                 document.getElementById('stat-daily').textContent = stats.daily_time;
                 document.getElementById('stat-passed').textContent = stats.assessments_passed;
@@ -633,11 +649,11 @@
         
         async function handleResumeTopic() {
             try {
-                const statsRes = await apiCall('/analytics/stats?portal=' + getCurrentPortal());
-                if (statsRes.success && statsRes.data.resume_topic) {
-                    const mat = statsRes.data.resume_topic;
+                const response = await apiGetDashboard();
+                if (response.success && response.data.resume_topic) {
+                    const mat = response.data.resume_topic;
                     let page = 'learning.html';
-                    if (mat.type === 'topic') page = 'topic-details.html';
+                    if (mat.type === 'vocational') page = 'vocational.html';
                     if (mat.type === 'vocational') page = 'vocational.html';
                     
                     window.location.href = `${page}?id=${mat.id}`;
