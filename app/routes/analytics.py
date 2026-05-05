@@ -30,17 +30,23 @@ def process_track_data(user_id, data):
     else:
         duration = int(duration)
 
+    t_id = data.get('topic_id') or data.get('id')
+    try:
+        t_id = int(t_id) if t_id else None
+    except:
+        t_id = None
+        
     log = ActivityLog(
         user_id=user_id,
         portal_type=portal_type,
         session_id=data.get('session_id'),
         activity_type=data.get('activity_type'),
         module=data.get('module'),
-        start_time=data.get('start_time') or datetime.utcnow().isoformat() + "Z",
+        start_time=data.get('start_time') or datetime.utcnow().isoformat(),
         end_time=data.get('end_time'),
         duration=duration,
         score=data.get('score', 0),
-        topic_id=data.get('topic_id'),
+        topic_id=t_id,
         video_id=data.get('video_id')
     )
     db.session.add(log)
@@ -175,21 +181,21 @@ def get_dashboard_stats():
         # 1. Study Time This Month Filtered by Portal
         from sqlalchemy import and_
         
-        # Use datetime objects for robust filtering
-        month_dt = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
-        today_dt = now.replace(hour=0, minute=0, second=0, microsecond=0)
+        # Use ISO strings for robust filtering against String-based SQLite columns
+        month_iso = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0).isoformat()
+        today_iso = now.replace(hour=0, minute=0, second=0, microsecond=0).isoformat()
 
         total_sec = db.session.query(db.func.sum(ActivityLog.duration)).filter(
             ActivityLog.user_id == user_id,
             ActivityLog.portal_type == portal,
-            db.func.coalesce(ActivityLog.start_time, ActivityLog.created_at) >= month_dt
+            db.func.coalesce(ActivityLog.start_time, ActivityLog.created_at) >= month_iso
         ).scalar() or 0
         
         # 2. Today Study Time Filtered by Portal
         today_sec = db.session.query(db.func.sum(ActivityLog.duration)).filter(
             ActivityLog.user_id == user_id,
             ActivityLog.portal_type == portal,
-            db.func.coalesce(ActivityLog.start_time, ActivityLog.created_at) >= today_dt
+            db.func.coalesce(ActivityLog.start_time, ActivityLog.created_at) >= today_iso
         ).scalar() or 0
         
         # 3. Accuracy Calculation (SQL Aggregation for scalability)

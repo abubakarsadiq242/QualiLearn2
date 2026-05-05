@@ -434,6 +434,7 @@ async function startStudyTimer(topic_id = null) {
             await apiTrackActivity({
                 activity_type: "study_session",
                 module: localStorage.getItem('ql_study_topic_name') || "General",
+                id: localStorage.getItem('ql_study_topic'),
                 duration: 30, // Pulse every 30 seconds
                 start_time: new Date(Date.now() - 30000).toISOString(),
                 end_time: new Date().toISOString()
