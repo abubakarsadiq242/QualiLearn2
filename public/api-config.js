@@ -352,7 +352,8 @@ async function apiGetSubjectProgress(subject) {
 }
 
 async function apiGetLeaderboard() {
-    return await apiCall('/analytics/leaderboard');
+    const portal = getCurrentPortal();
+    return await apiCall(`/analytics/leaderboard?portal=${portal}`);
 }
 
 // Global Study Session Tracker (Persistent)

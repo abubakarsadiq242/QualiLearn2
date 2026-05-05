@@ -307,16 +307,14 @@ def get_dashboard_stats():
         def format_time(seconds):
             h = int(seconds // 3600)
             m = int((seconds % 3600) // 60)
-            if h > 0:
-                return f"{h}h {m}m"
-            return f"{m}m"
+            return f"{h}h {m}m"
 
         stats = {
             "overall_progress": round(min(progress_pct, 100.0), 1),
             "study_time": format_time(total_sec),
             "daily_time": format_time(today_sec),
             "assessments_passed": Assessment.query.filter_by(user_id=user_id, portal_type=portal, passed=True).count(),
-            "accuracy": f"{round(accuracy, 1)}%",
+            "accuracy": f"{int(accuracy)}%",
             "current_streak": streak_obj.current_streak if streak_obj else 0,
             "longest_streak": streak_obj.longest_streak if streak_obj else 0,
             "resume_topic": resume_topic,
@@ -417,20 +415,28 @@ def get_subject_progress():
 def get_leaderboard():
     try:
         from datetime import datetime, timedelta
-        seven_days_ago = (datetime.utcnow() - timedelta(days=7)).isoformat()
+        portal = request.args.get('portal', 'secondary')
+        now = datetime.utcnow()
+        seven_days_ago_iso = (now - timedelta(days=7)).isoformat()
         
         # 1. Study time and Game scores from ActivityLog
         logs = db.session.query(
             ActivityLog.user_id,
             db.func.sum(ActivityLog.duration).label('total_duration'),
             db.func.sum(ActivityLog.score).label('total_game_score')
-        ).filter(ActivityLog.created_at >= seven_days_ago).group_by(ActivityLog.user_id).all()
+        ).filter(
+            ActivityLog.portal_type == portal,
+            db.func.coalesce(ActivityLog.start_time, ActivityLog.created_at) >= seven_days_ago_iso
+        ).group_by(ActivityLog.user_id).all()
         
         # 2. Assessment scores
         assessments = db.session.query(
             Assessment.user_id,
             db.func.sum(Assessment.correct_answers).label('total_correct')
-        ).filter(Assessment.created_at >= seven_days_ago).group_by(Assessment.user_id).all()
+        ).filter(
+            Assessment.portal_type == portal,
+            Assessment.created_at >= seven_days_ago_iso
+        ).group_by(Assessment.user_id).all()
         
         # Combine data
         user_stats = {}
@@ -454,7 +460,8 @@ def get_leaderboard():
                 prog_obj = Progress.query.filter_by(user_id=u_id, portal_type=portal).first()
                 display_progress = 0
                 if prog_obj:
-                    display_progress = (prog_obj.completed_units / max(prog_obj.total_units, 1)) * 100
+                    # In our system total_units is 100 for percentage
+                    display_progress = prog_obj.completed_units
                 else:
                     # Fallback to model field for secondary if no specific row exists
                     display_progress = user.overall_progress if portal == 'secondary' else 0
@@ -468,7 +475,8 @@ def get_leaderboard():
                     'progress': round(display_progress, 1)
                 })
                 
-        leaderboard.sort(key=lambda x: x['progress'], reverse=True)
+        # Sort by Progress (Mastery) first, then points
+        leaderboard.sort(key=lambda x: (x['progress'], x['points']), reverse=True)
         
         return jsonify({
             "success": True,
