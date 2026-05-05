@@ -339,7 +339,21 @@
             const btnText = document.getElementById('subject-text');
             const btnIcon = document.getElementById('subject-icon');
             
-            if (btnText) btnText.innerText = subject;
+            if (btnText) {
+                const i18nMap = {
+                    'Mathematics': 'subject_mathematics',
+                    'English': 'subject_english',
+                    'Biology': 'subject_biology',
+                    'Physics': 'subject_physics',
+                    'Chemistry': 'subject_chemistry'
+                };
+                if (i18nMap[subject]) {
+                    btnText.setAttribute('data-i18n', i18nMap[subject]);
+                } else {
+                    btnText.removeAttribute('data-i18n');
+                    btnText.innerText = subject;
+                }
+            }
             
             // Dynamic Icon update
             const iconMap = {
@@ -353,6 +367,9 @@
             if (btnIcon && iconMap[subject]) {
                 btnIcon.className = `bi ${iconMap[subject]} me-2 text-primary`;
             }
+            
+            // Re-apply language to translate the newly set data-i18n attribute
+            applyLanguage(localStorage.getItem('ql_lang') || 'en');
 
             const lang = localStorage.getItem('ql_lang') || 'en';
             console.log(`[Flashcard] Loading deck: ${subject} (${lang})`);

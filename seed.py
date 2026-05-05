@@ -61,21 +61,21 @@ def seed_data():
         math_topics = {
             'en': [
                 ('Algebraic expressions and equations', 'Master variables, coefficients, and solving linear equations.', 'https://www.youtube.com/embed/vDqOoI-4Z6M', 'Academics'),
-                ('Quadratic equations', 'Solving second-degree equations using factoring and formulas.', 'https://www.youtube.com/embed/XidW4U8hU0A', 'Academics'),
-                ('Geometry (angles, triangles, circles)', 'Theorems relating to shapes, angles, and circle properties.', 'https://www.youtube.com/embed/302eJ3TzJQU', 'Academics'),
-                ('Statistics and probability', 'Data analysis, mean, median, and calculating chance.', 'https://www.youtube.com/embed/4B876Xo9M5U', 'Academics'),
-                ('Trigonometry basics', 'Sine, Cosine, and Tangent relationships in triangles.', 'https://www.youtube.com/embed/J72vP7Hw0uM', 'Academics')
+                ('Quadratic equations', 'Solutions and the quadratic formula.', 'https://www.youtube.com/embed/qeByhTF8WEw', 'Academics'),
+                ('Geometry (angles, triangles, circles)', 'Properties of shapes and spatial reasoning.', 'https://www.youtube.com/embed/302eJ3TzJQU', 'Academics'),
+                ('Statistics and probability', 'Data analysis and chance calculation.', 'https://www.youtube.com/embed/SkidyDQuupA', 'Academics'),
+                ('Trigonometry basics', 'Relationship between angles and side ratios.', 'https://www.youtube.com/embed/PUB0TaZ7bhA', 'Academics')
             ]
         }
 
         # --- English Topics ---
         english_topics = {
             'en': [
-                ('Comprehension and summary', 'Developing reading skills and concise summarizing.', 'https://www.youtube.com/embed/5U_W0W3ClyE', 'Academics'),
-                ('Essay writing (formal & informal)', 'Mastering different styles of essay composition.', 'https://www.youtube.com/embed/8-W7j3hY64U', 'Academics'),
-                ('Parts of speech and grammar rules', 'Essential rules for nouns, verbs, and syntax.', 'https://www.youtube.com/embed/SBCw4_Xgo6A', 'Academics'),
-                ('Sentence structure and punctuation', 'Crafting clear sentences with correct punctuation.', 'https://www.youtube.com/embed/0WvJCun9oXw', 'Academics'),
-                ('Vocabulary building and word usage', 'Expanding lexicon and understanding context.', 'https://www.youtube.com/embed/Y0iR-O_YqLo', 'Academics')
+                ('Comprehension and summary', 'Developing reading skills and concise summarizing.', 'https://www.youtube.com/embed/e4HiKR3wmWo', 'Academics'),
+                ('Essay writing (formal & informal)', 'Mastering different styles of essay composition.', 'https://www.youtube.com/embed/PgwmAUJx248', 'Academics'),
+                ('Parts of speech and grammar rules', 'Essential rules for nouns, verbs, and syntax.', 'https://www.youtube.com/embed/chjmnCSPnbw', 'Academics'),
+                ('Sentence structure and punctuation', 'Crafting clear sentences with correct punctuation.', 'https://www.youtube.com/embed/nyYyiYULkM4', 'Academics'),
+                ('Vocabulary building and word usage', 'Expanding lexicon and understanding context.', 'https://www.youtube.com/embed/CQSUEKNOc6s', 'Academics')
             ]
         }
 
@@ -83,19 +83,19 @@ def seed_data():
         biology_topics = {
             'en': [
                 ('Cell structure and functions', 'The building blocks of life and their organelles.', 'https://www.youtube.com/embed/URUJD5NEXC8', 'Academics'),
-                ('Nutrition in plants and animals', 'How organisms obtain and process energy.', 'https://www.youtube.com/embed/YpXjA7G-S2o', 'Academics'),
-                ('Human body systems', 'Anatomy and physiology of major organ systems.', 'https://www.youtube.com/embed/gEUu-A2WnSE', 'Academics'),
-                ('Reproduction in organisms', 'Biological processes for producing offspring.', 'https://www.youtube.com/embed/Xm_m8pEmsV4', 'Academics'),
-                ('Ecology and ecosystems', 'Interactions between organisms and their environment.', 'https://www.youtube.com/embed/GInJPo8u8oY', 'Academics')
+                ('Nutrition in plants and animals', 'How organisms obtain and process energy.', 'https://www.youtube.com/embed/waamP1uq1Ck', 'Academics'),
+                ('Human body systems', 'Anatomy and physiology of major organ systems.', 'https://www.youtube.com/embed/8Z1C7B98KEY', 'Academics'),
+                ('Reproduction in organisms', 'Biological processes for producing offspring.', 'https://www.youtube.com/embed/jt_wm0PuzSQ', 'Academics'),
+                ('Ecology and ecosystems', 'Interactions between organisms and their environment.', 'https://www.youtube.com/embed/srpl5YRw-_U', 'Academics')
             ]
         }
 
         # --- Physics Topics ---
         physics_topics = {
             'en': [
-                ('Motion and force', 'Newton’s laws and the relationship between mass and acceleration.', 'https://www.youtube.com/embed/Gn8mQWTT6os', 'Academics'),
-                ('Energy and work', 'Kinetic and potential energy, and the principle of conservation.', 'https://www.youtube.com/embed/2W9Zp0S2mE0', 'Academics'),
-                ('Waves and sound', 'Properties of mechanical waves and the physics of acoustics.', 'https://www.youtube.com/embed/TdTclSge278', 'Academics'),
+                ('Motion and force', 'Newton’s laws and the relationship between mass and acceleration.', 'https://www.youtube.com/embed/g550H4e5FCY', 'Academics'),
+                ('Energy and work', 'Kinetic and potential energy, and the principle of conservation.', 'https://www.youtube.com/embed/_MR1Dp8-F8w', 'Academics'),
+                ('Waves and sound', 'Properties of mechanical waves and the physics of acoustics.', 'https://www.youtube.com/embed/XY0RJu4sDHk', 'Academics'),
                 ('Electricity and circuits', 'Current, voltage, resistance, and circuit diagrams.', 'https://www.youtube.com/embed/m4jzgqZu-4s', 'Academics'),
                 ('Heat and temperature', 'Thermodynamics and thermal properties of matter.', 'https://www.youtube.com/embed/f1eAOygDP5s', 'Academics')
             ]
@@ -104,11 +104,11 @@ def seed_data():
         # --- Chemistry Topics ---
         chemistry_topics = {
             'en': [
-                ('Atomic structure', 'Components of atoms and electronic configuration.', 'https://www.youtube.com/embed/fsLJZSAtW-8', 'Academics'),
+                ('Atomic structure', 'Components of atoms and electronic configuration.', 'https://www.youtube.com/embed/OH-aSu-rWgk', 'Academics'),
                 ('Periodic table and elements', 'Classification and properties of chemical elements.', 'https://www.youtube.com/embed/0RRVV4Diomg', 'Academics'),
                 ('Chemical bonding', 'Ionic, covalent, and metallic bonds.', 'https://www.youtube.com/embed/7DjsD7Hcd9U', 'Academics'),
                 ('Acids, bases, and salts', 'pH scales, neutralization, and salt formation.', 'https://www.youtube.com/embed/ANi709MYnWg', 'Academics'),
-                ('Chemical reactions and equations', 'Balancing equations and types of reactions.', 'https://www.youtube.com/embed/TStjgUhuS2o', 'Academics')
+                ('Chemical reactions and equations', 'Balancing equations and types of reactions.', 'https://www.youtube.com/embed/Hxd1TNgSuPg', 'Academics')
             ]
         }
 
