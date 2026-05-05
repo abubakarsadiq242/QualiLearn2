@@ -60,8 +60,6 @@ def call_groq_api(prompt):
         return "I understood your question, but I'm having trouble generating a response. Could you try asking in a different way?"
     except requests.exceptions.RequestException as e:
         print(f"Groq API Request Error: {e}")
-        if response.status_code == 429:
-            return "I'm receiving too many questions at once! Please wait a moment and try again."
         return "I'm having a brief technical moment connecting to my brain. Please try again in a few seconds!"
     except Exception as e:
         print(f"Groq Unexpected Error: {e}")
@@ -114,10 +112,10 @@ def send_message():
 
         # Build prompt safely
         prompt_template = f"""
-        You are {persona_name}, {persona_role}. 
-        Your goal is to {persona_goal}.
+        You are {{persona_name}}, {{persona_role}}. 
+        Your goal is to {{persona_goal}}.
 
-        IMPORTANT: Respond ONLY in {lang_name}.
+        IMPORTANT: Respond ONLY in {{lang_name}}.
 
         STRICT GUIDELINES:
         - DIRECT ANSWER ONLY: Do NOT include greetings, introductions, or any conversational filler. Start the very first sentence with the answer.
@@ -126,7 +124,7 @@ def send_message():
         - {{persona_feature}}
         - CLEAN TEXT: Use ONLY plain text and LaTeX math. ABSOLUTELY NO markdown stars (*), bold markers (**), or headers (#).
         - Accuracy: Provide the exact, correct answer the user is looking for.
-        - {persona_context}
+        - {{persona_context}}
 
         Context:
         {{context}}
@@ -136,9 +134,14 @@ def send_message():
         
         persona_feature = "Technical Guidance: Provide step-by-step practical instructions where applicable." if user_lvl == 'Vocational' else "Math Formulas: Use professional LaTeX formatting for all mathematical equations. Use $ formula $ for inline and $$ formula $$ for large block equations."
         
-        prompt = prompt_template.replace("{context}", context) \
-                                 .replace("{message}", data.get('message', '')) \
-                                 .replace("{persona_feature}", persona_feature)
+        prompt = prompt_template.replace("{persona_name}", persona_name) \
+                                 .replace("{persona_role}", persona_role) \
+                                 .replace("{persona_goal}", persona_goal) \
+                                 .replace("{lang_name}", lang_name) \
+                                 .replace("{persona_feature}", persona_feature) \
+                                 .replace("{persona_context}", persona_context) \
+                                 .replace("{context}", context) \
+                                 .replace("{message}", data.get('message', ''))
         
         print("Calling Groq API...")
         bot_response = call_groq_api(prompt)
@@ -149,7 +152,7 @@ def send_message():
         
         # Reward progress
         if user:
-            user.study_time = (user.study_time or 0) + 2 # Add 2 mins per interaction
+            user.study_time = (user.study_time or 0) + 2
             user.overall_progress = min(100, (user.overall_progress or 0) + 0.05)
         
         db.session.commit()

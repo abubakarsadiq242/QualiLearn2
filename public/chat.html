@@ -346,8 +346,8 @@
                 const response = await apiSendMessage(text);
                 document.getElementById(loadingId).remove();
                 
-                // Navigate correct structure: response.data.bot_message.message
-                let reply = (response.data && response.data.bot_message) ? response.data.bot_message.message : "I couldn't get a response.";
+                // Navigate correct structure: response.data.message
+                let reply = (response.data && response.data.message) ? response.data.message : "I couldn't get a response.";
                 
                 // Final Sanitize: Remove stars and any potential AI-self-intros
                 reply = reply.replace(/\*/g, '').replace(/#/g, '');
