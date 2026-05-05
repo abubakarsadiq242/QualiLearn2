@@ -211,39 +211,6 @@
 
         <!-- Subjects Grid -->
         <div class="row g-4" id="subjects-grid-selector">
-            <!-- Math -->
-            <div class="col-md-6 col-lg-4">
-                <div class="subject-card" onclick="window.location.href='learning.html?subject=Mathematics'">
-                    <div class="subject-banner bg-primary bg-gradient">
-                        <i class="bi bi-calculator"></i>
-                    </div>
-                    <div class="p-4">
-                        <h4 class="fw-bold mb-2" data-i18n="subject_mathematics">Mathematics</h4>
-                        <p class="text-muted small mb-4" data-i18n="feature_multilingual_desc">Master the core concepts of mathematics.</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2" data-i18n="status_active">Active</span>
-                            <button class="btn btn-primary btn-modern" onclick="event.stopPropagation(); window.location.href='subject-videos.html?subject=Mathematics'" data-i18n="view_all">View Curriculum</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- English -->
-            <div class="col-md-6 col-lg-4">
-                <div class="subject-card" onclick="window.location.href='learning.html?subject=English'">
-                    <div class="subject-banner bg-success bg-gradient">
-                        <i class="bi bi-translate"></i>
-                    </div>
-                    <div class="p-4">
-                        <h4 class="fw-bold mb-2" data-i18n="subject_english">English Language</h4>
-                        <p class="text-muted small mb-4" data-i18n="feature_multilingual_desc">Improve your grammar and communication.</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="badge bg-success-subtle text-success rounded-pill px-3 py-2" data-i18n="status_active">Active</span>
-                            <button class="btn btn-success btn-modern text-white" onclick="event.stopPropagation(); window.location.href='subject-videos.html?subject=English'" data-i18n="view_all">View Curriculum</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
             <!-- Science Sections (Level Dependent) -->
             <div id="science-portal-dynamic" class="col-12 p-0 m-0 row g-4">
                 <!-- Injected via JS -->
@@ -336,129 +303,13 @@
         function renderSubjectPortals(level = 'Academics') {
             const portal = document.getElementById('science-portal-dynamic');
             if (!portal) return;
-
-            const isAcademic = level && (level.toUpperCase().includes('SSS') || level.toUpperCase().includes('ACADEMICS'));
-            
-            let html = '';
-
-            // 1. Core Subjects
-            html += `
-                <div class="col-md-6 col-lg-4">
-                    <div class="subject-card" onclick="window.location.href='learning.html?subject=Mathematics'">
-                        <div class="subject-banner bg-primary bg-gradient"><i class="bi bi-calculator"></i></div>
-                        <div class="p-4">
-                            <h4 class="fw-bold mb-2">Mathematics</h4>
-                            <p class="text-muted small mb-4">Algebra, Geometry, and Logic.</p>
-                            <button class="btn btn-primary btn-modern text-white" onclick="event.stopPropagation(); window.location.href='subject-videos.html?subject=Mathematics'">View All</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="subject-card" onclick="window.location.href='learning.html?subject=English'">
-                        <div class="subject-banner bg-success bg-gradient"><i class="bi bi-alphabet-uppercase"></i></div>
-                        <div class="p-4">
-                            <h4 class="fw-bold mb-2">English Language</h4>
-                            <p class="text-muted small mb-4">Grammar, Literature, and Writing.</p>
-                            <button class="btn btn-success btn-modern text-white" onclick="event.stopPropagation(); window.location.href='subject-videos.html?subject=English'">View All</button>
-                        </div>
-                    </div>
+            portal.innerHTML = `
+                <div class="col-12 text-center py-5">
+                    <i class="bi bi-folder-x text-muted opacity-25" style="font-size: 5rem;"></i>
+                    <h4 class="fw-bold outfit mt-3">No Subjects Available</h4>
+                    <p class="text-muted">The curriculum is currently being updated. Please check back later.</p>
                 </div>
             `;
-
-            // 2. Academic Subjects (Biology/Physics/Chemistry etc.)
-            if (isAcademic) {
-                html += `
-                    <div class="col-md-6 col-lg-4">
-                        <div class="subject-card" onclick="window.location.href='learning.html?subject=Biology'">
-                            <div class="subject-banner bg-danger bg-gradient"><i class="bi bi-heart-pulse"></i></div>
-                            <div class="p-4">
-                                <h4 class="fw-bold mb-2">Biology</h4>
-                                <p class="text-muted small mb-4" data-i18n="feature_multilingual_desc">Life sciences, genetics, and anatomy.</p>
-                                <button class="btn btn-danger btn-modern text-white" onclick="event.stopPropagation(); window.location.href='subject-videos.html?subject=Biology'" data-i18n="view_all">View All</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4">
-                        <div class="subject-card" onclick="window.location.href='learning.html?subject=Physics'">
-                            <div class="subject-banner bg-info bg-gradient"><i class="bi bi-lightning"></i></div>
-                            <div class="p-4">
-                                <h4 class="fw-bold mb-2">Physics</h4>
-                                <p class="text-muted small mb-4" data-i18n="feature_multilingual_desc">Mechanics, energy, and physical laws.</p>
-                                <button class="btn btn-info btn-modern text-white" onclick="event.stopPropagation(); window.location.href='subject-videos.html?subject=Physics'" data-i18n="view_all">View All</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4">
-                        <div class="subject-card" onclick="window.location.href='learning.html?subject=Chemistry'">
-                            <div class="subject-banner bg-warning bg-gradient"><i class="bi bi-flask"></i></div>
-                            <div class="p-4">
-                                <h4 class="fw-bold mb-2">Chemistry</h4>
-                                <p class="text-muted small mb-4" data-i18n="feature_multilingual_desc">Elements, reactions, and matter.</p>
-                                <button class="btn btn-warning btn-modern text-white" onclick="event.stopPropagation(); window.location.href='subject-videos.html?subject=Chemistry'" data-i18n="view_all">View All</button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-
-                // Add Arts & Social Sciences
-                html += `
-                    <div class="col-md-6 col-lg-4">
-                        <div class="subject-card" onclick="window.location.href='learning.html?subject=Commerce'">
-                            <div class="subject-banner bg-dark bg-gradient"><i class="bi bi-shop"></i></div>
-                            <div class="p-4">
-                                <h4 class="fw-bold mb-2" data-i18n="subject_commerce">Commerce</h4>
-                                <p class="text-muted small mb-4" data-i18n="feature_multilingual_desc">Trade, aids to trade, and business.</p>
-                                <button class="btn btn-dark btn-modern text-white" onclick="event.stopPropagation(); window.location.href='subject-videos.html?subject=Commerce'" data-i18n="view_all">View All</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4">
-                        <div class="subject-card" onclick="window.location.href='learning.html?subject=Geography'">
-                            <div class="subject-banner bg-secondary bg-gradient"><i class="bi bi-globe"></i></div>
-                            <div class="p-4">
-                                <h4 class="fw-bold mb-2" data-i18n="subject_geography">Geography</h4>
-                                <p class="text-muted small mb-4" data-i18n="feature_multilingual_desc">The earth, maps, and environment.</p>
-                                <button class="btn btn-secondary btn-modern text-white" onclick="event.stopPropagation(); window.location.href='subject-videos.html?subject=Geography'" data-i18n="view_all">View All</button>
-                            </div>
-                        </div>
-                    <div class="col-md-6 col-lg-4">
-                        <div class="subject-card" onclick="window.location.href='learning.html?subject=Social Studies'">
-                            <div class="subject-banner bg-warning bg-gradient"><i class="bi bi-people"></i></div>
-                            <div class="p-4">
-                                <h4 class="fw-bold mb-2">Social Studies</h4>
-                                <p class="text-muted small mb-4">Community, Culture, and Society.</p>
-                                <button class="btn btn-warning btn-modern text-white" onclick="event.stopPropagation(); window.location.href='subject-videos.html?subject=Social Studies'">View All</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4">
-                        <div class="subject-card" onclick="window.location.href='learning.html?subject=Science'">
-                            <div class="subject-banner bg-info bg-gradient"><i class="bi bi-rocket"></i></div>
-                            <div class="p-4">
-                                <h4 class="fw-bold mb-2">Basic Science</h4>
-                                <p class="text-muted small mb-4">Nature, Energy, and Discovery.</p>
-                                <button class="btn btn-info btn-modern text-white" onclick="event.stopPropagation(); window.location.href='subject-videos.html?subject=Science'">View All</button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
-
-            // Always add Agric Science if available for both
-            html += `
-                <div class="col-md-6 col-lg-4">
-                    <div class="subject-card" onclick="window.location.href='learning.html?subject=Agricultural Science'">
-                        <div class="subject-banner bg-success bg-gradient"><i class="bi bi-leaf"></i></div>
-                        <div class="p-4">
-                            <h4 class="fw-bold mb-2" data-i18n="subject_agric">Agricultural Science</h4>
-                            <p class="text-muted small mb-4" data-i18n="feature_multilingual_desc">Crop production and animal husbandry.</p>
-                            <button class="btn btn-success btn-modern text-white" onclick="event.stopPropagation(); window.location.href='subject-videos.html?subject=Agricultural Science'" data-i18n="view_all">View All</button>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            portal.innerHTML = html;
         }
 
         async function loadMaterials(subject = '') {
