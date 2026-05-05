@@ -10,7 +10,7 @@ def seed_final_content():
         languages = ['en', 'ha', 'yo', 'ig', 'pi']
         subjects = [
             'Mathematics', 'English', 'Biology', 'Physics', 'Chemistry', 
-            'Economics', 'Government', 'Agricultural Science', 'Social Studies', 
+            'Agricultural Science', 'Social Studies', 
             'Commerce', 'Geography', 'Science'
         ]
         
@@ -45,18 +45,6 @@ def seed_final_content():
                 ("What is the plural of '{word}'?", "{plural}", ["{plural}", "{alt1}", "{alt2}", "{alt3}"]),
                 ("Identify the part of speech: '{word}'", "{part}", ["Noun", "Verb", "Adjective", "Adverb"]),
                 ("Choose the correct spelling:", "{word}", ["{word}", "{w1}", "{w2}", "{w3}"])
-            ],
-            'Economics': [
-                ("What is the basic law of demand?", "Price up, Demand down", ["Price up, Demand down", "Price up, Demand up", "Supply up, Demand down", "None"]),
-                ("Factors of production include land, labor, capital and:", "Entrepreneurship", ["Entrepreneurship", "Money", "Tools", "Machines"]),
-                ("Opportunity cost refers to:", "The next best alternative", ["The next best alternative", "The total cost", "Hidden cost", "Fixed cost"]),
-                ("Inflation is the general rise in:", "Prices", ["Prices", "Wages", "Employment", "Supply"])
-            ],
-            'Government': [
-                ("A system of government by the whole population is:", "Democracy", ["Democracy", "Monarchy", "Oligarchy", "Dictatorship"]),
-                ("The executive branch of government is responsible for:", "Enforcing laws", ["Enforcing laws", "Making laws", "Interpreting laws", "Voting"]),
-                ("Nigeria became a republic in:", "1963", ["1960", "1963", "1999", "1914"]),
-                ("The upper house of the National Assembly is the:", "Senate", ["Senate", "House of Reps", "Supreme Court", "Cabinet"])
             ],
             'Agricultural Science': [
                 ("The process of removing weeds is called:", "Weeding", ["Weeding", "Mulching", "Pruning", "Thinning"]),
@@ -97,8 +85,6 @@ def seed_final_content():
             'Chemistry': [("Avogadro's Number", "6.022 x 10²³"), ("Ideal Gas Law", "PV = nRT"), ("Periodic Table", "Arrangement of elements by atomic number")],
             'Biology': [("DNA", "Deoxyribonucleic Acid"), ("ATP", "Adenosine Triphosphate"), ("Mitosis", "Cell division resulting in two identical cells")],
             'English': [("Simile", "Comparison using like or as"), ("Metaphor", "Direct comparison"), ("Onomatopoeia", "Word that sounds like its meaning")],
-            'Economics': [("Scarity", "Limited resources vs unlimited wants"), ("Supply", "Amount of goods available"), ("Demand", "Desire for a good and ability to pay")],
-            'Government': [("Sovereignty", "Supreme power or authority"), ("Constitution", "Set of rules for a country"), ("Federalism", "Power shared between central and state gov")],
             'Agricultural Science': [("Photosynthesis", "Plants making food from sunlight"), ("Erosion", "Wearing away of soil"), ("Irrigation", "Artificial watering of crops")],
             'Social Studies': [("Values", "Beliefs that guide behavior"), ("Culture", "Way of life of a people"), ("Leadership", "Ability to guide or influence others")],
             'Commerce': [("Asset", "Something of value owned"), ("Liability", "Money owed to others"), ("Equity", "Ownership interest in a business")],

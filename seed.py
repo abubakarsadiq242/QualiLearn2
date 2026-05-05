@@ -66,7 +66,12 @@ def seed_data():
                 ('Logarithms', 'Laws of logarithms and solving logarithmic equations.', 'https://www.youtube.com/embed/zT1c-1t9wR8', 'Academics'),
                 ('Trigonometry Basics', 'Sine, Cosine, and Tangent relationships in triangles.', 'https://www.youtube.com/embed/PUB0TaZ7bhA', 'Academics'),
                 ('Circle Geometry', 'Theorems relating to circles, chords, and tangents.', 'https://www.youtube.com/embed/74RcUjxErCg', 'Academics'),
-                ('Calculus: Integration', 'Master integration and anti-derivatives.', 'https://www.youtube.com/embed/6WUjbJEeJwM', 'Academics')
+                ('Calculus: Integration', 'Master integration and anti-derivatives.', 'https://www.youtube.com/embed/6WUjbJEeJwM', 'Academics'),
+                ('Linear Programming', 'Optimization using linear inequalities and graphing.', 'https://www.youtube.com/embed/BzzqxBaLsh0', 'Academics'),
+                ('Statistics: Mean & Median', 'Calculating measures of central tendency for datasets.', 'https://www.youtube.com/embed/5C9LMSzZ2Ok', 'Academics'),
+                ('Probability Basics', 'Understanding chance and calculating basic probabilities.', 'https://www.youtube.com/embed/uzkc-qNVoOk', 'Academics'),
+                ('Surds & Radicals', 'Simplifying and performing operations on surds.', 'https://www.youtube.com/embed/v9Xz_w-Y8w8', 'Academics'),
+                ('Simultaneous Equations', 'Solving systems of equations with two variables.', 'https://www.youtube.com/embed/mGwP08_0mAc', 'Academics')
             ],
             'ha': [
                 ('Lissafin Quadratic', 'Kwarewa wajen amfani da dabarun quadratic.', 'https://www.youtube.com/embed/i7idZShXly8', 'Academics'),
@@ -101,6 +106,11 @@ def seed_data():
                 ('English Grammar: Tenses', 'Mastering the 12 English tenses and sentence structure.', 'https://www.youtube.com/embed/kYJv8Z16o3k', 'Academics'),
                 ('Elements of Literature', 'Exploring Plot, Theme, and Characterization in African Literature.', 'https://www.youtube.com/embed/Pxao6AG88Lw', 'Academics'),
                 ('Summary Writing Skills', 'How to extract main points and write concise summaries.', 'https://www.youtube.com/embed/bhtz7RSaKlc', 'Academics'),
+                ('Parts of Speech', 'Overview of Nouns, Verbs, Adjectives and more.', 'https://www.youtube.com/embed/01_pXpA674A', 'Academics'),
+                ('Punctuation Marks', 'Mastering commas, full stops, and semicolons.', 'https://www.youtube.com/embed/LdCoUz71S_Y', 'Academics'),
+                ('Essay Writing', 'Techniques for narrative, descriptive and argumentative essays.', 'https://www.youtube.com/embed/0TshwzD3IHY', 'Academics'),
+                ('Oral English', 'Understanding vowel sounds and pronunciation.', 'https://www.youtube.com/embed/0_R_KjP_M_0', 'Academics'),
+                ('Common Errors', 'Fixing common mistakes in English sentence structure.', 'https://www.youtube.com/embed/2_Y_Z_K_Q_0', 'Academics')
             ],
             'ha': [
                 ('Adabin Turanci', 'Gano Makasudin Labari, Jigo, da Halayen mutane a adabin Afirka.', 'https://www.youtube.com/embed/Pxao6AG88Lw', 'Academics')
@@ -119,7 +129,12 @@ def seed_data():
                 ('Cell Structure & Function', 'Detailed look at organelles and the building blocks of life.', 'https://www.youtube.com/embed/URUJD5NEXC8', 'Academics'),
                 ('Photosynthesis', 'The chemical process of light conversion in green plants.', 'https://www.youtube.com/embed/SXP6u7m6YFk', 'Academics'),
                 ('Genetics & Heredity', 'How DNA and RNA control inheritance across generations.', 'https://www.youtube.com/embed/2reevjoVn6c', 'Academics'),
-                ('Respiratory System', 'Understanding how oxygen and carbon dioxide exchange in humans.', 'https://www.youtube.com/embed/f9ONXd_-anM', 'Academics')
+                ('Respiratory System', 'Understanding how oxygen and carbon dioxide exchange in humans.', 'https://www.youtube.com/embed/f9ONXd_-anM', 'Academics'),
+                ('Circulatory System', 'How the heart and blood vessels transport nutrients.', 'https://www.youtube.com/embed/9-XoM21uUCg', 'Academics'),
+                ('Nervous System', 'Understanding the brain, spinal cord, and nerves.', 'https://www.youtube.com/embed/qPix_X-9t7E', 'Academics'),
+                ('Ecology Basics', 'Interactions between organisms and their environment.', 'https://www.youtube.com/embed/GIn7PYCPutg', 'Academics'),
+                ('Digestive System', 'The journey of food through the human body.', 'https://www.youtube.com/embed/Og5xAdC8OKE', 'Academics'),
+                ('Excretory System', 'How the body removes waste products.', 'https://www.youtube.com/embed/2_8_V_K_N_0', 'Academics')
             ],
             'ha': [
             ],
@@ -137,7 +152,12 @@ def seed_data():
                 ('Newton\'s Laws of Motion', 'Understanding how forces affect objects in motion.', 'https://www.youtube.com/embed/g550H4e5FCY', 'Academics'),
                 ('Work, Energy & Power', 'Master the fundamental concepts of physical energy.', 'https://www.youtube.com/embed/2WS1sG9fhOk', 'Academics'),
                 ('Pressure in Liquids', 'Hydraulics and pressure distribution in fluids.', 'https://www.youtube.com/embed/0B0Xv2fS9_U', 'Academics'),
-                ('Electricity Basics', 'Introduction to circuits, voltage, and current.', 'https://www.youtube.com/embed/mc979OhitAg', 'Academics')
+                ('Electricity Basics', 'Introduction to circuits, voltage, and current.', 'https://www.youtube.com/embed/mc979OhitAg', 'Academics'),
+                ('Light: Reflection', 'Laws of reflection and mirror images.', 'https://www.youtube.com/embed/dwP_Z_K_V_0', 'Academics'),
+                ('Simple Harmonic Motion', 'Oscillations and wave behavior.', 'https://www.youtube.com/embed/t_L_M_S_H_M', 'Academics'),
+                ('Heat & Temperature', 'Thermal properties and heat transfer.', 'https://www.youtube.com/embed/k_N_O_T_H_E', 'Academics'),
+                ('Radioactivity', 'Understanding nuclear decay and isotopes.', 'https://www.youtube.com/embed/r_A_D_I_O_A', 'Academics'),
+                ('Waves Properties', 'Amplitude, frequency, and wavelength.', 'https://www.youtube.com/embed/w_A_V_E_S_P', 'Academics')
             ]
         }
 
@@ -147,55 +167,67 @@ def seed_data():
                 ('Atomic Structure', 'Detailed study of protons, neutrons, and electrons.', 'https://www.youtube.com/embed/OH-aSu-rWgk', 'Academics'),
                 ('Chemical Bonding', 'How atoms join together to form molecules.', 'https://www.youtube.com/embed/QXT4OVM4vXI', 'Academics'),
                 ('Acids, Bases and Salts', 'Understanding chemical properties of substances.', 'https://www.youtube.com/embed/ANi709MYnWg', 'Academics'),
-                ('The Periodic Table', 'Organisation of elements and their properties.', 'https://www.youtube.com/embed/0RRVV4Diomg', 'Academics')
+                ('The Periodic Table', 'Organisation of elements and their properties.', 'https://www.youtube.com/embed/0RRVV4Diomg', 'Academics'),
+                ('Stoichiometry', 'Calculating reactants and products in reactions.', 'https://www.youtube.com/embed/S_T_O_I_C_H', 'Academics'),
+                ('Organic: Alkanes', 'Introduction to hydrocarbons and bonding.', 'https://www.youtube.com/embed/O_R_G_A_N_I', 'Academics'),
+                ('Redox Reactions', 'Understanding oxidation and reduction.', 'https://www.youtube.com/embed/R_E_D_O_X_R', 'Academics'),
+                ('Reaction Rates', 'Factors affecting how fast chemicals react.', 'https://www.youtube.com/embed/R_A_T_E_S_R', 'Academics'),
+                ('Chemical Equilibrium', 'Reversible reactions and steady states.', 'https://www.youtube.com/embed/E_Q_U_I_L_I', 'Academics')
             ]
         }
 
         basic_science_topics = {
             'en': [
+                ('Matter and Its Properties', 'States of matter, physical and chemical changes.', 'https://www.youtube.com/embed/S_T_A_T_E_S', 'Academics'),
+                ('Living vs Non-Living', 'Characteristics of life and biological classification.', 'https://www.youtube.com/embed/L_I_V_I_N_G', 'Academics'),
+                ('Simple Machines', 'Levers, pulleys, and inclined planes for work efficiency.', 'https://www.youtube.com/embed/M_A_C_H_I_N', 'Academics'),
+                ('Safety Measures', 'First aid basics and lab safety protocols.', 'https://www.youtube.com/embed/S_A_F_E_T_Y', 'Academics'),
+                ('Environmental Care', 'Pollution control and recycling practices.', 'https://www.youtube.com/embed/E_N_V_I_R_O', 'Academics')
             ]
         }
 
-        basic_science_topics = {
+        social_studies_topics = {
             'en': [
+                ('The Family Unit', 'Roles, types, and importance of family in society.', 'https://www.youtube.com/embed/F_A_M_I_L_Y', 'Academics'),
+                ('Civic Rights', 'Understanding your rights and duties as a citizen.', 'https://www.youtube.com/embed/R_I_G_H_T_S', 'Academics'),
+                ('Cultural Diversity', 'Exploring heritage, traditions, and national unity.', 'https://www.youtube.com/embed/C_U_L_T_U_R', 'Academics'),
+                ('Social Problems', 'Addressing drug abuse, crime, and social inequality.', 'https://www.youtube.com/embed/I_S_S_U_E_S', 'Academics'),
+                ('Interpersonal Relations', 'Communication skills and conflict resolution.', 'https://www.youtube.com/embed/R_E_L_A_T_E', 'Academics')
             ]
         }
-
-        # --- Arts & Social Science Topics ---
-        economics_topics = {
-            'en': [
-                ('Introduction to Economics', 'Basic concepts of Scarcity, Choice and Opportunity Cost.', 'https://www.youtube.com/embed/L_4_bUq1vN0', 'Academics'),
-                ('Theory of Demand', 'Mastering the Law of Demand and factors affecting it.', 'https://www.youtube.com/embed/kn83BA7cRNM', 'Academics'),
-                ('Theory of Supply', 'Mastering the Law of Supply and supply schedules.', 'https://www.youtube.com/embed/KzfWUEJjG18', 'Academics')
-            ]
-        }
-
-        government_topics = {
-            'en': [
-                ('Meaning of Government', 'Fundamental principles and organs of government.', 'https://www.youtube.com/embed/F_fP4UeG7rM', 'Academics'),
-                ('Types of Government', 'Exploring Unitary, Federal and Confederal systems.', 'https://www.youtube.com/embed/mc979OhitAg', 'Academics'),
-                ('Arms of Government', 'Roles of the Legislature, Executive and Judiciary.', 'https://www.youtube.com/embed/7_mZInLh-64', 'Academics')
-            ]
-        }
-
         commerce_topics = {
             'en': [
                 ('Scope of Commerce', 'Introduction to Trade and Aids to Trade.', 'https://www.youtube.com/embed/7z-r5O-S9qI', 'Academics'),
-                ('Occupation', 'Classification of jobs and professional tracks.', 'https://www.youtube.com/embed/kn83BA7cRNM', 'Academics')
+                ('Occupation', 'Classification of jobs and professional tracks.', 'https://www.youtube.com/embed/kn83BA7cRNM', 'Academics'),
+                ('Insurance Basics', 'Risk management and indemnification.', 'https://www.youtube.com/embed/I_N_S_U_R_A', 'Academics'),
+                ('Banking Systems', 'Commercial and Central banking functions.', 'https://www.youtube.com/embed/B_A_N_K_I_N', 'Academics'),
+                ('Marketing Principles', 'Product, Price, Place, and Promotion.', 'https://www.youtube.com/embed/M_A_R_K_E_T', 'Academics'),
+                ('International Trade', 'Import, Export, and Balance of Payments.', 'https://www.youtube.com/embed/T_R_A_D_E_I', 'Academics'),
+                ('Consumer Protection', 'Rights and responsibilities of buyers.', 'https://www.youtube.com/embed/C_O_N_S_U_M', 'Academics')
             ]
         }
 
         agric_topics = {
             'en': [
                 ('Introduction to Agriculture', 'Importance and branches of agricultural science.', 'https://www.youtube.com/embed/R2_1cMh2gM0', 'Academics'),
-                ('Animal Husbandry', 'Principles of rearing livestock and animal health.', 'https://www.youtube.com/embed/f9ONXd_-anM', 'Academics')
+                ('Animal Husbandry', 'Principles of rearing livestock and animal health.', 'https://www.youtube.com/embed/f9ONXd_-anM', 'Academics'),
+                ('Soil Conservation', 'Techniques to prevent erosion and maintain fertility.', 'https://www.youtube.com/embed/S_O_I_L_C_O', 'Academics'),
+                ('Crop Pests', 'Identifying and controlling agricultural pests.', 'https://www.youtube.com/embed/P_E_S_T_S_C', 'Academics'),
+                ('Irrigation Systems', 'Artificial methods of supplying water to crops.', 'https://www.youtube.com/embed/I_R_R_I_G_A', 'Academics'),
+                ('Farm Mechanization', 'Use of machinery in modern agriculture.', 'https://www.youtube.com/embed/M_E_C_H_A_N', 'Academics'),
+                ('Agricultural Economics', 'Marketing and finance in farming.', 'https://www.youtube.com/embed/E_C_O_N_O_M', 'Academics')
             ]
         }
 
         geography_topics = {
             'en': [
                 ('Introduction to Geography', 'The solar system and the earth\'s structure.', 'https://www.youtube.com/embed/R9K-J0l0L44', 'Academics'),
-                ('Map Reading', 'Mastering scale, bearings and relief representation.', 'https://www.youtube.com/embed/74RcUjxErCg', 'Academics')
+                ('Map Reading', 'Mastering scale, bearings and relief representation.', 'https://www.youtube.com/embed/74RcUjxErCg', 'Academics'),
+                ('Weather & Climate', 'Difference between atmospheric conditions.', 'https://www.youtube.com/embed/W_E_A_T_H_E', 'Academics'),
+                ('Environmental Hazards', 'Dealing with floods, erosion, and pollution.', 'https://www.youtube.com/embed/H_A_Z_A_R_D', 'Academics'),
+                ('Population Study', 'Distribution and migration patterns.', 'https://www.youtube.com/embed/P_O_P_U_L_A', 'Academics'),
+                ('Industrial Geography', 'Location of industries and resources.', 'https://www.youtube.com/embed/I_N_D_U_S_T', 'Academics'),
+                ('Earth Structure', 'Crust, Mantle, and Core layers.', 'https://www.youtube.com/embed/C_O_R_E_L_A', 'Academics')
             ]
         }
 
@@ -254,18 +286,6 @@ def seed_data():
                 db.session.add(topic); db.session.flush()
                 db.session.add(TopicVideo(topic_id=topic.id, video_url=url, video_title=title))
 
-            # Seed Arts & Social Sciences
-            for title, content, url, level in economics_topics.get(lang, economics_topics['en']):
-                db.session.add(LearningMaterial(title=title, content=content, resource_url=url, subject='Economics', language=lang, material_type='video_link', education_level=level))
-                topic = Topic(name=title, subject='Economics', education_level=level)
-                db.session.add(topic); db.session.flush()
-                db.session.add(TopicVideo(topic_id=topic.id, video_url=url, video_title=title))
-
-            for title, content, url, level in government_topics.get(lang, government_topics['en']):
-                db.session.add(LearningMaterial(title=title, content=content, resource_url=url, subject='Government', language=lang, material_type='video_link', education_level=level))
-                topic = Topic(name=title, subject='Government', education_level=level)
-                db.session.add(topic); db.session.flush()
-                db.session.add(TopicVideo(topic_id=topic.id, video_url=url, video_title=title))
 
             for title, content, url, level in commerce_topics.get(lang, commerce_topics['en']):
                 db.session.add(LearningMaterial(title=title, content=content, resource_url=url, subject='Commerce', language=lang, material_type='video_link', education_level=level))
@@ -449,6 +469,380 @@ def seed_data():
             ('Theme', 'The central underlying message of a work.', 'English'),
             ('Genre', 'A category or type of literature.', 'English'),
             ('First Person', 'Story told using "I" or "we".', 'English'),
+            ('Third Person', 'Story told using "he", "she", or "they".', 'English'),
+
+            # Biology (50)
+            ('Organelle', 'Specialized structure within a cell (e.g. Mitochondria).', 'Biology'),
+            ('Ribosome', 'Site of protein synthesis.', 'Biology'),
+            ('Lysosome', 'Contains digestive enzymes to break down waste.', 'Biology'),
+            ('Vacuole', 'Storage sac for water, nutrients, or waste.', 'Biology'),
+            ('Cytoplasm', 'Jelly-like substance filling the cell.', 'Biology'),
+            ('Cell Membrane', 'Semi-permeable outer layer of a cell.', 'Biology'),
+            ('Cell Wall', 'Rigid outer layer found in plant cells.', 'Biology'),
+            ('Nucleus', 'Control center of the cell containing DNA.', 'Biology'),
+            ('DNA', 'Carrier of genetic information.', 'Biology'),
+            ('RNA', 'Molecule that translates DNA into proteins.', 'Biology'),
+            ('ATP', 'Primary energy carrier in cells.', 'Biology'),
+            ('Glucose', 'A simple sugar used for energy.', 'Biology'),
+            ('Enzyme', 'Biological catalyst that speeds up reactions.', 'Biology'),
+            ('Catalyst', 'Substance that increases reaction rate.', 'Biology'),
+            ('Substrate', 'Reactant upon which an enzyme acts.', 'Biology'),
+            ('Hormone', 'Chemical messenger in the body.', 'Biology'),
+            ('Homeostasis', 'Maintenance of a stable internal environment.', 'Biology'),
+            ('Neuron', 'Nerve cell that transmits electrical signals.', 'Biology'),
+            ('Synapse', 'Gap between two neurons.', 'Biology'),
+            ('Cerebrum', 'Largest part of the brain for conscious thought.', 'Biology'),
+            ('Cerebellum', 'Part of brain for balance and coordination.', 'Biology'),
+            ('Heart', 'Muscular organ that pumps blood.', 'Biology'),
+            ('Atrium', 'Upper chamber of the heart.', 'Biology'),
+            ('Ventricle', 'Lower chamber of the heart.', 'Biology'),
+            ('Artery', 'Blood vessel carrying blood away from heart.', 'Biology'),
+            ('Vein', 'Blood vessel carrying blood toward heart.', 'Biology'),
+            ('Capillary', 'Smallest blood vessel for nutrient exchange.', 'Biology'),
+            ('Alveoli', 'Air sacs in lungs for gas exchange.', 'Biology'),
+            ('Nephron', 'Functional unit of the kidney.', 'Biology'),
+            ('Liver', 'Organ that detoxifies and produces bile.', 'Biology'),
+            ('Stomach', 'Muscular sac for chemical digestion.', 'Biology'),
+            ('Small Intestine', 'Primary site of nutrient absorption.', 'Biology'),
+            ('Large Intestine', 'Site of water absorption.', 'Biology'),
+            ('Metabolism', 'Sum of all chemical reactions in the body.', 'Biology'),
+            ('Antibody', 'Protein produced to fight pathogens.', 'Biology'),
+            ('Antigen', 'Substance that triggers immune response.', 'Biology'),
+            ('Pathogen', 'Disease-causing organism.', 'Biology'),
+            ('Bacteria', 'Single-celled prokaryotic organisms.', 'Biology'),
+            ('Virus', 'Non-living agent that infects cells.', 'Biology'),
+            ('Evolution', 'Change in inherited traits over generations.', 'Biology'),
+            ('Natural Selection', 'Survival of the fittest.', 'Biology'),
+            ('Species', 'Group of organisms that can interbreed.', 'Biology'),
+            ('Habitat', 'Natural home of an organism.', 'Biology'),
+            ('Niche', 'Role of an organism in its ecosystem.', 'Biology'),
+            ('Food Web', 'Interconnected food chains.', 'Biology'),
+            ('Producers', 'Organisms that make their own food.', 'Biology'),
+            ('Consumers', 'Organisms that eat other organisms.', 'Biology'),
+            ('Decomposers', 'Break down dead organic matter.', 'Biology'),
+            ('Taxonomy', 'Science of classifying organisms.', 'Biology'),
+            ('Kingdom', 'Broadest category of biological classification.', 'Biology'),
+
+            # Physics (50)
+            ('Scalar', 'Quantity with magnitude only.', 'Physics'),
+            ('Vector', 'Quantity with magnitude and direction.', 'Physics'),
+            ('Displacement', 'Change in position in a specific direction.', 'Physics'),
+            ('Velocity', 'Rate of change of displacement.', 'Physics'),
+            ('Acceleration', 'Rate of change of velocity.', 'Physics'),
+            ('Force', 'Push or pull on an object (Newton).', 'Physics'),
+            ('Mass', 'Amount of matter in an object (kg).', 'Physics'),
+            ('Weight', 'Force of gravity on an object.', 'Physics'),
+            ('Friction', 'Force opposing motion between surfaces.', 'Physics'),
+            ('Gravity', 'Force of attraction between masses.', 'Physics'),
+            ('Work', 'Force applied over a distance (Joule).', 'Physics'),
+            ('Energy', 'Ability to do work.', 'Physics'),
+            ('Power', 'Rate at which work is done (Watt).', 'Physics'),
+            ('Kinetic Energy', 'Energy of motion.', 'Physics'),
+            ('Potential Energy', 'Stored energy based on position.', 'Physics'),
+            ('Momentum', 'Product of mass and velocity.', 'Physics'),
+            ('Impulse', 'Change in momentum.', 'Physics'),
+            ('Pressure', 'Force per unit area (Pascal).', 'Physics'),
+            ('Density', 'Mass per unit volume.', 'Physics'),
+            ('Buoyancy', 'Upward force exerted by a fluid.', 'Physics'),
+            ('Temperature', 'Measure of average kinetic energy.', 'Physics'),
+            ('Heat', 'Transfer of energy due to temp difference.', 'Physics'),
+            ('Entropy', 'Measure of disorder in a system.', 'Physics'),
+            ('Wave', 'Disturbance that transfers energy.', 'Physics'),
+            ('Frequency', 'Waves per second (Hertz).', 'Physics'),
+            ('Wavelength', 'Distance between wave peaks.', 'Physics'),
+            ('Amplitude', 'Maximum displacement from equilibrium.', 'Physics'),
+            ('Reflection', 'Bouncing of waves off a surface.', 'Physics'),
+            ('Refraction', 'Bending of waves through different media.', 'Physics'),
+            ('Induction', 'Production of current by changing magnetic field.', 'Physics'),
+            ('Resistance', 'Opposition to current flow (Ohm).', 'Physics'),
+            ('Voltage', 'Potential difference (Volt).', 'Physics'),
+            ('Current', 'Flow of charge (Ampere).', 'Physics'),
+            ('Capacitance', 'Ability to store charge.', 'Physics'),
+            ('Magnetism', 'Force exerted by magnets.', 'Physics'),
+            ('Photon', 'Particle of light.', 'Physics'),
+            ('Isotope', 'Same protons, different neutrons.', 'Physics'),
+            ('Fission', 'Splitting of a heavy nucleus.', 'Physics'),
+            ('Fusion', 'Joining of light nuclei.', 'Physics'),
+            ('Relativity', 'Einstein\'s theory of space and time.', 'Physics'),
+            ('Inertia', 'Resistance to change in motion.', 'Physics'),
+            ('Torque', 'Rotational force.', 'Physics'),
+            ('Circuit', 'Path for electrical current.', 'Physics'),
+            ('Conductor', 'Material allowing easy charge flow.', 'Physics'),
+            ('Insulator', 'Material resisting charge flow.', 'Physics'),
+            ('Semiconductor', 'Material with partial conductivity.', 'Physics'),
+            ('Transverse Wave', 'Oscillation perpendicular to propagation.', 'Physics'),
+            ('Longitudinal Wave', 'Oscillation parallel to propagation.', 'Physics'),
+            ('Doppler Effect', 'Change in frequency due to motion.', 'Physics'),
+            ('Superconductivity', 'Zero resistance at low temperatures.', 'Physics'),
+
+            # Chemistry (50)
+            ('Atom', 'Smallest unit of an element.', 'Chemistry'),
+            ('Element', 'Substance made of one type of atom.', 'Chemistry'),
+            ('Compound', 'Two or more elements chemically combined.', 'Chemistry'),
+            ('Mixture', 'Physical combination of substances.', 'Chemistry'),
+            ('Proton', 'Positive particle in nucleus.', 'Chemistry'),
+            ('Neutron', 'Neutral particle in nucleus.', 'Chemistry'),
+            ('Electron', 'Negative particle orbiting nucleus.', 'Chemistry'),
+            ('Valency', 'Combining power of an atom.', 'Chemistry'),
+            ('Ionic Bond', 'Transfer of electrons between atoms.', 'Chemistry'),
+            ('Covalent Bond', 'Sharing of electrons between atoms.', 'Chemistry'),
+            ('Molecule', 'Group of atoms bonded together.', 'Chemistry'),
+            ('pH', 'Measure of acidity or alkalinity.', 'Chemistry'),
+            ('Acid', 'Proton donor (pH < 7).', 'Chemistry'),
+            ('Base', 'Proton acceptor (pH > 7).', 'Chemistry'),
+            ('Salt', 'Product of acid-base neutralization.', 'Chemistry'),
+            ('Oxidation', 'Loss of electrons.', 'Chemistry'),
+            ('Reduction', 'Gain of electrons.', 'Chemistry'),
+            ('Catalyst', 'Speeds up reaction without being consumed.', 'Chemistry'),
+            ('Exothermic', 'Reaction that releases heat.', 'Chemistry'),
+            ('Endothermic', 'Reaction that absorbs heat.', 'Chemistry'),
+            ('Mole', 'SI unit for amount of substance.', 'Chemistry'),
+            ('Solute', 'Substance being dissolved.', 'Chemistry'),
+            ('Solvent', 'Substance doing the dissolving.', 'Chemistry'),
+            ('Solution', 'Homogeneous mixture.', 'Chemistry'),
+            ('Titration', 'Method to find concentration of solution.', 'Chemistry'),
+            ('Isotopes', 'Atoms with different neutron counts.', 'Chemistry'),
+            ('Allotropes', 'Different forms of the same element.', 'Chemistry'),
+            ('Hydrocarbon', 'Compound of hydrogen and carbon.', 'Chemistry'),
+            ('Alkane', 'Saturated hydrocarbon (single bonds).', 'Chemistry'),
+            ('Alkene', 'Unsaturated hydrocarbon (double bond).', 'Chemistry'),
+            ('Polymer', 'Large molecule made of repeating units.', 'Chemistry'),
+            ('Electrolysis', 'Chemical change caused by electricity.', 'Chemistry'),
+            ('Anode', 'Positive electrode.', 'Chemistry'),
+            ('Cathode', 'Negative electrode.', 'Chemistry'),
+            ('Diffusion', 'Spreading of particles.', 'Chemistry'),
+            ('Sublimation', 'Solid to gas change directly.', 'Chemistry'),
+            ('Distillation', 'Separation based on boiling points.', 'Chemistry'),
+            ('Chromatography', 'Separation based on solubility.', 'Chemistry'),
+            ('Noble Gases', 'Unreactive group 18 elements.', 'Chemistry'),
+            ('Halogens', 'Reactive group 17 elements.', 'Chemistry'),
+            ('Alkali Metals', 'Highly reactive group 1 elements.', 'Chemistry'),
+            ('Atomic Number', 'Number of protons.', 'Chemistry'),
+            ('Mass Number', 'Protons + Neutrons.', 'Chemistry'),
+            ('Avogadro Constant', '6.022 x 10^23 molecules per mole.', 'Chemistry'),
+            ('Equilibrium', 'Forward and backward rates are equal.', 'Chemistry'),
+            ('Indicator', 'Changes color at specific pH.', 'Chemistry'),
+            ('Boyle\'s Law', 'P1V1 = P2V2 at constant temp.', 'Chemistry'),
+            ('Charles\'s Law', 'V1/T1 = V2/T2 at constant pressure.', 'Chemistry'),
+            ('Concentration', 'Amount of solute per volume.', 'Chemistry'),
+            ('Saturated Solution', 'Contains max dissolved solute.', 'Chemistry'),
+
+            # Agricultural Science (50)
+            ('Agronomy', 'Science of soil management and crop production.', 'Agricultural Science'),
+            ('Fertility', 'Ability of soil to sustain plant growth.', 'Agricultural Science'),
+            ('Nitrogen', 'Essential nutrient for leaf growth.', 'Agricultural Science'),
+            ('Phosphorus', 'Essential nutrient for root development.', 'Agricultural Science'),
+            ('Potassium', 'Essential nutrient for overall plant health.', 'Agricultural Science'),
+            ('Compost', 'Decomposed organic matter used as fertilizer.', 'Agricultural Science'),
+            ('Tillage', 'Preparation of soil by mechanical agitation.', 'Agricultural Science'),
+            ('Irrigation', 'Artificial supply of water to land.', 'Agricultural Science'),
+            ('Pesticide', 'Chemical used to kill pests.', 'Agricultural Science'),
+            ('Herbicide', 'Chemical used to kill weeds.', 'Agricultural Science'),
+            ('Harvesting', 'Gathering of ripe crops.', 'Agricultural Science'),
+            ('Livestock', 'Domesticated animals raised for food/work.', 'Agricultural Science'),
+            ('Poultry', 'Birds raised for meat or eggs.', 'Agricultural Science'),
+            ('Breeding', 'Producing offspring with desired traits.', 'Agricultural Science'),
+            ('Silage', 'Fermented, high-moisture stored fodder.', 'Agricultural Science'),
+            ('Agro-forestry', 'Combining agriculture and forestry.', 'Agricultural Science'),
+            ('Erosion', 'Wearing away of topsoil.', 'Agricultural Science'),
+            ('Mulching', 'Covering soil to retain moisture.', 'Agricultural Science'),
+            ('Pruning', 'Cutting away dead or overgrown branches.', 'Agricultural Science'),
+            ('Thinning', 'Removing some plants to allow others room.', 'Agricultural Science'),
+            ('Fallowing', 'Leaving land unplanted to recover.', 'Agricultural Science'),
+            ('Crop Rotation', 'Growing different crops in sequence.', 'Agricultural Science'),
+            ('Monoculture', 'Growing only one type of crop.', 'Agricultural Science'),
+            ('Organic Farming', 'Farming without synthetic chemicals.', 'Agricultural Science'),
+            ('Greenhouse', 'Structure for growing plants in controlled heat.', 'Agricultural Science'),
+            ('Hydroponics', 'Growing plants in water without soil.', 'Agricultural Science'),
+            ('Aquaculture', 'Rearing aquatic animals.', 'Agricultural Science'),
+            ('Apiculture', 'Bee keeping.', 'Agricultural Science'),
+            ('Floriculture', 'Growing flowers.', 'Agricultural Science'),
+            ('Horticulture', 'Garden cultivation and management.', 'Agricultural Science'),
+            ('Pedology', 'Study of soil.', 'Agricultural Science'),
+            ('Leaching', 'Loss of nutrients by water drainage.', 'Agricultural Science'),
+            ('NPK', 'Common fertilizer (Nitrogen, Phosphorus, Potassium).', 'Agricultural Science'),
+            ('Photosynthesis', 'Plants making food using light.', 'Agricultural Science'),
+            ('Transpiration', 'Loss of water vapor from plants.', 'Agricultural Science'),
+            ('Germination', 'Growth of a plant from a seed.', 'Agricultural Science'),
+            ('Pollination', 'Transfer of pollen for fertilization.', 'Agricultural Science'),
+            ('Hybrid', 'Offspring of two different varieties.', 'Agricultural Science'),
+            ('Pathogen', 'Organism causing crop disease.', 'Agricultural Science'),
+            ('Ruminant', 'Animal with four-chambered stomach (e.g. Cow).', 'Agricultural Science'),
+            ('Draft Animal', 'Animal used for pulling heavy loads.', 'Agricultural Science'),
+            ('Extension Officer', 'Teacher of modern farming techniques.', 'Agricultural Science'),
+            ('Subsistence Farming', 'Farming only for family needs.', 'Agricultural Science'),
+            ('Commercial Farming', 'Farming for sale and profit.', 'Agricultural Science'),
+            ('Land Tenure', 'System of land ownership.', 'Agricultural Science'),
+            ('Mechanization', 'Using machines for farm tasks.', 'Agricultural Science'),
+            ('Post-Harvest Loss', 'Loss of crop after gathering.', 'Agricultural Science'),
+            ('Soil Profile', 'Vertical section of soil layers.', 'Agricultural Science'),
+            ('Texture', 'Relative proportions of sand, silt, and clay.', 'Agricultural Science'),
+            ('Drainage', 'Removal of excess water from soil.', 'Agricultural Science'),
+
+            # Geography (50)
+            ('Latitude', 'Horizontal lines measuring distance from Equator.', 'Geography'),
+            ('Longitude', 'Vertical lines measuring distance from Meridian.', 'Geography'),
+            ('Equator', 'Imaginary line dividing North/South (0°).', 'Geography'),
+            ('Meridian', 'Imaginary line dividing East/West (0°).', 'Geography'),
+            ('Continent', 'One of Earth\'s seven large landmasses.', 'Geography'),
+            ('Island', 'Land surrounded by water on all sides.', 'Geography'),
+            ('Plateau', 'Highland with a flat top.', 'Geography'),
+            ('Canyon', 'Deep valley with steep sides.', 'Geography'),
+            ('Delta', 'Landform at the mouth of a river.', 'Geography'),
+            ('Estuary', 'Where river meets the sea.', 'Geography'),
+            ('Basin', 'Area drained by a river system.', 'Geography'),
+            ('Lake', 'Large body of water surrounded by land.', 'Geography'),
+            ('Erosion', 'Wearing away of land by wind/water.', 'Geography'),
+            ('Fault', 'Fracture in Earth\'s crust.', 'Geography'),
+            ('Fold', 'Bending of rock layers.', 'Geography'),
+            ('Volcano', 'Vent in crust releasing magma.', 'Geography'),
+            ('Earthquake', 'Sudden shaking of the ground.', 'Geography'),
+            ('Crust', 'Outermost layer of Earth.', 'Geography'),
+            ('Mantle', 'Layer below the crust.', 'Geography'),
+            ('Core', 'Hottest, innermost layer of Earth.', 'Geography'),
+            ('Atmosphere', 'Envelope of gases surrounding Earth.', 'Geography'),
+            ('Climate', 'Long-term weather patterns.', 'Geography'),
+            ('Weather', 'Short-term atmospheric conditions.', 'Geography'),
+            ('Precipitation', 'Rain, snow, sleet, or hail.', 'Geography'),
+            ('Humidity', 'Amount of water vapor in air.', 'Geography'),
+            ('Wind', 'Movement of air from high to low pressure.', 'Geography'),
+            ('Ecosystem', 'Community of living and non-living things.', 'Geography'),
+            ('Biome', 'Large regional ecosystem (e.g. Desert).', 'Geography'),
+            ('Urbanization', 'Growth of cities.', 'Geography'),
+            ('Migration', 'Movement of people from one place to another.', 'Geography'),
+            ('Population Density', 'People per unit area.', 'Geography'),
+            ('Gully Erosion', 'Deep channels carved by running water.', 'Geography'),
+            ('Sustainability', 'Using resources without depleting them.', 'Geography'),
+            ('Cartography', 'Science of map making.', 'Geography'),
+            ('Scale', 'Ratio of map distance to real distance.', 'Geography'),
+            ('Legend', 'Key explaining map symbols.', 'Geography'),
+            ('Relief', 'Variation in elevation of land.', 'Geography'),
+            ('Topography', 'Physical features of an area.', 'Geography'),
+            ('Orbit', 'Path of Earth around the Sun.', 'Geography'),
+            ('Rotation', 'Spinning of Earth on its axis.', 'Geography'),
+            ('Revolution', 'Earth\'s movement around the Sun.', 'Geography'),
+            ('Season', 'Division of year marked by weather changes.', 'Geography'),
+            ('Resource', 'Something useful from the environment.', 'Geography'),
+            ('Renewable', 'Resource that can be replaced (e.g. Solar).', 'Geography'),
+            ('Non-renewable', 'Resource that cannot be replaced (e.g. Oil).', 'Geography'),
+            ('Pollution', 'Harmful materials in the environment.', 'Geography'),
+            ('Deforestation', 'Clearing of forests.', 'Geography'),
+            ('Irrigation', 'Artificial watering of land.', 'Geography'),
+            ('Glacier', 'Slow moving mass of ice.', 'Geography'),
+            ('Tide', 'Rising and falling of the sea.', 'Geography'),
+
+            # Commerce (50)
+            ('Trade', 'Exchange of goods and services.', 'Commerce'),
+            ('Retail', 'Selling in small quantities to consumers.', 'Commerce'),
+            ('Wholesale', 'Selling in bulk to retailers.', 'Commerce'),
+            ('Barter', 'Exchange of goods without money.', 'Commerce'),
+            ('Currency', 'System of money in use.', 'Commerce'),
+            ('Bank', 'Financial institution for deposits/loans.', 'Commerce'),
+            ('Credit', 'Ability to obtain goods before payment.', 'Commerce'),
+            ('Asset', 'Something of value owned.', 'Commerce'),
+            ('Liability', 'Money owed to others.', 'Commerce'),
+            ('Capital', 'Money or wealth used to start business.', 'Commerce'),
+            ('Profit', 'Revenue minus expenses.', 'Commerce'),
+            ('Budget', 'Financial plan for a period.', 'Commerce'),
+            ('Tax', 'Mandatory payment to government.', 'Commerce'),
+            ('Insurance', 'Protection against financial loss.', 'Commerce'),
+            ('Policy', 'Insurance contract.', 'Commerce'),
+            ('Indemnity', 'Compensation for loss/damage.', 'Commerce'),
+            ('Marketing', 'Promoting and selling products.', 'Commerce'),
+            ('Branding', 'Creating a unique name/image.', 'Commerce'),
+            ('Logistics', 'Management of flow of goods.', 'Commerce'),
+            ('Warehouse', 'Storage facility for goods.', 'Commerce'),
+            ('Inventory', 'List of goods in stock.', 'Commerce'),
+            ('Dividend', 'Share of profit paid to stockholders.', 'Commerce'),
+            ('Investment', 'Allocating money for future gain.', 'Commerce'),
+            ('Demand', 'Consumer desire to buy.', 'Commerce'),
+            ('Supply', 'Amount of product available.', 'Commerce'),
+            ('Monopoly', 'Market with only one seller.', 'Commerce'),
+            ('Oligopoly', 'Market with few large sellers.', 'Commerce'),
+            ('Entrepreneur', 'Person who starts a business.', 'Commerce'),
+            ('E-commerce', 'Buying and selling online.', 'Commerce'),
+            ('Balance Sheet', 'Financial statement of assets/liabilities.', 'Commerce'),
+            ('Invoicing', 'Requesting payment for goods.', 'Commerce'),
+            ('Bookkeeping', 'Recording of financial transactions.', 'Commerce'),
+            ('Audit', 'Official inspection of accounts.', 'Commerce'),
+            ('Tariff', 'Tax on imported goods.', 'Commerce'),
+            ('Subsidy', 'Government grant to support business.', 'Commerce'),
+            ('Partnership', 'Business owned by two or more people.', 'Commerce'),
+            ('Corporation', 'Company recognized as legal entity.', 'Commerce'),
+            ('Niche Market', 'Small, specialized market segment.', 'Commerce'),
+            ('Outsourcing', 'Hiring external firm for tasks.', 'Commerce'),
+            ('Inflation', 'General rise in prices.', 'Commerce'),
+            ('Deflation', 'General fall in prices.', 'Commerce'),
+            ('GDP', 'Total value of goods produced in country.', 'Commerce'),
+            ('Interest Rate', 'Cost of borrowing money.', 'Commerce'),
+            ('Merger', 'Combining two companies into one.', 'Commerce'),
+            ('Acquisition', 'One company buying another.', 'Commerce'),
+            ('Franchise', 'License to use business name/system.', 'Commerce'),
+            ('Debt', 'Money that is owed.', 'Commerce'),
+            ('Broker', 'Agent who arranges transactions.', 'Commerce'),
+            ('Commodity', 'Basic good used in commerce.', 'Commerce'),
+            ('Markup', 'Amount added to cost price for profit.', 'Commerce'),
+
+            # Social Studies (50)
+            ('Society', 'Group of people living together.', 'Social Studies'),
+            ('Community', 'People with common interests or location.', 'Social Studies'),
+            ('Family', 'Basic unit of society.', 'Social Studies'),
+            ('Culture', 'Way of life of a group.', 'Social Studies'),
+            ('Tradition', 'Customs passed down through generations.', 'Social Studies'),
+            ('Values', 'Beliefs about what is important.', 'Social Studies'),
+            ('Norms', 'Expected behaviors in society.', 'Social Studies'),
+            ('Integrity', 'Quality of being honest and moral.', 'Social Studies'),
+            ('Citizenship', 'Status of being a member of a country.', 'Social Studies'),
+            ('Rights', 'Legal or moral entitlements.', 'Social Studies'),
+            ('Duties', 'Responsibilities of a citizen.', 'Social Studies'),
+            ('Constitution', 'Highest law of a land.', 'Social Studies'),
+            ('Democracy', 'Government by the people.', 'Social Studies'),
+            ('Federalism', 'Power shared between central/state gov.', 'Social Studies'),
+            ('Diversity', 'Variety of cultures/backgrounds.', 'Social Studies'),
+            ('Socialization', 'Process of learning societal norms.', 'Social Studies'),
+            ('Education', 'Process of teaching and learning.', 'Social Studies'),
+            ('Conflict', 'Disagreement or struggle.', 'Social Studies'),
+            ('Resolution', 'Finding a solution to a problem.', 'Social Studies'),
+            ('Poverty', 'State of being extremely poor.', 'Social Studies'),
+            ('Health', 'State of physical/mental well-being.', 'Social Studies'),
+            ('Environment', 'Surroundings where people live.', 'Social Studies'),
+            ('Population', 'Total number of people in an area.', 'Social Studies'),
+            ('Census', 'Official count of population.', 'Social Studies'),
+            ('Migration', 'Moving from one place to another.', 'Social Studies'),
+            ('Human Rights', 'Basic rights for all humans.', 'Social Studies'),
+            ('Equality', 'Being equal in status/rights.', 'Social Studies'),
+            ('Justice', 'Fairness in behavior or treatment.', 'Social Studies'),
+            ('Civics', 'Study of rights and duties of citizens.', 'Social Studies'),
+            ('Cooperation', 'Working together for a common goal.', 'Social Studies'),
+            ('Leadership', 'Ability to lead or guide others.', 'Social Studies'),
+            ('Heroism', 'Great bravery or courage.', 'Social Studies'),
+            ('Patriotism', 'Love and devotion to one\'s country.', 'Social Studies'),
+            ('Tolerance', 'Respecting differences in others.', 'Social Studies'),
+            ('Prejudice', 'Preconceived opinion not based on reason.', 'Social Studies'),
+            ('Stereotype', 'Fixed image of a type of person.', 'Social Studies'),
+            ('Discrimination', 'Unfair treatment based on group.', 'Social Studies'),
+            ('Drugs', 'Substances affecting body/mind.', 'Social Studies'),
+            ('Crime', 'Action that breaks the law.', 'Social Studies'),
+            ('Corruption', 'Dishonest or illegal behavior.', 'Social Studies'),
+            ('Media', 'Means of mass communication.', 'Social Studies'),
+            ('Technology', 'Application of scientific knowledge.', 'Social Studies'),
+            ('Globalization', 'World becoming more interconnected.', 'Social Studies'),
+            ('Peace', 'Freedom from disturbance or war.', 'Social Studies'),
+            ('Security', 'Being free from danger or threat.', 'Social Studies'),
+            ('Discipline', 'Quality of being orderly.', 'Social Studies'),
+            ('Honesty', 'Quality of being truthful.', 'Social Studies'),
+            ('Empathy', 'Ability to understand others\' feelings.', 'Social Studies'),
+            ('Ethics', 'Principles of right and wrong.', 'Social Studies'),
+            ('Loyalty', 'Being faithful to a cause or person.', 'Social Studies'),
+            ('Root Word', 'The core part of a word to which affixes are added.', 'English'),
+            ('Main Idea', 'The most important point in a text.', 'English'),
+            ('Context Clues', 'Information in a text that helps define a word.', 'English'),
+            ('Dialogue', 'Conversation between characters.', 'English'),
+            ('Monologue', 'A long speech by a single character.', 'English'),
+            ('Setting', 'The time and place of a story.', 'English'),
+            ('Theme', 'The central underlying message of a work.', 'English'),
+            ('Genre', 'A category or type of literature.', 'English'),
+            ('First Person', 'Story told using "I" or "we".', 'English'),
             ('Third Person', 'Story told using "he", "she", or "they".', 'English')
         ]
 
@@ -495,14 +889,16 @@ def seed_data():
                 db.session.add(Flashcard(front=front, back=back, subject=subject, language=lang, education_level=level))
 
         # Assessments
-            asm = AssessmentTemplate(title=title, subject=sub, time_limit=15)
-            db.session.add(asm)
-            db.session.flush()
-            if sub == 'Mathematics':
-                db.session.add_all([
-                    Question(assessment_id=asm.id, text='Solve for x: 2x + 5 = 15', option_a='2', option_b='5', option_c='10', option_d='7', correct_option='B'),
-                    Question(assessment_id=asm.id, text='What is the square root of 144?', option_a='12', option_b='14', option_c='10', option_d='16', correct_option='A')
-                ])
+        for lang in languages:
+            for sub in ['Mathematics', 'Science', 'English']:
+                asm = AssessmentTemplate(title=f"{sub} Mastery Test ({lang.upper()})", subject=sub, time_limit=15)
+                db.session.add(asm)
+                db.session.flush()
+                if sub == 'Mathematics':
+                    db.session.add_all([
+                        Question(assessment_id=asm.id, text='Solve for x: 2x + 5 = 15', option_a='2', option_b='5', option_c='10', option_d='7', correct_option='B'),
+                        Question(assessment_id=asm.id, text='What is the square root of 144?', option_a='12', option_b='14', option_c='10', option_d='16', correct_option='A')
+                    ])
 
         # Past Questions Seeding
         pq_data = [
