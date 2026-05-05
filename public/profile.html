@@ -212,8 +212,11 @@
             <div class="avatar-container" id="user-initial">U</div>
             <div class="flex-grow-1">
                 <h2 class="fw-bold mb-1 outfit" id="user-display-name">Student</h2>
-                <div class="d-flex flex-wrap gap-2 mt-2">
+                <div class="d-flex flex-wrap align-items-center gap-2 mt-2">
                     <span class="badge bg-white text-primary rounded-pill px-3 py-2 fw-bold" id="p-track-badge">JSS Track</span>
+                    <button class="btn btn-sm btn-white bg-opacity-25 text-white border-0 rounded-circle" onclick="updateProfile()" title="Edit Profile">
+                        <i class="bi bi-pencil-fill"></i>
+                    </button>
                 </div>
             </div>
         </section>
@@ -338,10 +341,15 @@
         async function updateProfile() {
             const firstName = prompt("Enter First Name:", document.getElementById('p-first').textContent);
             const lastName = prompt("Enter Last Name:", document.getElementById('p-last').textContent);
+            const level = prompt("Enter Education Level (JSS, SSS, Primary):", document.getElementById('p-education').textContent);
             
-            if (firstName !== null && lastName !== null) {
+            if (firstName !== null && lastName !== null && level !== null) {
                 try {
-                    const res = await apiUpdateProfile({ first_name: firstName, last_name: lastName });
+                    const res = await apiUpdateProfile({ 
+                        first_name: firstName, 
+                        last_name: lastName,
+                        education_level: level
+                    });
                     if (res.success) {
                         alert('Profile updated successfully!');
                         await refreshProfile();
