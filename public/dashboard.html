@@ -647,86 +647,29 @@
             const portal = document.getElementById('dashboard-science-portal');
             if (!portal) return;
 
-            const isSSS = level && level.toUpperCase().includes('SSS');
-            let html = '';
-
-            // 1. Science Stream
-            if (isSSS) {
-                html += `
-                    <div class="col-md-4">
-                        <div class="subject-card p-4 border rounded-4 h-100" onclick="window.location.href='learning.html?subject=Biology'">
-                            <div class="badge bg-danger-subtle text-danger mb-3" data-i18n="subject_science">Science</div>
-                            <h4 class="fw-bold mb-2">Biology</h4>
-                            <p class="text-muted small mb-4" data-i18n="feature_multilingual_desc">Life sciences and anatomy.</p>
-                            <div class="d-grid gap-2"><a href="learning.html?subject=Biology" class="btn btn-danger text-white btn-sm rounded-pill fw-bold" data-i18n="start_learning">Learn</a></div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="subject-card p-4 border rounded-4 h-100" onclick="window.location.href='learning.html?subject=Physics'">
-                            <div class="badge bg-info-subtle text-info mb-3" data-i18n="subject_science">Science</div>
-                            <h4 class="fw-bold mb-2">Physics</h4>
-                            <p class="text-muted small mb-4" data-i18n="feature_multilingual_desc">Mechanics and physical laws.</p>
-                            <div class="d-grid gap-2"><a href="learning.html?subject=Physics" class="btn btn-info text-white btn-sm rounded-pill fw-bold" data-i18n="start_learning">Learn</a></div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="subject-card p-4 border rounded-4 h-100" onclick="window.location.href='learning.html?subject=Chemistry'">
-                            <div class="badge bg-warning-subtle text-warning mb-3" data-i18n="subject_science">Science</div>
-                            <h4 class="fw-bold mb-2">Chemistry</h4>
-                            <p class="text-muted small mb-4" data-i18n="feature_multilingual_desc">Matter and chemical reactions.</p>
-                            <div class="d-grid gap-2"><a href="learning.html?subject=Chemistry" class="btn btn-warning text-white btn-sm rounded-pill fw-bold" data-i18n="start_learning">Learn</a></div>
-                        </div>
-                    </div>
-                `;
-
-                // Arts & Social Science
-                html += `
-                    <div class="col-md-4">
-                        <div class="subject-card p-4 border rounded-4 h-100" onclick="window.location.href='learning.html?subject=Economics'">
-                            <div class="badge bg-success-subtle text-success mb-3">Social Science</div>
-                            <h5 class="fw-bold mb-2">Economics</h5>
-                            <p class="text-muted small mb-4">Market systems and finance.</p>
-                            <div class="d-grid gap-2"><a href="learning.html?subject=Economics" class="btn btn-success text-white btn-sm rounded-pill fw-bold">Learn</a></div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="subject-card p-4 border rounded-4 h-100" onclick="window.location.href='learning.html?subject=Government'">
-                            <div class="badge bg-primary-subtle text-primary mb-3">Arts</div>
-                            <h5 class="fw-bold mb-2">Government</h5>
-                            <p class="text-muted small mb-4">Politics and citizenship.</p>
-                            <div class="d-grid gap-2"><a href="learning.html?subject=Government" class="btn btn-primary text-white btn-sm rounded-pill fw-bold">Learn</a></div>
-                        </div>
-                    </div>
-                `;
-            } else {
-                html += `
-                    <div class="col-md-4">
-                        <div class="subject-card p-4 border rounded-4 h-100" onclick="window.location.href='learning.html?subject=Science'">
-                            <div class="badge bg-warning-subtle text-warning mb-3">Core</div>
-                            <h5 class="fw-bold mb-2">Basic Science</h5>
-                            <p class="text-muted small mb-4">Introduction to life sciences.</p>
-                            <div class="d-grid gap-2"><a href="learning.html?subject=Science" class="btn btn-warning text-white btn-sm rounded-pill fw-bold">Learn</a></div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="subject-card p-4 border rounded-4 h-100" onclick="window.location.href='learning.html?subject=Social Studies'">
-                            <div class="badge bg-success-subtle text-success mb-3" data-i18n="nav_subjects">Core</div>
-                            <h4 class="fw-bold mb-2">Social Studies</h4>
-                            <p class="text-muted small mb-4" data-i18n="feature_multilingual_desc">Human and social relations.</p>
-                            <div class="d-grid gap-2"><a href="learning.html?subject=Social Studies" class="btn btn-success text-white btn-sm rounded-pill fw-bold" data-i18n="start_learning">Learn</a></div>
-                        </div>
-                    </div>
-                `;
-            }
-
-            // Always add Agric for both
-            html += `
+            let html = `
                 <div class="col-md-4">
-                    <div class="subject-card p-4 border rounded-4 h-100" onclick="window.location.href='learning.html?subject=Agricultural Science'">
-                        <div class="badge bg-success-subtle text-success mb-3" data-i18n="nav_vocational">Vocational</div>
-                        <h4 class="fw-bold mb-2">Agricultural Science</h4>
-                        <p class="text-muted small mb-4" data-i18n="feature_multilingual_desc">Crops and animal health.</p>
-                        <div class="d-grid gap-2"><a href="learning.html?subject=Agricultural Science" class="btn btn-success text-white btn-sm rounded-pill fw-bold" data-i18n="start_learning">Learn</a></div>
+                    <div class="subject-card p-4 border rounded-4 h-100" onclick="window.location.href='learning.html?subject=Biology'">
+                        <div class="badge bg-danger-subtle text-danger mb-3">Science</div>
+                        <h4 class="fw-bold mb-2">Biology</h4>
+                        <p class="text-muted small mb-4">Life sciences and anatomy.</p>
+                        <div class="d-grid gap-2"><a href="learning.html?subject=Biology" class="btn btn-danger text-white btn-sm rounded-pill fw-bold">Learn</a></div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="subject-card p-4 border rounded-4 h-100" onclick="window.location.href='learning.html?subject=Physics'">
+                        <div class="badge bg-info-subtle text-info mb-3">Science</div>
+                        <h4 class="fw-bold mb-2">Physics</h4>
+                        <p class="text-muted small mb-4">Mechanics and physical laws.</p>
+                        <div class="d-grid gap-2"><a href="learning.html?subject=Physics" class="btn btn-info text-white btn-sm rounded-pill fw-bold">Learn</a></div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="subject-card p-4 border rounded-4 h-100" onclick="window.location.href='learning.html?subject=Chemistry'">
+                        <div class="badge bg-warning-subtle text-warning mb-3">Science</div>
+                        <h4 class="fw-bold mb-2">Chemistry</h4>
+                        <p class="text-muted small mb-4">Matter and chemical reactions.</p>
+                        <div class="d-grid gap-2"><a href="learning.html?subject=Chemistry" class="btn btn-warning text-white btn-sm rounded-pill fw-bold">Learn</a></div>
                     </div>
                 </div>
             `;

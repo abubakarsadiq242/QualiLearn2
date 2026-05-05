@@ -303,13 +303,60 @@
         function renderSubjectPortals(level = 'Academics') {
             const portal = document.getElementById('science-portal-dynamic');
             if (!portal) return;
-            portal.innerHTML = `
-                <div class="col-12 text-center py-5">
-                    <i class="bi bi-folder-x text-muted opacity-25" style="font-size: 5rem;"></i>
-                    <h4 class="fw-bold outfit mt-3">No Subjects Available</h4>
-                    <p class="text-muted">The curriculum is currently being updated. Please check back later.</p>
+
+            let html = `
+                <div class="col-md-6 col-lg-4">
+                    <div class="subject-card" onclick="window.location.href='learning.html?subject=Mathematics'">
+                        <div class="subject-banner bg-primary bg-gradient"><i class="bi bi-calculator"></i></div>
+                        <div class="p-4">
+                            <h4 class="fw-bold mb-2">Mathematics</h4>
+                            <p class="text-muted small mb-4">Algebra, Geometry, and Logic.</p>
+                            <button class="btn btn-primary btn-modern text-white" onclick="event.stopPropagation(); window.location.href='subject-videos.html?subject=Mathematics'">View All</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="subject-card" onclick="window.location.href='learning.html?subject=English'">
+                        <div class="subject-banner bg-success bg-gradient"><i class="bi bi-alphabet-uppercase"></i></div>
+                        <div class="p-4">
+                            <h4 class="fw-bold mb-2">English Language</h4>
+                            <p class="text-muted small mb-4">Grammar and Literature.</p>
+                            <button class="btn btn-success btn-modern text-white" onclick="event.stopPropagation(); window.location.href='subject-videos.html?subject=English'">View All</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="subject-card" onclick="window.location.href='learning.html?subject=Biology'">
+                        <div class="subject-banner bg-danger bg-gradient"><i class="bi bi-heart-pulse"></i></div>
+                        <div class="p-4">
+                            <h4 class="fw-bold mb-2">Biology</h4>
+                            <p class="text-muted small mb-4">Life sciences and genetics.</p>
+                            <button class="btn btn-danger btn-modern text-white" onclick="event.stopPropagation(); window.location.href='subject-videos.html?subject=Biology'">View All</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="subject-card" onclick="window.location.href='learning.html?subject=Physics'">
+                        <div class="subject-banner bg-info bg-gradient"><i class="bi bi-lightning"></i></div>
+                        <div class="p-4">
+                            <h4 class="fw-bold mb-2">Physics</h4>
+                            <p class="text-muted small mb-4">Mechanics and energy.</p>
+                            <button class="btn btn-info btn-modern text-white" onclick="event.stopPropagation(); window.location.href='subject-videos.html?subject=Physics'">View All</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="subject-card" onclick="window.location.href='learning.html?subject=Chemistry'">
+                        <div class="subject-banner bg-warning bg-gradient"><i class="bi bi-flask"></i></div>
+                        <div class="p-4">
+                            <h4 class="fw-bold mb-2">Chemistry</h4>
+                            <p class="text-muted small mb-4">Matter and reactions.</p>
+                            <button class="btn btn-warning btn-modern text-white" onclick="event.stopPropagation(); window.location.href='subject-videos.html?subject=Chemistry'">View All</button>
+                        </div>
+                    </div>
                 </div>
             `;
+            portal.innerHTML = html;
         }
 
         async function loadMaterials(subject = '') {
