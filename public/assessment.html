@@ -303,23 +303,57 @@
 
         document.addEventListener('DOMContentLoaded', async () => {
             const params = new URLSearchParams(window.location.search);
-            const subject = params.get('subject') || 'Mathematics';
+            const subject = params.get('subject');
             const lang = localStorage.getItem('ql_lang') || 'en';
             
             document.getElementById('lang-btn').innerHTML = `<i class="bi bi-translate text-primary me-2"></i> ${lang.toUpperCase()}`;
-            loadSubject(subject);
             applyLanguage(lang);
 
             const user = JSON.parse(localStorage.getItem('ql_user'));
             if (user) {
                 document.getElementById('user-initial').textContent = user.first_name.charAt(0).toUpperCase();
             }
+
+            if (subject) {
+                loadSubject(subject);
+            } else {
+                showSubjectSelection();
+            }
         });
+
+        function showSubjectSelection() {
+            const panel = document.querySelector('.exam-panel');
+            panel.innerHTML = `
+                <div class="text-center py-5 animate__animated animate__fadeIn">
+                    <h2 class="fw-bold mb-4 outfit">Select a Subject to Practice</h2>
+                    <p class="text-muted mb-5">Choose a subject below to start answering past questions.</p>
+                    <div class="d-flex flex-column flex-sm-row flex-wrap justify-content-center gap-3">
+                        <button class="btn btn-outline-primary rounded-pill px-4 py-3 fw-bold shadow-sm" onclick="loadSubject('Mathematics')" style="min-width: 220px;">
+                            <i class="bi bi-calculator me-2"></i> Mathematics
+                        </button>
+                        <button class="btn btn-outline-primary rounded-pill px-4 py-3 fw-bold shadow-sm" onclick="loadSubject('English')" style="min-width: 220px;">
+                            <i class="bi bi-book me-2"></i> English Language
+                        </button>
+                        <button class="btn btn-outline-primary rounded-pill px-4 py-3 fw-bold shadow-sm" onclick="loadSubject('Science')" style="min-width: 220px;">
+                            <i class="bi bi-flask me-2"></i> Sciences
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('subject-btn').innerText = "Select Subject";
+            document.getElementById('current-assessment-info').innerText = "Please select a subject to begin";
+        }
 
         async function loadSubject(subject) {
             const lang = localStorage.getItem('ql_lang') || 'en';
             document.getElementById('subject-btn').innerText = subject;
             document.getElementById('current-assessment-info').innerText = `${subject} • All Years • Practice`;
+            
+            document.querySelector('.exam-panel').innerHTML = `
+                <div class="text-center py-5">
+                    <div class="spinner-border text-primary mb-3"></div>
+                    <p class="text-muted" data-i18n="loading_questions">Loading Past Questions...</p>
+                </div>`;
             
             try {
                 // Remove the restrictive '2024' year filter to show all seeded questions

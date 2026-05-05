@@ -25,8 +25,16 @@ window.addEventListener('beforeinstallprompt', (e) => {
 });
 
 function showInstallPromotion() {
+  // Respect user dismissal
+  if (localStorage.getItem('pwaPromptDismissed') === 'true') return;
+  // Only show once per session
+  if (sessionStorage.getItem('pwaPromptShown') === 'true') return;
+
   // Don't show if already created
   if (document.getElementById('pwa-install-banner')) return;
+
+  // Mark as shown for this session
+  sessionStorage.setItem('pwaPromptShown', 'true');
 
   const banner = document.createElement('div');
   banner.id = 'pwa-install-banner';
@@ -69,6 +77,7 @@ function showInstallPromotion() {
 
   document.getElementById('pwa-dismiss-btn').addEventListener('click', () => {
     banner.style.display = 'none';
+    localStorage.setItem('pwaPromptDismissed', 'true');
   });
 
   document.getElementById('pwa-install-btn').addEventListener('click', async () => {
