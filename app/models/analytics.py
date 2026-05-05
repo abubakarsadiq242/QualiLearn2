@@ -2,7 +2,7 @@ from app import db
 from datetime import datetime
 
 class StudySession(db.Model):
-    __tablename__ = 'sessions'
+    __tablename__ = 'study_sessions'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     portal_type = db.Column(db.String(20), default='secondary') # 'secondary' or 'vocational'

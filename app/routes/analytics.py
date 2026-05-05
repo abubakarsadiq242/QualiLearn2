@@ -183,11 +183,14 @@ def get_dashboard_stats():
             db.func.coalesce(ActivityLog.start_time, ActivityLog.created_at) >= today_start.replace('Z', '')
         ).scalar() or 0
         
-        # 3. Accuracy Calculation (Average of assessment scores)
-        all_assessments = Assessment.query.filter_by(user_id=user_id, portal_type=portal).all()
-        if all_assessments:
-            total_accuracy = sum([(a.correct_answers / (a.total_questions or 1)) * 100 for a in all_assessments])
-            accuracy = total_accuracy / len(all_assessments)
+        # 3. Accuracy Calculation (SQL Aggregation for scalability)
+        acc_stats = db.session.query(
+            db.func.sum(Assessment.correct_answers),
+            db.func.sum(Assessment.total_questions)
+        ).filter(Assessment.user_id == user_id, Assessment.portal_type == portal).first()
+        
+        if acc_stats and acc_stats[1] and acc_stats[1] > 0:
+            accuracy = (acc_stats[0] / acc_stats[1]) * 100
         else:
             accuracy = 0
         
@@ -200,16 +203,16 @@ def get_dashboard_stats():
         # Total Units varies by portal
         if portal == 'vocational':
             total_mats = VocationalContent.query.count() or 0
-            total_videos = 0 # Currently videos are tied to topics, vocational might need its own
-            total_exams = 0 # Vocational exams logic
-            total_cards = 0 # Vocational flashcards logic
+            total_videos = 0 
+            total_exams = 0 
+            total_cards = 0 
         else:
             total_mats = LearningMaterial.query.count() or 0
             total_videos = TopicVideo.query.count() or 0
             total_exams = AssessmentTemplate.query.count() or 0
             total_cards = Flashcard.query.count() or 0
         
-        normalized_cards = max(1, total_cards // 5) # Group 5 cards as one unit
+        normalized_cards = max(1, total_cards // 5) 
         dynamic_total_units = max(1, total_mats + total_videos + total_exams + normalized_cards)
         
         prog = Progress.query.filter_by(user_id=user_id, portal_type=portal).first()
@@ -218,7 +221,7 @@ def get_dashboard_stats():
             db.session.add(prog)
             progress_pct = 0
         else:
-            # Sync completion count with actual completed items
+            # Sync completion count
             actual_comp = CompletedItem.query.filter_by(user_id=user_id, portal_type=portal).count()
             prog.completed_units = actual_comp
             prog.total_units = dynamic_total_units
@@ -231,14 +234,13 @@ def get_dashboard_stats():
         user = db.session.get(User, user_id)
         if user and user.resume_topic_id:
             if portal == 'vocational':
-                # Prioritize vocational content
                 voc = db.session.get(VocationalContent, user.resume_topic_id)
                 if voc:
                     resume_topic = voc.to_dict()
                     resume_topic['type'] = 'vocational'
                     resume_topic['subject'] = voc.category
             else:
-                # Prioritize academic topics and materials
+                from app.models.topics import Topic
                 top = db.session.get(Topic, user.resume_topic_id)
                 if top:
                     resume_topic = top.to_dict()

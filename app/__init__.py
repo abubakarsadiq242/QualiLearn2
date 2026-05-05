@@ -118,6 +118,7 @@ def create_app(config_name):
     
     from app.routes.analytics import analytics_bp
     from app.routes.topics import topics_bp
+    from app.routes.api import api_bp
     
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
     app.register_blueprint(users_bp, url_prefix='/api/users')
@@ -128,5 +129,6 @@ def create_app(config_name):
     app.register_blueprint(dashboard_bp, url_prefix='/api/dashboard')
     app.register_blueprint(analytics_bp, url_prefix='/api/analytics')
     app.register_blueprint(topics_bp, url_prefix='/api/topics')
+    app.register_blueprint(api_bp, url_prefix='/api/v1')
 
     return app
