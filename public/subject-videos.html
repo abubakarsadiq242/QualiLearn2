@@ -17,9 +17,123 @@
         .nav-link:hover { background: #f1f5f9; color: var(--primary); }
         .nav-link.active { background: var(--primary); color: white !important; }
         .content-main { margin-left: var(--sidebar-width); padding: 2rem; min-height: 100vh; }
-        .video-card { background: white; border-radius: 24px; border: 1px solid #e2e8f0; overflow: hidden; transition: 0.3s; }
-        .video-card:hover { transform: translateY(-5px); box-shadow: 0 12px 24px rgba(0,0,0,0.06); }
-        .ratio-16x9 { background: #000; }
+        
+        /* Modern Video Cards */
+        .video-card { 
+            background: white; 
+            border-radius: 28px; 
+            border: 1px solid #e2e8f0; 
+            overflow: hidden; 
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+            position: relative;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        }
+        .video-card:hover { 
+            transform: translateY(-10px); 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1); 
+            border-color: var(--primary);
+        }
+        
+        .thumbnail-container {
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+            background: #000;
+        }
+        
+        .thumbnail-container img {
+            transition: transform 0.6s ease;
+        }
+        
+        .video-card:hover .thumbnail-container img {
+            transform: scale(1.05);
+            filter: brightness(0.7);
+        }
+        
+        .play-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: all 0.3s ease;
+            background: rgba(0,0,0,0.2);
+            backdrop-filter: blur(0px);
+            z-index: 2;
+        }
+        
+        .video-card:hover .play-overlay {
+            opacity: 1;
+            backdrop-filter: blur(2px);
+        }
+        
+        .play-btn-glass {
+            width: 70px;
+            height: 70px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            transition: all 0.3s ease;
+            transform: scale(0.8);
+        }
+        
+        .video-card:hover .play-btn-glass {
+            transform: scale(1);
+        }
+        
+        .play-btn-glass:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            transform: scale(1.1) !important;
+        }
+
+        .video-info {
+            padding: 1.75rem;
+            background: linear-gradient(to bottom, transparent, white 20%);
+        }
+
+        .btn-finish {
+            background: #f1f5f9;
+            color: #475569;
+            border: none;
+            transition: all 0.2s ease;
+        }
+        .btn-finish:hover {
+            background: #dcfce7;
+            color: #166534;
+        }
+        .btn-finish.completed {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .topic-tag {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 700;
+            padding: 0.25rem 0.75rem;
+            background: var(--primary);
+            color: white;
+            border-radius: 50px;
+            margin-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        .search-container {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+        }
 
         .profile-bubble {
             width: 45px;
@@ -35,6 +149,16 @@
             transition: all 0.2s ease;
         }
         .profile-bubble:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(79, 70, 229, 0.3); }
+        
+        /* Entrance Animation */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-card {
+            animation: fadeInUp 0.6s ease forwards;
+            opacity: 0;
+        }
         @media (max-width: 991px) { .sidebar { transform: translateX(-100%); } .content-main { margin-left: 0; } }
     </style>
 </head>
@@ -95,6 +219,25 @@
             </div>
         </header>
 
+        <!-- Search & Filters -->
+        <div class="search-container mb-5 animate__animated animate__fadeIn">
+            <div class="row g-3">
+                <div class="col-md-8">
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent border-end-0 rounded-start-pill ps-4">
+                            <i class="bi bi-search text-muted"></i>
+                        </span>
+                        <input type="text" id="videoSearch" class="form-control border-start-0 rounded-end-pill py-3" placeholder="Search lessons..." onkeyup="filterVideos()">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <select id="topicFilter" class="form-select rounded-pill py-3 px-4" onchange="filterVideos()">
+                        <option value="all">All Topics</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
         <div class="row g-4 mb-5" id="video-grid">
             <!-- Videos will be injected here -->
         </div>
@@ -107,8 +250,10 @@
     <script>
         const urlParams = new URLSearchParams(window.location.search);
         const subject = urlParams.get('subject');
+        let allVideos = [];
+        let allTopics = [];
 
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
             if (!subject) { window.location.href = 'learning.html'; return; }
             
             document.getElementById('subject-title').innerText = subject;
@@ -120,7 +265,7 @@
                 if (initialEl) initialEl.textContent = user.first_name.charAt(0).toUpperCase();
             }
 
-            loadSubjectVideos();
+            await loadSubjectVideos();
         });
 
         async function loadSubjectVideos() {
@@ -130,35 +275,24 @@
             try {
                 const user = JSON.parse(localStorage.getItem('ql_user'));
                 const level = user ? user.education_level : '';
-                const res = await apiGetSubjectVideos(subject, level);
                 
+                // Fetch topics first for the filter
+                const topicsRes = await apiGetTopics();
+                if (topicsRes.success) {
+                    allTopics = (topicsRes.data[subject] || []).map(t => ({ id: t.id, name: t.name }));
+                    const filter = document.getElementById('topicFilter');
+                    allTopics.forEach(t => {
+                        const opt = document.createElement('option');
+                        opt.value = t.id;
+                        opt.textContent = t.name;
+                        filter.appendChild(opt);
+                    });
+                }
+
+                const res = await apiGetSubjectVideos(subject, level);
                 if (res.success) {
-                    const videos = res.data;
-                    if (videos.length === 0) {
-                        grid.innerHTML = '<div class="col-12 text-center py-5"><h4>No videos found for this subject.</h4></div>';
-                    } else {
-                        grid.innerHTML = '';
-                        videos.forEach(v => {
-                            const col = document.createElement('div');
-                            col.className = 'col-md-6 animate__animated animate__fadeInUp';
-                            col.innerHTML = `
-                                <div class="video-card h-100 shadow-sm border-0">
-                                    <div class="ratio ratio-16x9">
-                                        <iframe src="${getEmbedUrl(v.embed_url || v.video_url)}" allowfullscreen></iframe>
-                                    </div>
-                                    <div class="p-4">
-                                        <h5 class="fw-bold mb-3 outfit">${v.video_title}</h5>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <button class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm" onclick="markCompleted('${v.id}', '${v.topic_id}')">
-                                                <i class="bi bi-check-circle me-2"></i> Mark Finished
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            `;
-                            grid.appendChild(col);
-                        });
-                    }
+                    allVideos = res.data;
+                    renderVideos(allVideos);
                 }
             } catch (e) { 
                 console.error(e); 
@@ -166,7 +300,74 @@
             }
         }
 
+        function renderVideos(videos) {
+            const grid = document.getElementById('video-grid');
+            if (videos.length === 0) {
+                grid.innerHTML = '<div class="col-12 text-center py-5"><h4>No videos found matching your criteria.</h4></div>';
+                return;
+            }
+
+            grid.innerHTML = '';
+            videos.forEach((v, index) => {
+                const videoId = v.video_id;
+                const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+                const topicName = allTopics.find(t => t.id == v.topic_id)?.name || 'Topic';
+                
+                const col = document.createElement('div');
+                col.className = 'col-md-6 animate-card';
+                col.style.animationDelay = `${index * 0.05}s`;
+                col.innerHTML = `
+                    <div class="video-card h-100 shadow-sm border-0">
+                        <div class="ratio ratio-16x9 thumbnail-container" id="container-${v.id}" onclick="playVideo('${v.id}', '${v.video_url || v.embed_url}')">
+                            <img src="${thumbnailUrl}" class="w-100 h-100 object-fit-cover" alt="${v.video_title}" onerror="this.src='https://img.youtube.com/vi/${videoId}/hqdefault.jpg'">
+                            <div class="play-overlay">
+                                <div class="play-btn-glass">
+                                    <i class="bi bi-play-fill"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="video-info">
+                            <span class="topic-tag">${topicName}</span>
+                            <h5 class="fw-bold mb-3 outfit">${v.video_title}</h5>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <button class="btn btn-finish rounded-pill px-4 py-2 fw-bold small d-flex align-items-center gap-2" onclick="markCompleted('${v.id}', '${v.topic_id}')" id="btn-finish-${v.id}">
+                                    <i class="bi bi-check-circle"></i> Mark Finished
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(col);
+            });
+        }
+
+        function filterVideos() {
+            const query = document.getElementById('videoSearch').value.toLowerCase();
+            const topicId = document.getElementById('topicFilter').value;
+
+            const filtered = allVideos.filter(v => {
+                const matchQuery = v.video_title.toLowerCase().includes(query);
+                const matchTopic = (topicId === 'all' || v.topic_id == topicId);
+                return matchQuery && matchTopic;
+            });
+
+            renderVideos(filtered);
+        }
+
+        function playVideo(id, url) {
+            const container = document.getElementById(`container-${id}`);
+            const embedUrl = getEmbedUrl(url);
+            container.innerHTML = `<iframe src="${embedUrl}&autoplay=1" allow="autoplay" allowfullscreen></iframe>`;
+            container.onclick = null;
+        }
+
         async function markCompleted(videoId, topicId) {
+            const btn = document.getElementById(`btn-finish-${videoId}`);
+            if (btn) {
+                btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> Completed';
+                btn.classList.add('completed');
+            }
+
             const res = await apiTrackActivity({
                 activity_type: 'topic_completion',
                 module: 'subject',
@@ -174,9 +375,6 @@
                 video_id: parseInt(videoId),
                 completed: true
             });
-            if (res.success) {
-                alert('Lesson marked as completed! Progress updated.');
-            }
         }
 
         // Start general study timer
